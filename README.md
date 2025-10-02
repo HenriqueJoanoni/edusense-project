@@ -20,3 +20,18 @@ improving reliability through automation.
   <a href="https://react.dev/"><img src="https://img.shields.io/badge/React_JS-61DAFB.svg?&style=flat-square&logo=React&logoColor=black"/></a>
   <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3776AB.svg?&style=flat-square&logo=Python&logoColor=white"/></a>
 </p>
+
+## How to run this project
+
+### Backend (Laravel)
+ - After cloning this repository, run `composer install` to install the dependencies.
+ - Create a `.env` file and set the environment variables as per `.env.example`.
+ - Run `php artisan migrate` to create the database tables.
+ - Run `php artisan db:seed` to seed the database with sample data.
+ - Run `php artisan serve` to start the server.
+
+### Frontend (React)
+ - After cloning this repository, run `yarn install` to install the dependencies.
+ - Run `yarn start` to start the development server.
+
+ - Open `http://localhost:3000/` in your browser.
