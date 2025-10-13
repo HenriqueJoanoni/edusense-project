@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import api from './api';
 
+import Header from './components/Header';
+
 function App() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -22,7 +24,7 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
+      <Header />
         <h2>Users</h2>
         {loading && <p>Loading...</p>}
         {error && <p>{error}</p>}
@@ -33,7 +35,6 @@ function App() {
             </li>
           ))}
         </ul>
-      </header>
     </div>
   );
 }
