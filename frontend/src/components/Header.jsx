@@ -1,16 +1,24 @@
 import React, {useState, useEffect} from "react"
-
+import "../css/Header.css"
 
 
 export default function Header(){
     return (
         <header>
-            <img 
-                src="/edusense_logo.png"
-            />
+            <div id="titleSection">
+                <img 
+                    src="/edusense_logo.png"
+                    id="edusenseLogo"
+                    alt="Edusense Logo"
+                />
+                <h1>EduSense</h1>
+            </div>
 
-            <h1>Edusense</h1>
-            
+            <div id="headerActions">
+                <a href="" className="headerLink">About</a>
+                <a href="" className="headerLink">Sign In</a>
+                <a href="" className="headerLink">Register</a>
+            </div>
         </header>
     )
 }
