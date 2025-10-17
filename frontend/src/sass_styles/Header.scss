@@ -23,7 +23,8 @@ header {
         padding-inline: 20px;
 
         img {
-            width: 100px;
+            width: 80px;
+            border-radius: 50%;
         }
 
         h1 {
@@ -49,6 +50,14 @@ header {
             color: #eee;
             font-weight: 500;
             border-radius: 10px;
+            border: 1px solid #73C2FB;
+
+
+            &:hover {
+                color: #73C2FB;
+                background-color: #eee;
+                border: 1px solid #73C2FB;
+            }
         }
     }
 

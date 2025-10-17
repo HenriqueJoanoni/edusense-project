@@ -1,4 +1,7 @@
 import Header from "../components/Header"
+import Footer from "../components/Footer"
+
+
 import "../css/Homepage.css"
 
 
@@ -15,6 +18,7 @@ export default function Homepage(){
                 </div>
             </div>
         </div>
+        <Footer />
         </>
 
     )

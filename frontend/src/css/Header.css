@@ -1,3 +1,7 @@
+*, *::after, *::before {
+  box-sizing: border-box;
+}
+
 header {
   width: 100%;
   height: 80px;
@@ -15,7 +19,8 @@ header #titleSection {
   padding-inline: 20px;
 }
 header #titleSection img {
-  width: 100px;
+  width: 80px;
+  border-radius: 50%;
 }
 header #titleSection h1 {
   padding-left: 20px;
@@ -37,4 +42,10 @@ header #headerActions .headerLink {
   color: #eee;
   font-weight: 500;
   border-radius: 10px;
+  border: 1px solid #73C2FB;
+}
+header #headerActions .headerLink:hover {
+  color: #73C2FB;
+  background-color: #eee;
+  border: 1px solid #73C2FB;
 }/*# sourceMappingURL=Header.css.map */

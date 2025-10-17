@@ -45,6 +45,19 @@
             font-size: 15px;   
             margin-top: 20px;
             border-radius: 10px;
+            transition: transform 0.25s;
+
+            &:hover {
+                cursor: pointer;
+                transform: scale(1.2);
+                background-color: #eee;
+                color: #141414;
+                border: 1px solid #eee;
+                
+                
+            }
         }
+
+        
     }
 }

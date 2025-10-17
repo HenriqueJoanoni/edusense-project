@@ -26,6 +26,8 @@ function App() {
   return (
     <div className="App">
       <Homepage />
+
+      {/* 
         <h2>Users</h2>
         {loading && <p>Loading...</p>}
         {error && <p>{error}</p>}
@@ -36,6 +38,8 @@ function App() {
             </li>
           ))}
         </ul>
+
+        */ }
     </div>
   );
 }

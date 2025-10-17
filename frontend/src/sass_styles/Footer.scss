@@ -1,0 +1,27 @@
+footer {
+    width: 100%;
+    height: 70px;
+    background-color: #eee;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+    #footerLinks ul {
+        width: 40%;
+        list-style: none;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+
+        li {
+            margin-inline: 20px;
+
+
+            a img{
+                width: 40px;
+            }
+        }
+    }
+}
