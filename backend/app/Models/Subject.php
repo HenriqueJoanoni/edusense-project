@@ -9,6 +9,8 @@ class Subject extends Model
 {
     protected $table = 'subjects';
 
+    public $timestamps = false;
+
     protected $fillable = [
         'subject_name',
         'subject_code'

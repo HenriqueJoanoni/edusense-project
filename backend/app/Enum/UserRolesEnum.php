@@ -1,6 +1,6 @@
 <?php
 
-namespace app\Enum;
+namespace App\Enum;
 
 enum UserRolesEnum: string
 {
