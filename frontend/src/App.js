@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import api from './api';
+import {BrowserRouter, Switch, Route} from "react-router-dom"
+
+import Homepage from './pages/Homepage';
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -22,7 +25,9 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
+      <Homepage />
+
+      {/* 
         <h2>Users</h2>
         {loading && <p>Loading...</p>}
         {error && <p>{error}</p>}
@@ -33,7 +38,8 @@ function App() {
             </li>
           ))}
         </ul>
-      </header>
+
+        */ }
     </div>
   );
 }
