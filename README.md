@@ -1,14 +1,14 @@
 # Edusense Project
 
 This project is a smart attendance management system designed to streamline student attendance tracking. It integrates
-an RFID-based identification system with a modern web platform to ensure accuracy and ease of use.
+a barcode-based identification system with a modern web platform to ensure accuracy and ease of use.
 
 `Backend`: Built with `Laravel`, providing secure APIs, data management, and business logic.
 
 `Frontend`: Developed in `React`, offering an intuitive and responsive admin panel for managing students, classes, and
 attendance records.
 
-`IoT Layer`: Powered by `Python`, running on RFID-enabled devices to capture student card data and send it directly to
+`IoT Layer`: Powered by `Python`, running on barcode-enabled scanning device to capture student card data and send it directly to
 the system in real-time.
 
 The system allows administrators and teachers to efficiently manage attendance records while reducing manual errors and
@@ -19,6 +19,7 @@ improving reliability through automation.
   <a href="https://laravel.com/"><img src="https://img.shields.io/badge/Laravel-FF2D20.svg?&style=flat-square&logo=Laravel&logoColor=white"/></a>
   <a href="https://react.dev/"><img src="https://img.shields.io/badge/React_JS-61DAFB.svg?&style=flat-square&logo=React&logoColor=black"/></a>
   <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3776AB.svg?&style=flat-square&logo=Python&logoColor=white"/></a>
+  <a href="https://www.raspberrypi.com/"><img src="https://img.shields.io/badge/-Raspberry_Pi-C51A4A?style=flat-square&logo=Raspberry-Pi"/></a>
 </p>
 
 ## How to run this project
@@ -35,3 +36,49 @@ improving reliability through automation.
  - Run `yarn start` to start the development server.
 
  - Open `http://localhost:3000/` in your browser.
+
+
+## IoT Layer
+### Hardware List:
+- 1x Raspberry Pi 5
+- 1x Buzzer
+- 1x Red LED
+- 1x Green LED
+- 2x 330Ω Resistors
+- 1x BreadBoard
+- 1x 10K Potentiometer
+- 1x 16x2 LCD Display (HD44780 compatible)
+- 1x Barcode Scanner Module (e.g., ATOMIC 2D Barcode Scanner Module)
+- Jumper Wires
+- Power Supply for Raspberry Pi
+- MicroSD Card with Raspberry Pi OS installed
+- Ethernet Cable (for internet connection)
+
+### Hardware Connections:
+| Component           | Pin / Interface           | Raspberry Pi 5 (BCM / physical) | Notes                                                                                                   |
+|---------------------|---------------------------|---------------------------------|---------------------------------------------------------------------------------------------------------|
+| LCD pin 1 (GND)     | GND                       | Any Pi ground rail              | -                                                                                                       |
+| LCD pin 2 (VCC / 5V)| +5V rail                  | Physical Pin 2 or 4             | The LCD backlight needs 5V                                                                              |
+| LCD pin 3 (V0)      | Potentiometer middle      | -                               | contrast adjust                                                                                         |
+| LCD RS              | GPIO4                     | BCM 4 / Physical 7              | -                                                                                                       |
+| LCD EN              | GPIO24                    | BCM 24 / Physical 18            | -                                                                                                       |
+| LCD D4              | GPIO23                    | BCM 23 / Physical 16            | -                                                                                                       |
+| LCD D5              | GPIO17                    | BCM 17 / Physical 11            | -                                                                                                       |
+| LCD D6              | GPIO18                    | BCM 18 / Physical 12            | -                                                                                                       |
+| LCD D7              | GPIO22                    | BCM 22 / Physical 15            | -                                                                                                       |
+| LCD LED+            | +5V rail                  | -                               | backlight                                                                                               |
+| LCD LED–            | GND                       | -                               | backlight ground                                                                                        |
+| Red LED (external)  | GPIO5                     | BCM 5 / Physical 29             | through resistor (e.g. 220 Ω) to LED                                                                    |
+| Green LED (external)| GPIO6                     | BCM 6 / Physical 31             | through resistor                                                                                        |
+| External Buzzer     | GPIO13                    | BCM 13 / Physical 33            | if used, or skip if scanner's internal buzzer suffices                                                  |
+| Scanner VCC         | 5V or 3.3V (check spec)   | e.g. 5V rail                    | Many modules use 3.3V TTL, but the ATOMIC base spec suggests 5V supply possible. Botland Electronics +1 |
+| Scanner GND         | GND                       | ground rail                     | common ground                                                                                           |
+| Scanner TX → Pi RX  | Pi GPIO15 (UART RX, BCM 15) | Physical Pin 10                 | connect scanner TX to Pi RX                                                                             |
+| Scanner RX → Pi TX  | Pi GPIO14 (UART TX, BCM 14) | Physical Pin 8                  | connect scanner RX to Pi TX                                                                             |
+
+- Raspberry Pi 5 will be connected to the internet via Ethernet
+- Raspberry Pi will be powered using the official 27w power adapter
+
+
+### Fritzing Diagram
+![Wiring diagram](./media/barcode_attendance_diagram.png)
