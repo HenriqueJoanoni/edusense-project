@@ -1,0 +1,91 @@
+#studentProfileContainer {
+    background: #f2f2f2;
+    padding: 20px;
+    min-height: 80vh;
+
+
+    #studentProfileTopRow {
+        width: 95%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: stretch;
+
+
+        #studentInfoContainer {
+            position: relative;
+            width: 50%;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            background: #fff;
+            border-radius: 15px;
+            padding: 40px 80px 80px 40px;
+
+            #profilePhoto {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                
+                border-radius: 50%;
+                
+                img {
+                    width: 150px;
+                    height: 150px;
+                    border-radius: 50%;
+                    border: 3px solid #002FFF;
+                }
+            }
+
+            #studentInformation {
+                margin-left: 40px;
+                display: flex;
+                flex-direction: column;
+
+                * {
+                    margin: 0;
+                    padding: 2px;
+                }
+            }
+
+            #settingsButton {
+                background: transparent;
+                border: none;
+                position: absolute;
+                top: 10px;
+                right: 10px;
+
+                img {
+                    width: 30px;
+                    height: 30px;
+                    transition: ease-out 0.1s;
+
+                    &:hover {
+                        cursor: pointer;
+                        transform: rotate(30deg)
+                    }
+                }
+            }
+        }
+
+        #studentChartSummary {
+            background-color: #fff;
+            border-radius: 15px;
+            width: 40%;
+            height: 300px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+
+            canvas {
+                width: 80% !important;
+                height: 80% !important;
+            }
+        }
+    }
+
+    #studentTimetable {
+        height: 400px;
+    }
+}
