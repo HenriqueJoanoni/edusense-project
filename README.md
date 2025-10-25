@@ -82,3 +82,23 @@ improving reliability through automation.
 
 ### Fritzing Diagram
 ![Wiring diagram](./media/barcode_attendance_diagram.png)
+
+
+## Security and Privacy
+The security of the device will start with its protective case. This will prevent physical interference with the device.
+
+Data will be sent between the Raspberry Pi and PubNub, and the AWS server that has been encrypted with appropriate standards to ensure network privacy. 
+
+Secure practices will also be enforced at the server level. All user input will be validated at the server before being acted on.
+This is to protect against:
+- Incomplete information entering the system.
+- SQL Injection attacks.
+- Crashes occuring from unexpected inputs.
+
+### Passwords:
+All user passwords will be hashed prior to storage and comparison.
+
+### Access:
+Users will be logged in through tokens, then these tokens will be used to control users' access level and permissions, with deny by default being the standard.
+
+
