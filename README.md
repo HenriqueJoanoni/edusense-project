@@ -102,3 +102,41 @@ All user passwords will be hashed prior to storage and comparison.
 Users will be logged in through tokens, then these tokens will be used to control users' access level and permissions, with deny by default being the standard.
 
 
+
+## The User, UI, and tesing
+### Who is the device for?
+This device is designed to be used by:
+- Teachers
+- Students
+- School Administrators
+
+Students will connect to the system through the scanner, by scanning their ID card, and their face to sign in. 
+They will be able to access their own personal and attendance data through the online portal.
+![Students can view their personal data, attendance info, and class info.](./media/profile_page.png)
+
+
+
+Teachers will be able to access the attendance data their classes and students within their classes, and student profiles.
+Clicking on any student row will redirect a teacher to that student's page.
+![Teacher View](./media/teacher_view.png)
+
+
+Administrators will have access to all student profiles, class information, and attendance data. They will be the users able to edit and create class information and enrollment.
+![Teacher View](./media/admin_view.png)
+
+
+# Testing and success
+The success of the project can be determined by how effectively it scans and records attendance, and how quickly it achieves this.
+The scanner will need to be robust enough to work in a variety of brightness levels, positions, and with a wide sample of students of different features / complexions / accessories (such as glasses).
+
+The project will be considered successful if
+- The scanner is able to effectively scan and record students quickly and accurately.
+- This data is easily accessible to teachers, students, and administrators and presented in an intuitive way.
+- The system takes less time than traditional attendance methods.
+- Users are able to use the system with minimal confusion.
+
+
+
+
+
+
