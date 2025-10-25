@@ -1,5 +1,14 @@
-# Edusense Project
+# Edusense Project 
 
+## Table of Contents
+1. [Introduction](#introduction) 
+2. [Hardware](#iot-layer)
+3. [Data, Data Storage, and Data Processing](#data-storage-processing)
+4. [Security and Privacy](#security-and-privacy)
+5. [The UI, User, and Testing](#the-user-ui-and-testing)
+
+
+## Introduction
 This project is a smart attendance management system designed to streamline student attendance tracking. It integrates
 a barcode-based identification system with a modern web platform to ensure accuracy and ease of use.
 
@@ -38,7 +47,7 @@ improving reliability through automation.
  - Open `http://localhost:3000/` in your browser.
 
 
-## IoT Layer
+## IoT Layer 
 ### Hardware List:
 - 1x Raspberry Pi 5
 - 1x Buzzer
@@ -82,3 +91,62 @@ improving reliability through automation.
 
 ### Fritzing Diagram
 ![Wiring diagram](./media/barcode_attendance_diagram.png)
+
+
+## Security and Privacy
+The security of the device will start with its protective case. This will prevent physical interference with the device.
+
+Data will be sent between the Raspberry Pi and PubNub, and the AWS server that has been encrypted with appropriate standards to ensure network privacy. 
+Data transfers to PubNub will be encrypted using PubNub's generated sets of keys.
+
+Secure practices will also be enforced at the server level. All user input will be validated at the server before being acted on.
+This is to protect against:
+- Incomplete information entering the system.
+- SQL Injection attacks.
+- Crashes occuring from unexpected inputs.
+
+### Passwords:
+All user passwords will be hashed prior to storage and comparison.
+
+### Access:
+Users will be logged in through tokens, then these tokens will be used to control users' access level and permissions, with deny by default being the standard.
+
+
+
+## The User, UI, and tesing
+### Who is the device for?
+This device is designed to be used by:
+- Teachers
+- Students
+- School Administrators
+
+Students will connect to the system through the scanner, by scanning their ID card, and their face to sign in. 
+They will be able to access their own personal and attendance data through the online portal.
+![Students can view their personal data, attendance info, and class info.](./media/profile_page.png)
+
+
+
+Teachers will be able to access the attendance data their classes and students within their classes, and student profiles.
+Clicking on any student row will redirect a teacher to that student's page.
+![Teacher View](./media/teacher_view.png)
+
+
+Administrators will have access to all student profiles, class information, and attendance data. They will be the users able to edit and create class information and enrollment.
+![Teacher View](./media/admin_view.png)
+
+
+# Testing and success
+The success of the project can be determined by how effectively it scans and records attendance, and how quickly it achieves this.
+The scanner will need to be robust enough to work in a variety of brightness levels, positions, and with a wide sample of students of different features / complexions / accessories (such as glasses).
+
+The project will be considered successful if
+- The scanner is able to effectively scan and record students quickly and accurately.
+- This data is easily accessible to teachers, students, and administrators and presented in an intuitive way.
+- The system takes less time than traditional attendance methods.
+- Users are able to use the system with minimal confusion.
+
+
+
+
+
+
