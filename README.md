@@ -88,6 +88,7 @@ improving reliability through automation.
 The security of the device will start with its protective case. This will prevent physical interference with the device.
 
 Data will be sent between the Raspberry Pi and PubNub, and the AWS server that has been encrypted with appropriate standards to ensure network privacy. 
+Data transfers to PubNub will be encrypted using PubNub's generated sets of keys.
 
 Secure practices will also be enforced at the server level. All user input will be validated at the server before being acted on.
 This is to protect against:
