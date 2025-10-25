@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import api from './api';
-import {BrowserRouter, Switch, Route} from "react-router-dom"
+import {BrowserRouter, Routes, Route, Link } from "react-router-dom"
 
 import Homepage from './pages/Homepage';
+import StudentProfile from './pages/StudentProfile';
+import ClassAttendancePage from './pages/ClassAttendancePage';
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -24,24 +26,28 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
-      <Homepage />
+    <BrowserRouter>
+      <Routes>
+          <Route path="/" element={<Homepage />} />
+          <Route path="/students/" element={<StudentProfile />} />
+          <Route path="/attendance/" element={<ClassAttendancePage />} />
+      </Routes>
+    
+    </BrowserRouter>
 
-      {/* 
-        <h2>Users</h2>
-        {loading && <p>Loading...</p>}
-        {error && <p>{error}</p>}
-        <ul>
-          {users.map(user => (
-            <li key={user.id}>
-                {user.user_name} | {user.user_role}
-            </li>
-          ))}
-        </ul>
 
-        */ }
-    </div>
+
+    
+    
   );
 }
 
 export default App;
+
+
+
+<div className="App">
+      <Homepage />
+
+      
+    </div>

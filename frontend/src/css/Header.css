@@ -9,7 +9,7 @@ header {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background-color: #eee;
+  background-color: #fff;
 }
 header #titleSection {
   display: flex;
