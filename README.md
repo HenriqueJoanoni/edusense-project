@@ -113,7 +113,7 @@ Users will be logged in through tokens, then these tokens will be used to contro
 
 
 
-## The User, UI, and tesing
+## The User, UI, and testing
 ### Who is the device for?
 This device is designed to be used by:
 - Teachers
