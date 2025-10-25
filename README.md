@@ -1,5 +1,14 @@
-# Edusense Project
+# Edusense Project 
 
+## Table of Contents
+1. [Introduction](#introduction) 
+2. [Hardware](#iot-layer)
+3. [Data, Data Storage, and Data Processing](#data-storage-processing)
+4. [Security and Privacy](#security-and-privacy)
+5. [The UI, User, and Testing](#the-user-ui-and-testing)
+
+
+## Introduction
 This project is a smart attendance management system designed to streamline student attendance tracking. It integrates
 a barcode-based identification system with a modern web platform to ensure accuracy and ease of use.
 
@@ -38,7 +47,7 @@ improving reliability through automation.
  - Open `http://localhost:3000/` in your browser.
 
 
-## IoT Layer
+## IoT Layer 
 ### Hardware List:
 - 1x Raspberry Pi 5
 - 1x Buzzer
