@@ -275,7 +275,7 @@ Deduplication policy (example)
 
 Crontab line to run Laravel scheduler:
 
-    `* * * * cd /path/to/project && php artisan schedule:run >> /dev/null 2>&1`
+    * * * * cd /path/to/project && php artisan schedule:run >> /dev/null 2>&1
 
 Planned scheduled tasks (examples; describe frequency and purpose):
 
