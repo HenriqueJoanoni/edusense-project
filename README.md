@@ -69,26 +69,26 @@ improving reliability through automation.
 
 ### Hardware Connections:
 
-| Component            | Pin / Interface             | Raspberry Pi 5 (BCM / physical) | Notes                                                                                                   |
+| Component            | GPIO Pins          | Raspberry Pi 5 (physical pins) | Notes                                                                                                   |
 |----------------------|-----------------------------|---------------------------------|---------------------------------------------------------------------------------------------------------|
 | LCD pin 1 (GND)      | GND                         | Any Pi ground rail              | -                                                                                                       |
 | LCD pin 2 (VCC / 5V) | +5V rail                    | Physical Pin 2 or 4             | The LCD backlight needs 5V                                                                              |
-| LCD pin 3 (V0)       | Potentiometer middle        | -                               | contrast adjust                                                                                         |
-| LCD RS               | GPIO4                       | BCM 4 / Physical 7              | -                                                                                                       |
-| LCD EN               | GPIO24                      | BCM 24 / Physical 18            | -                                                                                                       |
-| LCD D4               | GPIO23                      | BCM 23 / Physical 16            | -                                                                                                       |
-| LCD D5               | GPIO17                      | BCM 17 / Physical 11            | -                                                                                                       |
-| LCD D6               | GPIO18                      | BCM 18 / Physical 12            | -                                                                                                       |
-| LCD D7               | GPIO22                      | BCM 22 / Physical 15            | -                                                                                                       |
+| LCD pin 3      | Potentiometer middle        | -                               | contrast adjust                                                                                         |
+| LCD RS               | GPIO4                       | Physical 7              | -                                                                                                       |
+| LCD EN               | GPIO24                      | Physical 18            | -                                                                                                       |
+| LCD D4               | GPIO23                      | Physical 16            | -                                                                                                       |
+| LCD D5               | GPIO17                      | Physical 11            | -                                                                                                       |
+| LCD D6               | GPIO18                      | Physical 12            | -                                                                                                       |
+| LCD D7               | GPIO22                      | Physical 15            | -                                                                                                       |
 | LCD LED+             | +5V rail                    | -                               | backlight                                                                                               |
 | LCD LED–             | GND                         | -                               | backlight ground                                                                                        |
-| Red LED (external)   | GPIO5                       | BCM 5 / Physical 29             | through resistor (e.g. 220 Ω) to LED                                                                    |
-| Green LED (external) | GPIO6                       | BCM 6 / Physical 31             | through resistor                                                                                        |
-| External Buzzer      | GPIO13                      | BCM 13 / Physical 33            | if used, or skip if scanner's internal buzzer suffices                                                  |
-| Scanner VCC          | 5V or 3.3V (check spec)     | e.g. 5V rail                    | Many modules use 3.3V TTL, but the ATOMIC base spec suggests 5V supply possible. Botland Electronics +1 |
+| Red LED    | GPIO5                       | Physical 29             | through resistor (e.g. 330 Ω) to LED                                                                    |
+| Green LED | GPIO6                       | Physical 31             | through resistor                                                                                        |
+| Buzzer      | GPIO13                      | Physical 33            | -                                               |
+| Scanner VCC          | 5V or 3.3V (check spec)     | e.g. 5V rail                    | Many modules use 3.3V, but the ATOMIC base spec suggests 5V supply possible |
 | Scanner GND          | GND                         | ground rail                     | common ground                                                                                           |
-| Scanner TX → Pi RX   | Pi GPIO15 (UART RX, BCM 15) | Physical Pin 10                 | connect scanner TX to Pi RX                                                                             |
-| Scanner RX → Pi TX   | Pi GPIO14 (UART TX, BCM 14) | Physical Pin 8                  | connect scanner RX to Pi TX                                                                             |
+| Scanner TX → Pi RX   | Pi GPIO15 (UART RX) | Physical Pin 10                 | connect scanner TX to Pi RX                                                                             |
+| Scanner RX → Pi TX   | Pi GPIO14 (UART TX) | Physical Pin 8                  | connect scanner RX to Pi TX                                                                             |
 
 - Raspberry Pi 5 will be connected to the internet via Ethernet
 - Raspberry Pi will be powered using the official 27w power adapter
