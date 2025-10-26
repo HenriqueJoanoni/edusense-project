@@ -98,7 +98,7 @@ is AWS with PubNub used for real-time event streaming to the frontend.
 
 - Primary sensors/devices
     - Barcode/QR scanner
-        - What is captured: code value (student id string or encoded payload), scanner device id, timestamp.
+        - What is captured: code value, scanner device id, timestamp.
         - How it works: The scanner will send decoded code via USB keyboard emulation, camera-based scanners in Python 
           to decode frames and emit an event.
         - Typical frequency: event-driven on scan. Can scan several codes per second; again for attendance we expect one
@@ -191,19 +191,19 @@ Example JSON shape for a sensor_events.payload
 "image_url": null
 }
 
-Reasoning: Keeping attendance_records normalized (with student_id and class_id) allows efficient relational queries and
+Reasoning: Keeping attendances normalized (with student_id and class_id) allows efficient relational queries and
 reporting. Raw events may be retained in S3 or a sensor_events table for debugging/auditing.
 
 3) Sample queries (MySQL)
 
 - 1) Mark attendance (insert)
-       INSERT INTO `attendance_records` (`student_id`, `class_id`, `device_id`, `sensor_type`, `sensor_event_id`,
+       INSERT INTO `attendances` (`student_id`, `class_id`, `device_id`, `sensor_type`, `sensor_event_id`,
        `recorded_at`, `source_timestamp`, `status`, `metadata`, `created_at`, `updated_at`)
        VALUES (1234, 5678, 10, 'rfid', 98765, NOW(), '2025-10-25 08:05:32', 'present', '{"rssi": -52}', NOW(), NOW());
 
 - 2) Get a student's attendance for a course between dates
        SELECT ar.*, c.course_code, s.first_name, s.last_name
-       FROM `attendance_records` ar
+       FROM `attendances` ar
        JOIN `classes` c ON ar.class_id = c.id
        JOIN `students` s ON ar.student_id = s.id
        WHERE ar.student_id = 1234
@@ -215,7 +215,7 @@ reporting. Raw events may be retained in S3 or a sensor_events table for debuggi
        COUNT(CASE WHEN ar.status = 'present' THEN 1 END) AS present_count,
        COUNT(CASE WHEN ar.status != 'present' THEN 1 END) AS other_count
        FROM `classes` c
-       LEFT JOIN `attendance_records` ar ON ar.class_id = c.id
+       LEFT JOIN `attendances` ar ON ar.class_id = c.id
        WHERE c.id = 5678
        GROUP BY c.id, c.course_code;
 
@@ -247,7 +247,7 @@ reporting. Raw events may be retained in S3 or a sensor_events table for debuggi
 - Step 2: Backend processing
     - Laravel receives the event, authenticates device, stores raw event, then attempts to resolve student_id by 
       matching UID or code.
-    - After student resolution, backend creates an attendance_records entry with metadata.
+    - After student resolution, backend creates an attendances entry with metadata.
     - Backend emits a PubNub message to the frontend to update real-time
       dashboards.
 - Step 3: Post-processing and analytics
@@ -282,7 +282,7 @@ Planned scheduled tasks (examples; describe frequency and purpose):
 - php artisan attendance:reconcile
     - Schedule: every 5 minutes
     - Purpose: process unprocessed sensor_events, resolve duplicates, create missing
-      attendance_records, and mark sensor_events.processed = true.
+      attendances, and mark sensor_events.processed = true.
 
 - php artisan device:heartbeat-check
     - Schedule: every 5 minutes
@@ -361,7 +361,7 @@ Processing summary:
 - Use background jobs (Laravel queues: Redis/SQS) to handle heavy processing (face recognition, large imports) so
   synchronous endpoints remain fast.
 - Implement idempotency: events include a device_event_id or hash so duplicate POSTs do not create duplicate
-  attendance_records.
+  attendances.
 - Rate limits: protect the API from malformed/spammed devices; implement per-device rate limits.
 - Test scale: when many devices are active, raw event S3 + Athena or DynamoDB can be used for scalable ingestion and
   analytics. Start with RDS+S3 for small/medium institutions.
