@@ -3,7 +3,7 @@
 ## Table of Contents
 1. [Introduction](#introduction) 
 2. [Hardware](#iot-layer)
-3. [Data, Data Storage, and Data Processing](#data-storage-processing)
+3. [Data, Data Storage, and Data Processing](#data-data-storage-and-data-processing)
 4. [Security and Privacy](#security-and-privacy)
 5. [The UI, User, and Testing](#the-user-ui-and-testing)
 
