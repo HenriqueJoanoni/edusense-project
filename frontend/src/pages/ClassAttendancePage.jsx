@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useState} from "react"
 import Header from "../components/Header"
 import Footer from "../components/Footer"
 import AttendanceTableRow from "../components/AttendanceTableRow"
@@ -9,6 +9,10 @@ import "../css/ClassAttendancePage.css"
 
 
 export default function ClassAttendancePage(){
+    const [sortField, setSortField] = useState("ID")
+    const [sortDirection, setSortDirection] = useState(1)
+    const [searchInput, setSearchInput] = useState("")
+
     const data = {
         classTitle:"Algorithms and Data Structures",
         totalStudentsPresent: 42,
@@ -30,12 +34,35 @@ export default function ClassAttendancePage(){
                 status: "late"
             },
             {
-                ID: "1234",
+                ID: "1235",
                 name: "Jane Doe",
-                arrivalTime: "",
+                arrivalTime: "-",
                 status: "absent"
             }
         ]
+    }
+
+    const findStudents = () =>{
+        if (searchInput === ""){
+            return [...data.studentData].sort((a, b) => a[sortField] > b[sortField   ] ? sortDirection : -sortDirection)
+        }
+
+        else {
+            return data.studentData.filter(student => {return student.ID.toLowerCase().includes(searchInput.toLowerCase()) ||
+                                                            student.name.toLowerCase().includes(searchInput.toLowerCase())
+            })
+        }
+    }
+
+    const updateSort = (newSortField) => {
+        if (sortField === newSortField) {
+            setSortDirection(sortDirection * -1)
+        }
+        else {
+            setSortField(newSortField)
+            setSortDirection(1)
+        }
+        
     }
 
 
@@ -82,6 +109,8 @@ export default function ClassAttendancePage(){
                                 <input 
                                     type="text"
                                     placeholder="Search Student"
+                                    value={searchInput}
+                                    onChange={e => {setSearchInput(e.target.value)}}
                                 />
                             </div>
                         </div>
@@ -89,14 +118,14 @@ export default function ClassAttendancePage(){
                     <table id="attendanceTable">
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Arrival Time</th>
-                                <th>Status</th>
+                                <th onClick={()=>{updateSort("ID")}}>ID {sortField !== "ID" ? "" : sortDirection === -1 ? "▼" : "▲"}</th>
+                                <th onClick={()=>{updateSort("name")}}>Name {sortField !== "name" ? "" : sortDirection === -1 ? "▼" : "▲"}</th>
+                                <th onClick={()=>{updateSort("arrivalTime")}}>Arrival Time {sortField !== "arrivalTime" ? "" : sortDirection === -1 ? "▼" : "▲"}</th>
+                                <th onClick={()=>{updateSort("status")}}>Status {sortField !== "status" ? "" : sortDirection === -1 ? "▼" : "▲"}</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {data.studentData.map(student => <AttendanceTableRow student={student} />)}
+                            {findStudents().map(student => <AttendanceTableRow key={student.ID} student={student} />)}
                         </tbody>
                     </table>
 
