@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class UserController extends Controller
 {
     /**
+     * Test Purposes Only
+     *
      * @return JsonResponse
      */
     public function getAllUsers(): JsonResponse
@@ -19,42 +22,39 @@ class UserController extends Controller
     }
 
     /**
-     * @param Request $request
      * @return JsonResponse
      */
-    public function login(Request $request): JsonResponse
+    public function getUser(Request $request): JsonResponse
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string|min:8'
+        $validated = $request->validate([
+            'id' => 'required|integer|exists:users,id',
         ]);
 
-        try {
-            $user = User::where('email', $request->input('email'))->first();
-
-            if (!$user || !Hash::check($request->input('password'), $user->password)) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Invalid Credentials.'
-                ], 401);
-            }
-
-            $userArray = $user->toArray();
-            unset($userArray['password']);
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Authentication successful.',
-                'data' => [
-                    'user' => $userArray,
-                ],
-            ], 200);
-        } catch (\Exception $e) {
+        $admin = Auth::user();
+        if (!$admin || $admin->user_role !== 'admin') {
             return response()->json([
                 'success' => false,
-                'message' => 'Error during login processing.'
-            ], 500);
+                'message' => 'Unauthorized access.'
+            ], 403);
         }
+
+        $user = User::find($validated['id']);
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found.'
+            ], 404);
+        }
+
+        $userArray = $user->toArray();
+        unset($userArray['user_password']);
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'user' => $userArray,
+            ],
+        ]);
     }
 
     /**
@@ -98,39 +98,15 @@ class UserController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function resetUserPassword(Request $request): JsonResponse
+    public function updateUser(Request $request): JsonResponse
     {
-        $validated = $request->validate([
-            'id' => 'required|integer|exists:users,id',
-            'new_password' => 'nullable|string|min:8|confirmed',
-        ]);
-
         try {
-            $user = User::find($validated['id']);
-
-            if (!$user) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'User not found.'
-                ], 404);
-            }
-
-            $password = $validated['new_password'] ?? config('app.default_user_password');
-            $user->password = Hash::make($password);
-            $user->save();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Password reset successfully.',
-                'data' => [
-                    'id' => $user->id,
-                ],
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to reset the password.',
-            ], 500);
+            $user = Auth::user();
+            // TODO: Add validation rules for user_name and user_email
+            $user->update($request->only(['user_name', 'user_email']));
+            return response()->json($user);
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'Failed to update user'], 500);
         }
     }
 }
