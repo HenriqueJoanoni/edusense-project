@@ -72,11 +72,19 @@ export default function ClassAttendancePage(){
 
                 <div id="attendanceTableContainer">
                     <div id="attendanceTableTools">
-                        <span><p>Attendance History</p></span>
-                        <span>
-                            <p>Data Selector</p>
-                            <p>Search Student</p>
-                        </span>
+                        <span id="titleSpan"><img src="/icons8-page-50.png"/><p>Attendance History</p></span>
+                        <div id="searchDiv">
+                            <div>
+                                Date Picker
+                            </div>
+                            <div id="nameSearchContainer">
+                                <img src="/icons8-magnifying-glass-50.png" alt="Magnifying Glass" />
+                                <input 
+                                    type="text"
+                                    placeholder="Search Student"
+                                />
+                            </div>
+                        </div>
                     </div>
                     <table id="attendanceTable">
                         <thead>
@@ -94,6 +102,7 @@ export default function ClassAttendancePage(){
 
                 </div>
             </div>
+            <Footer />
         
         </>
     )
