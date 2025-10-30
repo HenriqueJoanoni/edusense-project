@@ -1,0 +1,27 @@
+.formTextField {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding-block: 10px;
+  margin: auto;
+}
+.formTextField label {
+  font-size: 0.9rem;
+  color: #141414;
+  padding-block: 5px;
+}
+.formTextField input {
+  width: 90%;
+  padding: 5px 10px;
+  border-radius: 15px;
+  outline: none;
+  height: 40px;
+  border: 1px solid #141414;
+  font-size: 15px;
+  padding-left: 20px;
+}
+.formTextField input:focus {
+  border: 1px solid #002FFF;
+}/*# sourceMappingURL=FormTextField.css.map */
