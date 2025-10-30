@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\EnsureUserIsAdmin;
 use App\Http\Middleware\JwtMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -11,10 +12,16 @@ return Application::configure(basePath: dirname(__DIR__))
         api: __DIR__.'/../routes/api.php',
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
+        apiPrefix: 'api',
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'auth.jwt' => JWTMiddleware::class,
+            'admin' => EnsureUserIsAdmin::class,
+        ]);
+
+        $middleware->validateCsrfTokens(except: [
+            'api/*',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

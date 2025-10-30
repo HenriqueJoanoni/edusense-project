@@ -23,12 +23,19 @@ class JwtMiddleware
             $user = JWTAuth::parseToken()->authenticate();
 
             if (!$user) {
-                return response()->json(['error' => 'User not found'], 401);
+                return response()->json([
+                    'success' => false,
+                    'message' => 'User not found.'
+                ], 404);
             }
 
             Auth::setUser($user);
         } catch (Exception $e) {
-            return response()->json(['error' => 'Invalid Token'], 401);
+            return response()->json([
+                'success' => false,
+                'message' => 'Token is invalid or expired.',
+                'error' => $e->getMessage()
+            ], 401);
         }
 
         return $next($request);
