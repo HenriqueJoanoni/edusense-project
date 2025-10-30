@@ -7,6 +7,7 @@ import Homepage from './pages/Homepage';
 import StudentProfile from './pages/StudentProfile';
 import ClassAttendancePage from './pages/ClassAttendancePage';
 import Login from "./pages/Login"
+import Register from './pages/Register';
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -34,6 +35,8 @@ function App() {
           <Route path="/students/" element={<StudentProfile />} />
           <Route path="/attendance/" element={<ClassAttendancePage />} />
           <Route path="/login/" element={<Login />} />
+          <Route path="/register/" element={<Register />} />
+
 
       </Routes>
     

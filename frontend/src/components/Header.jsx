@@ -17,7 +17,7 @@ export default function Header(){
             <div id="headerActions">
                 <a href="" className="headerLink">About</a>
                 <a href="/login" className="headerLink">Login</a>
-                <a href="" className="headerLink">Register</a>
+                <a href="/register" className="headerLink">Register</a>
             </div>
         </header>
     )
