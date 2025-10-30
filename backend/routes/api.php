@@ -17,16 +17,24 @@ Route::patch('/reset-password', [AuthController::class, 'resetUserPassword']);
 
 Route::middleware('auth.jwt')->group(function () {
     /** User related */
-    Route::post('/user', [UserController::class, 'getUser']);
-    Route::put('/user', [UserController::class, 'updateUser']);
-    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('profile', [UserController::class, 'getProfile']);
+    Route::patch('update-profile', [UserController::class, 'updateProfile']);
+    Route::post('logout', [AuthController::class, 'logout']);
 
     /** Attendance */
-    Route::match(['get', 'post'], '/attendance', [AttendanceController::class, 'returnAttendance']);
+    Route::match(['get', 'post'], 'attendance', [AttendanceController::class, 'returnAttendance']);
 
     /** Barcode */
-    Route::post('/read-barcode/{barcodeData}', [ReaderController::class, 'readBarcode']);
+    Route::post('read-barcode/{barcodeData}', [ReaderController::class, 'readBarcode']);
 
     /** Report */
-    Route::match(['get', 'post'], '/generate-report/{startDate?}/{endDate?}', [ReportDataController::class, 'generateReport']);
+    Route::match(['get', 'post'], 'generate-report/{startDate?}/{endDate?}', [ReportDataController::class, 'generateReport']);
+
+    /** Admin related */
+    Route::middleware('admin')->group(function () {
+        Route::post('user', [UserController::class, 'getUser']);
+
+        Route::patch('update-user/{id}', [UserController::class, 'updateUser']);
+        Route::delete('delete-user/{id}', [UserController::class, 'deleteUser']);
+    });
 });

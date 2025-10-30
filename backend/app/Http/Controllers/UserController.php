@@ -3,25 +3,34 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Http\Requests\UpdateUserRequest;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Tymon\JWTAuth\Exceptions\JWTException;
 
 class UserController extends Controller
 {
     /**
      * Test Purposes Only
+     * Get all users
      *
      * @return JsonResponse
      */
     public function getAllUsers(): JsonResponse
     {
-        $users = User::all();
-        return response()->json($users);
+        $users = User::all()->makeHidden(['user_password']);
+
+        return response()->json([
+            'success' => true,
+            'data' => $users
+        ]);
     }
 
     /**
+     * Get a specific user by ID
+     *
+     * @param Request $request
      * @return JsonResponse
      */
     public function getUser(Request $request): JsonResponse
@@ -30,15 +39,8 @@ class UserController extends Controller
             'id' => 'required|integer|exists:users,id',
         ]);
 
-        $admin = Auth::user();
-        if (!$admin || $admin->user_role !== 'admin') {
-            return response()->json([
-                'success' => false,
-                'message' => 'Unauthorized access.'
-            ], 403);
-        }
-
         $user = User::find($validated['id']);
+
         if (!$user) {
             return response()->json([
                 'success' => false,
@@ -46,67 +48,168 @@ class UserController extends Controller
             ], 404);
         }
 
-        $userArray = $user->toArray();
-        unset($userArray['user_password']);
-
         return response()->json([
             'success' => true,
             'data' => [
-                'user' => $userArray,
+                'user' => $user->makeHidden(['user_password']),
+                'role_label' => $user->getRoleLabel(),
+                'permissions' => [
+                    'is_admin' => $user->isAdmin(),
+                    'can_manage_courses' => $user->canManageCourses(),
+                ]
             ],
         ]);
     }
 
     /**
-     * @param Request $request
+     * Update an authenticated user or specific user (admin only)
+     *
+     * @param UpdateUserRequest $request
      * @return JsonResponse
      */
-    public function registerNewUser(Request $request): JsonResponse
+    public function updateUser(UpdateUserRequest $request, int $id): JsonResponse
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
-
         try {
-            $user = User::create([
-                'name' => $validated['name'],
-                'email' => $validated['email'],
-                'password' => Hash::make($validated['password']),
-            ]);
+            $authenticatedUser = Auth::user();
+            $user = User::findOrFail($id);
 
-            $userArray = $user->toArray();
-            unset($userArray['password']);
+            if ($user->id !== $authenticatedUser->id && !$authenticatedUser->isAdmin()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Forbidden. You can only update your own profile.'
+                ], 403);
+            }
+
+            if ($user->id === $authenticatedUser->id && $request->has('user_role')) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'You cannot change your own role. Ask another admin.'
+                ], 403);
+            }
+
+            $validated = $request->validated();
+            $user->update($validated);
 
             return response()->json([
                 'success' => true,
-                'message' => 'User created successfully.',
+                'message' => 'User updated successfully.',
                 'data' => [
-                    'user' => $userArray,
+                    'user' => $user->fresh()->makeHidden(['user_password']),
+                    'role' => $user->user_role->value,
+                    'role_label' => $user->getRoleLabel(),
                 ],
-            ], 201);
+            ], 200);
+
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found.',
+            ], 404);
+
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Error during user creation.'
+                'message' => 'Failed to update user.',
+                'error' => config('app.debug') ? $e->getMessage() : null,
             ], 500);
         }
     }
 
     /**
-     * @param Request $request
+     * Delete a user (admin only)
+     *
+     * @param int $id
      * @return JsonResponse
      */
-    public function updateUser(Request $request): JsonResponse
+    public function deleteUser(int $id): JsonResponse
+    {
+        $authenticatedUser = Auth::user();
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found.'
+            ], 404);
+        }
+
+        if ($user->id === $authenticatedUser->id) {
+            return response()->json([
+                'success' => false,
+                'message' => 'You cannot delete your own account.'
+            ], 400);
+        }
+
+        $user->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'User deleted successfully.',
+        ]);
+    }
+
+    /**
+     * Get an authenticated user profile
+     *
+     * @return JsonResponse
+     */
+    public function getProfile(): JsonResponse
+    {
+        $user = Auth::user();
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'id' => $user->id,
+                'user_name' => $user->user_name,
+                'user_email' => $user->user_email,
+                'user_role' => $user->user_role->value,
+                'role_label' => $user->getRoleLabel(),
+                'permissions' => [
+                    'is_admin' => $user->isAdmin(),
+                    'is_lecturer' => $user->isLecturer(),
+                    'is_student' => $user->isStudent(),
+                    'can_manage_courses' => $user->canManageCourses(),
+                ]
+            ]
+        ]);
+    }
+
+    /**
+     * @param UpdateUserRequest $request
+     * @return JsonResponse
+     */
+    public function updateProfile(UpdateUserRequest $request): JsonResponse
     {
         try {
             $user = Auth::user();
-            // TODO: Add validation rules for user_name and user_email
-            $user->update($request->only(['user_name', 'user_email']));
-            return response()->json($user);
-        } catch (JWTException $e) {
-            return response()->json(['error' => 'Failed to update user'], 500);
+
+            if ($request->has('user_role')) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'You cannot change your own role.'
+                ], 403);
+            }
+
+            $validated = $request->validated();
+            $user->update($validated);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Profile updated successfully.',
+                'data' => [
+                    'user' => $user->fresh()->makeHidden(['user_password']),
+                    'role' => $user->user_role->value,
+                    'role_label' => $user->getRoleLabel(),
+                ],
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to update profile.',
+                'error' => config('app.debug') ? $e->getMessage() : null,
+            ], 500);
         }
     }
 }
