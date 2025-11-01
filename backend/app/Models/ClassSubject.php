@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ClassSubject extends Model
 {
-    protected $table = 'class_subject';
+    protected $table = 'class_subjects';
+
+    public $timestamps = false;
 
     protected $fillable = [
         'class_id',

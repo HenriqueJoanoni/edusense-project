@@ -1,5 +1,15 @@
 # Edusense Project
+https://github.com/HenriqueJoanoni/edusense-project
 
+## Table of Contents
+1. [Introduction](#introduction) 
+2. [Hardware](#iot-layer)
+3. [Data, Data Storage, and Data Processing](#data-data-storage-and-data-processing)
+4. [Security and Privacy](#security-and-privacy)
+5. [The UI, User, and Testing](#the-user-ui-and-testing)
+
+
+## Introduction
 This project is a smart attendance management system designed to streamline student attendance tracking. It integrates
 a barcode-based identification system with a modern web platform to ensure accuracy and ease of use.
 
@@ -60,26 +70,26 @@ improving reliability through automation.
 
 ### Hardware Connections:
 
-| Component            | Pin / Interface             | Raspberry Pi 5 (BCM / physical) | Notes                                                                                                   |
+| Component            | GPIO Pins          | Raspberry Pi 5 (physical pins) | Notes                                                                                                   |
 |----------------------|-----------------------------|---------------------------------|---------------------------------------------------------------------------------------------------------|
 | LCD pin 1 (GND)      | GND                         | Any Pi ground rail              | -                                                                                                       |
 | LCD pin 2 (VCC / 5V) | +5V rail                    | Physical Pin 2 or 4             | The LCD backlight needs 5V                                                                              |
-| LCD pin 3 (V0)       | Potentiometer middle        | -                               | contrast adjust                                                                                         |
-| LCD RS               | GPIO4                       | BCM 4 / Physical 7              | -                                                                                                       |
-| LCD EN               | GPIO24                      | BCM 24 / Physical 18            | -                                                                                                       |
-| LCD D4               | GPIO23                      | BCM 23 / Physical 16            | -                                                                                                       |
-| LCD D5               | GPIO17                      | BCM 17 / Physical 11            | -                                                                                                       |
-| LCD D6               | GPIO18                      | BCM 18 / Physical 12            | -                                                                                                       |
-| LCD D7               | GPIO22                      | BCM 22 / Physical 15            | -                                                                                                       |
+| LCD pin 3      | Potentiometer middle        | -                               | contrast adjust                                                                                         |
+| LCD RS               | GPIO4                       | Physical 7              | -                                                                                                       |
+| LCD EN               | GPIO24                      | Physical 18            | -                                                                                                       |
+| LCD D4               | GPIO23                      | Physical 16            | -                                                                                                       |
+| LCD D5               | GPIO17                      | Physical 11            | -                                                                                                       |
+| LCD D6               | GPIO18                      | Physical 12            | -                                                                                                       |
+| LCD D7               | GPIO22                      | Physical 15            | -                                                                                                       |
 | LCD LED+             | +5V rail                    | -                               | backlight                                                                                               |
 | LCD LED–             | GND                         | -                               | backlight ground                                                                                        |
-| Red LED (external)   | GPIO5                       | BCM 5 / Physical 29             | through resistor (e.g. 220 Ω) to LED                                                                    |
-| Green LED (external) | GPIO6                       | BCM 6 / Physical 31             | through resistor                                                                                        |
-| External Buzzer      | GPIO13                      | BCM 13 / Physical 33            | if used, or skip if scanner's internal buzzer suffices                                                  |
-| Scanner VCC          | 5V or 3.3V (check spec)     | e.g. 5V rail                    | Many modules use 3.3V TTL, but the ATOMIC base spec suggests 5V supply possible. Botland Electronics +1 |
+| Red LED    | GPIO5                       | Physical 29             | through resistor (e.g. 330 Ω) to LED                                                                    |
+| Green LED | GPIO6                       | Physical 31             | through resistor                                                                                        |
+| Buzzer      | GPIO13                      | Physical 33            | -                                               |
+| Scanner VCC          | 5V or 3.3V (check spec)     | e.g. 5V rail                    | Many modules use 3.3V, but the ATOMIC base spec suggests 5V supply possible |
 | Scanner GND          | GND                         | ground rail                     | common ground                                                                                           |
-| Scanner TX → Pi RX   | Pi GPIO15 (UART RX, BCM 15) | Physical Pin 10                 | connect scanner TX to Pi RX                                                                             |
-| Scanner RX → Pi TX   | Pi GPIO14 (UART TX, BCM 14) | Physical Pin 8                  | connect scanner RX to Pi TX                                                                             |
+| Scanner TX → Pi RX   | Pi GPIO15 (UART RX) | Physical Pin 10                 | connect scanner TX to Pi RX                                                                             |
+| Scanner RX → Pi TX   | Pi GPIO14 (UART TX) | Physical Pin 8                  | connect scanner RX to Pi TX                                                                             |
 
 - Raspberry Pi 5 will be connected to the internet via Ethernet
 - Raspberry Pi will be powered using the official 27w power adapter
@@ -182,7 +192,7 @@ Canonical relational schema (MySQL)
 - FOREIGN KEY (device_id) → devices(id)
 
 Example JSON shape for a sensor_events.payload
-{
+```json{
 "uid": "04A3F2C7",
 "type": "mifare-classic",
 "rssi": -58,
@@ -190,7 +200,7 @@ Example JSON shape for a sensor_events.payload
 "reader_port": 1,
 "image_url": null
 }
-
+```
 Reasoning: Keeping attendances normalized (with student_id and class_id) allows efficient relational queries and
 reporting. Raw events may be retained in S3 or a sensor_events table for debugging/auditing.
 
@@ -266,11 +276,7 @@ Deduplication policy (example)
 
 Crontab line to run Laravel scheduler:
 
-*
-    *
-        *
-            *
-                * cd /path/to/project && php artisan schedule:run >> /dev/null 2>&1
+    * * * * cd /path/to/project && php artisan schedule:run >> /dev/null 2>&1
 
 Planned scheduled tasks (examples; describe frequency and purpose):
 
@@ -332,7 +338,7 @@ Planned scheduled tasks (examples; describe frequency and purpose):
 - PubNub is used for UI updates only; canonical storage stays in RDS or S3.
 
 8) Example of a full event flow (JSON) emitted by a device
-   {
+   ```json{
    "device_uuid": "device-abc-001",
    "device_label": "Door-1 - Room 101",
    "sensor_type": "rfid",
@@ -345,6 +351,7 @@ Planned scheduled tasks (examples; describe frequency and purpose):
    "local_timestamp":"2025-10-25T08:05:32Z",
    "firmware_version":"1.2.0"
    }
+   ```
 
 Processing summary:
 
@@ -370,8 +377,8 @@ Processing summary:
 
 The security of the device will start with its protective case. This will prevent physical interference with the device.
 
-Data will be sent between the Raspberry Pi and PubNub, and the AWS server that has been encrypted with appropriate
-standards to ensure network privacy.
+Data will be sent between the Raspberry Pi and PubNub, and the AWS server that has been encrypted with appropriate standards to ensure network privacy. 
+Data transfers to PubNub will be encrypted using PubNub's generated sets of keys.
 
 Secure practices will also be enforced at the server level. All user input will be validated at the server before being
 acted on.
@@ -390,8 +397,7 @@ All user passwords will be hashed prior to storage and comparison.
 Users will be logged in through tokens, then these tokens will be used to control users' access level and permissions,
 with deny by default being the standard.
 
-## The User, UI, and tesing
-
+## The User, UI, and testing
 ### Who is the device for?
 
 This device is designed to be used by:
@@ -421,7 +427,6 @@ The scanner will need to be robust enough to work in a variety of brightness lev
 of students of different features / complexions / accessories (such as glasses).
 
 The project will be considered successful if
-
 - The scanner is able to effectively scan and record students quickly and accurately.
 - This data is easily accessible to teachers, students, and administrators and presented in an intuitive way.
 - The system takes less time than traditional attendance methods.

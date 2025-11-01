@@ -1,5 +1,0 @@
-{
-    "require": {
-        "fruitcake/laravel-cors": "^3.0"
-    }
-}

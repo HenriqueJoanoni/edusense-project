@@ -2,28 +2,152 @@
   width: 100%;
   min-height: 80vh;
   background-color: #f2f2f2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+#classAttendancePage #classTitleHeader {
+  width: 100%;
+  color: #002FFF;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 20px 0;
+  margin: auto;
+  text-align: center;
 }
 #classAttendancePage #topRow {
   width: 100%;
-  height: 400px;
+  padding-bottom: 20px;
   display: flex;
   justify-content: space-evenly;
-  align-items: center;
+  align-items: flex-start;
 }
 #classAttendancePage #topRow .attendanceInfoBox {
   background-color: #fff;
   width: 20%;
-  height: 200px;
+  height: 150px;
   border-radius: 15px;
   padding: 10px;
+  padding-bottom: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 #classAttendancePage #topRow .attendanceInfoBox span {
-  width: 90%;
+  width: 95%;
   margin: auto;
   font-weight: bold;
   text-align: center;
   color: #002FFF;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
-#classAttendancePage #topRow .attendanceInfoBox p {
+#classAttendancePage #topRow .attendanceInfoBox span img {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+#classAttendancePage #topRow .attendanceInfoBox span .spanText {
+  font-size: 18px;
+}
+#classAttendancePage #topRow .attendanceInfoBox .boxData {
+  margin: 0 0 0 30px;
   font-size: 2rem;
+  font-weight: bold;
+  padding: 0;
+}
+#classAttendancePage #attendanceTableContainer {
+  width: 95%;
+  background: #fff;
+  margin: auto;
+  border-radius: 15px;
+}
+#classAttendancePage #attendanceTableContainer #attendanceTableTools {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+#classAttendancePage #attendanceTableContainer #attendanceTableTools #titleSpan {
+  width: 85%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  font-weight: bold;
+}
+#classAttendancePage #attendanceTableContainer #attendanceTableTools #titleSpan img {
+  width: 30px;
+  margin-right: 10px;
+}
+#classAttendancePage #attendanceTableContainer #attendanceTableTools #searchDiv {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#classAttendancePage #attendanceTableContainer #attendanceTableTools #searchDiv #nameSearchContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  padding: 5px 10px;
+  min-width: 200px;
+}
+#classAttendancePage #attendanceTableContainer #attendanceTableTools #searchDiv #nameSearchContainer img {
+  width: 25px;
+  margin-right: 10px;
+}
+#classAttendancePage #attendanceTableContainer #attendanceTableTools #searchDiv #nameSearchContainer input {
+  border: none;
+  outline: none;
+}
+#classAttendancePage #attendanceTableContainer #attendanceTableTools #searchDiv #nameSearchContainer input:active {
+  border: none;
+  outline: none;
+}
+#classAttendancePage #attendanceTableContainer #attendanceTable {
+  width: 90%;
+  padding: 0;
+  margin: auto;
+  text-align: center;
+  border-collapse: collapse;
+}
+#classAttendancePage #attendanceTableContainer #attendanceTable thead {
+  background-color: #f2f2f2;
+  outline: none;
+}
+#classAttendancePage #attendanceTableContainer #attendanceTable thead th {
+  padding-block: 5px;
+}
+#classAttendancePage #attendanceTableContainer #attendanceTable tbody tr {
+  border-bottom: 2px solid #f2f2f2;
+}
+#classAttendancePage #attendanceTableContainer #attendanceTable tbody tr td {
+  padding-block: 20px;
+  font-size: 1.2em;
+}
+#classAttendancePage #attendanceTableContainer #attendanceTable tbody tr td .attendanceStatusBubble {
+  width: 120px;
+  padding: 5px 10px;
+  border-radius: 12px;
+  margin: auto;
+  border: none;
+}
+#classAttendancePage #attendanceTableContainer #attendanceTable tbody tr td .statusBubblePresent {
+  background-color: rgba(25, 255, 0, 0.15);
+  color: #0D7F00;
+}
+#classAttendancePage #attendanceTableContainer #attendanceTable tbody tr td .statusBubbleLate {
+  background-color: rgba(255, 156, 0, 0.15);
+  color: #8B5500;
+}
+#classAttendancePage #attendanceTableContainer #attendanceTable tbody tr td .statusBubbleAbsent {
+  background-color: rgba(223, 0, 4, 0.15);
+  color: #DF0004;
 }/*# sourceMappingURL=ClassAttendancePage.css.map */

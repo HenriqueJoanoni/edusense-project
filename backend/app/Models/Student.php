@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Student extends Model
 {
     protected $table = 'students';
+    public $timestamps = false;
 
     protected $fillable = [
         'student_name',
