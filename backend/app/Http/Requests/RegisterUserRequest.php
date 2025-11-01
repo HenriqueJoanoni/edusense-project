@@ -35,9 +35,11 @@ class RegisterUserRequest extends FormRequest
      */
     protected function prepareForValidation(): void
     {
-        $this->merge([
-            'user_role' => UserRolesEnum::USER,
-        ]);
+        if ($this->has('user_role') && $this->input('user_role') instanceof UserRolesEnum) {
+            $this->merge([
+                'user_role' => $this->input('user_role')->value,
+            ]);
+        }
     }
 
     /**
