@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class CourseClasses extends Model
 {
     protected $table = 'classes';
+
+    public $timestamps = false;
+
     protected $fillable = [
         'year',
         'semester',

@@ -10,6 +10,8 @@ class Lecturer extends Model
 {
     protected $table = 'lecturers';
 
+    public $timestamps = false;
+
     protected $fillable = [
         'lecturer_name',
         'lecturer_email',

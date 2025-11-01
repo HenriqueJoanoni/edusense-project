@@ -9,6 +9,8 @@ class Attendance extends Model
 {
     protected $table = 'attendances';
 
+    public $timestamps = false;
+
     protected $fillable = [
         'student_id',
         'reader_id',
