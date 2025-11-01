@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enum\UserRolesEnum;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterUserRequest;
 use App\Http\Requests\ResetPasswordRequest;
@@ -22,6 +23,7 @@ class AuthController extends Controller
     {
         try {
             $validated = $request->validated();
+            $validated['user_role'] = $validated['user_role'] ?? UserRolesEnum::USER;
             $user = User::create($validated);
             $token = $this->generateToken($user);
 
