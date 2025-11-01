@@ -40,8 +40,20 @@ Route::middleware('auth.jwt')->group(function () {
     // Barcode
     Route::post('read-barcode/{barcodeData}', [ReaderController::class, 'readBarcode']);
 
-    // Report
-    Route::match(['get', 'post'], 'generate-report/{startDate?}/{endDate?}', [ReportDataController::class, 'generateReport']);
+    // Reports
+    Route::prefix('reports')->group(function () {
+        // Custom period report (accepts both GET and POST)
+        Route::match(
+            ['get', 'post'],
+            'generate/{startDate?}/{endDate?}',
+            [ReportDataController::class, 'generateReport']
+        );
+
+        // Quick reports
+        Route::get('today', [ReportDataController::class, 'todayReport']);
+        Route::get('week', [ReportDataController::class, 'weekReport']);
+        Route::get('month', [ReportDataController::class, 'monthReport']);
+    });
 
     /*
     |--------------------------------------------------------------------------
