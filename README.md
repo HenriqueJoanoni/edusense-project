@@ -98,6 +98,18 @@ improving reliability through automation.
 
 ![Wiring diagram](./media/barcode_attendance_diagram.png)
 
+### Python Virtual Enviroment
+In Hardware folder
+```
+python -m venv venv
+source venv/bin/activate
+```
+pip installs
+```
+pip install gpiozero adafruit-blinka adafruit-circuitpython-charlcd
+```
+
+
 ## Data, Data Storage and Data Processing
 
 This section describes what data the device sensors will gather, how that data is stored, and how it is processed in the
