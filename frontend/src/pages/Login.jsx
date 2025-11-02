@@ -6,6 +6,21 @@ export default function Login(){
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
+    const handleSubmit = e => {
+        e.preventDefault()
+
+        axios.post(`${process.env.SERVER_ADDRESS}`)
+        .then(res => {
+            if (res.status === 200){
+                sessionStorage.user = res.data.user
+                sessionStorage.token = res.data.token
+            }
+            else {
+                console.log(res)
+            }
+        })
+    }
+
     return (
         <div id="loginPage">
             <div id="formContainer">
