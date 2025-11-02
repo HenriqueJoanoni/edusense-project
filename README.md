@@ -106,7 +106,7 @@ source venv/bin/activate
 ```
 pip installs
 ```
-pip install gpiozero adafruit-blinka adafruit-circuitpython-charlcd
+pip install gpiozero adafruit-blinka adafruit-circuitpython-charlcd lgpio
 ```
 
 
