@@ -11,6 +11,7 @@ export default function FormTextField(props){
                 value={props.value}
                 onChange={(e)=>props.onChange(e.target.value)}
                 required={props.required}
+                name={props.formFor}
             />
         </div>
     )
