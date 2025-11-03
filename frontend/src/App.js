@@ -7,6 +7,7 @@ import Homepage from './pages/Homepage';
 import StudentProfile from './pages/StudentProfile';
 import ClassAttendancePage from './pages/ClassAttendancePage';
 import Login from "./pages/Login"
+import Logout from './pages/Logout';
 import Register from './pages/Register';
 
 function App() {
@@ -35,7 +36,9 @@ function App() {
           <Route path="/students/" element={<StudentProfile />} />
           <Route path="/attendance/" element={<ClassAttendancePage />} />
           <Route path="/login/" element={<Login />} />
+          <Route path="/logout/" element={<Logout />} />
           <Route path="/register/" element={<Register />} />
+
 
 
       </Routes>

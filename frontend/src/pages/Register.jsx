@@ -1,7 +1,11 @@
 import React, {useState} from "react"
+import { Navigate } from "react-router-dom"
 import axios from "axios"
+
+
 import FormTextField from "../components/FormTextField"
 import "../css/LoginRegister.css"
+import { SERVER_ADDRESS } from "../config/global_constants"
 
 export default function Register(){
     const [name, setName] = useState("")
@@ -10,6 +14,8 @@ export default function Register(){
     const [password, setPassword] = useState("")
     const [confirmedPassword, setConfirmedPassword] = useState("")
     const [errorMessage, setErrorMessage] = useState("")
+    const [redirectHome, setRedirectHome] = useState(false)
+    
 
     const handleSubmit = e => {
         e.preventDefault()
@@ -23,15 +29,19 @@ export default function Register(){
 
         
         const formData = new FormData(e.target)
+        formData.append("user_role", "student")
+
 
         
-        axios.post(`${process.env.SERVER_HOST}/register`, formData, {headers: {"Content-Type": "multipart/form-data" }})
+        axios.post(`${SERVER_ADDRESS}/api/register`, formData, {headers: {"Content-Type": "multipart/form-data" }})
         .then(res => {
             if (res.status === 201){
                 console.log(res.data)
-                sessionStorage.user = res.data.user.user_email
-                sessionStorage.token = res.token
+                sessionStorage.setItem("user",  res.data.data.user.user_email)
+                sessionStorage.setItem("token", res.data.token)
                 setErrorMessage("")
+                setRedirectHome(true)
+
 
             }
             else {
@@ -50,6 +60,7 @@ export default function Register(){
 
     return (
         <div id="registerPage">
+            {redirectHome ? <Navigate to="/" replace/> : ""}
             <div id="formContainer">
                 <div id="returnButton"><a href="/home">↩</a></div>
 
@@ -72,7 +83,7 @@ export default function Register(){
                         value={email}
                         onChange={setEmail}
                         required={true}
-                        form_for="user_email"
+                        formFor="user_email"
                     />
                     
                     {/*  
@@ -106,7 +117,7 @@ export default function Register(){
 
                     
 
-                    <button type="submit">Login</button>
+                    <button type="submit">Register</button>
 
 
                     <p id="callToRegister">

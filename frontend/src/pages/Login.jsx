@@ -1,11 +1,18 @@
 import React, {useState} from "react"
+import { Navigate } from "react-router-dom"
+import axios from "axios"
+
 import FormTextField from "../components/FormTextField"
 import "../css/LoginRegister.css"
+import { SERVER_ADDRESS } from "../config/global_constants"
+
+
 
 export default function Login(){
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [errorMessage, setErrorMessage] = useState("")
+    const [redirectHome, setRedirectHome] = useState(false)
 
     const handleSubmit = e => {
         e.preventDefault()
@@ -14,11 +21,14 @@ export default function Login(){
         //todo validation
         const formData = new FormData(e.target)
 
-        axios.post(`${process.env.SERVER_ADDRESS}/login`, formData, {headers: {"Content-Type": "multipart/form-data" }})
+        axios.post(`${SERVER_ADDRESS}/api/login`, formData, {headers: {"Content-Type": "multipart/form-data" }})
         .then(res => {
+            console.log(res)
             if (res.status === 200){
-                sessionStorage.user = res.data.user.user_email
-                sessionStorage.token = res.token
+                console.log(res)
+                sessionStorage.setItem("user", res.data.data.user.user_email)
+                sessionStorage.setItem("token", res.data.token)
+                setRedirectHome(true)
             }
             else {
                 console.log(res)
@@ -33,12 +43,13 @@ export default function Login(){
 
     return (
         <div id="loginPage">
+            {redirectHome ? <Navigate to="/" replace/> : ""}
             <div id="formContainer">
                 <div id="returnButton"><a href="/home">↩</a></div>
 
                 <h2>Login to your EduSense account</h2>
-                {errorMessage === "" ? errorMessage : ""}x
-                <form action="">
+                {errorMessage === "" ? errorMessage : ""}
+                <form action="#" onSubmit={e=>handleSubmit(e)}>
                     <FormTextField 
                         label="Email"
                         type="text"
