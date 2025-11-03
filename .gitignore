@@ -442,3 +442,7 @@ backend/.env
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+
+# python venv in hardware
+/hardware/venv
