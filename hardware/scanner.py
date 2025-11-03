@@ -4,6 +4,7 @@ import random
 import board
 import digitalio
 from adafruit_character_lcd.character_lcd import Character_LCD_Mono
+from pubnub_client import publish_message
 
 
 # refrence for LCD https://pimylifeup.com/raspberry-pi-lcd-16x2/
@@ -64,6 +65,9 @@ try:
         lcd.message = "Please Scan\nYour ID"
         button.wait_for_press()
         id = random.choice(ID_LIST)
+
+        # Publish scanned ID
+        publish_message({"ID": id})
 
         if id in VALID_IDS:
             display_text("Valid ID", f"ID: {id}")
