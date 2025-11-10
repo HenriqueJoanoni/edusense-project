@@ -6,6 +6,9 @@ import {BrowserRouter, Routes, Route, Link } from "react-router-dom"
 import Homepage from './pages/Homepage';
 import StudentProfile from './pages/StudentProfile';
 import ClassAttendancePage from './pages/ClassAttendancePage';
+import Login from "./pages/Login"
+import Logout from './pages/Logout';
+import Register from './pages/Register';
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -29,8 +32,15 @@ function App() {
     <BrowserRouter>
       <Routes>
           <Route path="/" element={<Homepage />} />
+          <Route path="/home" element={<Homepage />} />
           <Route path="/students/" element={<StudentProfile />} />
           <Route path="/attendance/" element={<ClassAttendancePage />} />
+          <Route path="/login/" element={<Login />} />
+          <Route path="/logout/" element={<Logout />} />
+          <Route path="/register/" element={<Register />} />
+
+
+
       </Routes>
     
     </BrowserRouter>
