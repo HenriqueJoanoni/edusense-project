@@ -1,12 +1,15 @@
-from gpiozero import Buzzer, LED, Button
+from gpiozero import Buzzer, LED, DigitalOutputDevice, Button
 from time import sleep
-import random
+import re
+import serial
 import board
 import digitalio
 from adafruit_character_lcd.character_lcd import Character_LCD_Mono
 from pubnub_client import publish_message
+from qrcode2 import QRCode2
 
 
+# lcd setup
 # refrence for LCD https://pimylifeup.com/raspberry-pi-lcd-16x2/
 lcd_rs = digitalio.DigitalInOut(board.D4)
 lcd_en = digitalio.DigitalInOut(board.D24)
@@ -19,38 +22,66 @@ lcd_columns = 16
 lcd_rows = 2
 
 lcd = Character_LCD_Mono(
-    lcd_rs, lcd_en, lcd_d4, lcd_d5, lcd_d6, lcd_d7, lcd_columns, lcd_rows
+    lcd_rs, lcd_en, lcd_d4, lcd_d5, lcd_d6, lcd_d7,
+    lcd_columns, lcd_rows
 )
 
-sleep(0.5)
 
-# Other components
-buzzer = Buzzer(16)
+# components
+buzzer = Buzzer(13)
 green_led = LED(6)
 red_led = LED(5)
-button = Button(26)
-
-# ID lists
-ID_LIST = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-VALID_IDS = [1, 2, 4, 6, 7, 8]
 
 
-def problem_indicator():
-    buzzer.on()
-    red_led.on()
-    sleep(0.5)
-    buzzer.off()
-    red_led.off()
-    sleep(0.5)
+# barcode scanner setup
+scanner = QRCode2("/dev/ttyAMA0")
+scanner.set_brightness(75)
+scanner.set_continuous(True)
+
+
+# keyboard button setup
+row_pins = [12, 16, 25, 26]
+rows = [DigitalOutputDevice(pin) for pin in row_pins]
+
+col_pins = [7, 8, 9, 11]
+cols = [Button(pin, pull_up=False) for pin in col_pins]
+
+keys = [
+    "1", "2", "3", "A",
+    "4", "5", "6", "B",
+    "7", "8", "9", "C",
+    "*", "0", "#", "D"
+]
+
+def read_keypad():
+    pressed_keys = []
+    for i, row in enumerate(rows):
+        row.on()
+        for j, col in enumerate(cols):
+            if col.is_pressed:
+                index = i * len(cols) + j
+                pressed_keys.append(keys[index])
+        row.off()
+    return pressed_keys
 
 
 def success_indicator():
-    buzzer.on()
     green_led.on()
-    sleep(0.25)
+    buzzer.on()
+    sleep(0.2)
     buzzer.off()
     green_led.off()
-    sleep(0.75)
+    sleep(0.3)
+
+
+def problem_indicator():
+    for _ in range(2):
+        red_led.on()
+        buzzer.on()
+        sleep(0.2)
+        red_led.off()
+        buzzer.off()
+        sleep(0.2)
 
 
 def display_text(line1="", line2=""):
@@ -60,28 +91,81 @@ def display_text(line1="", line2=""):
 
 
 try:
-    print("Program Started")
+    display_text("Ready to Scan", "or Enter ID")
+    print("System ready. Waiting for barcode data or keypad input...")
+
+    input_buffer = ""
+    last_key = []
+
     while True:
-        lcd.message = "Please Scan\nYour ID"
-        button.wait_for_press()
-        id = random.choice(ID_LIST)
+        data = scanner.read()
 
-        # Publish scanned ID
-        publish_message({"ID": id})
+        # check for barcode data
+        if data:
+            data = data.strip()
+            print(f"Scanned: {data}")
 
-        if id in VALID_IDS:
-            display_text("Valid ID", f"ID: {id}")
-            success_indicator()
-        else:
-            display_text("Invalid ID", f"ID: {id}")
-            problem_indicator()
+            if re.match(r"^D00\d{6}$", data):
+                display_text("Access Granted", f"{data}")
+                success_indicator()
+
+                # Publish scanned ID
+                # publish_message({"ID": data})
+            else:
+                display_text("AInvalid ID", f"{data}")
+                problem_indicator()
+
+            sleep(2)
+            display_text("Ready to Scan", "or Enter ID")
+
+
+        # check for keypad input
+        pressed_keys = read_keypad()
+        if pressed_keys and pressed_keys != last_keys:
+            key = pressed_keys[0]  # Only read the first pressed key
+            print(f"Key pressed: {key}")
+
+            if key == "*":
+                input_buffer = ""
+                display_text("Input Cleared", "")
+                problem_indicator()
+                sleep(1)
+                display_text("Enter ID:", input_buffer)
+
+            elif key == "#":
+                print(f"Entered ID: {input_buffer}")
+                if re.match(r"^D00\d{6}$", input_buffer):
+                    display_text("Access Granted", input_buffer)
+                    success_indicator()
+                    # publish_message({"ID": input_buffer})
+                else:
+                    display_text("Invalid ID", input_buffer)
+                    problem_indicator()
+                input_buffer = ""
+                sleep(2)
+                display_text("Ready to Scan", "or Enter ID")
+
+            else:
+                # Add key to buffer
+                input_buffer += key
+                display_text("Enter ID:", input_buffer[-lcd_columns:])
+
+            last_keys = pressed_keys
+
+        elif not pressed_keys:
+            last_keys = []
+
+        sleep(0.1)
+
 
 except KeyboardInterrupt:
-    print("Program Ended by User.")
+    print("Exiting...")
+
 
 finally:
+    scanner.ser.close()  
     lcd.clear()
-    buzzer.off()
     green_led.off()
     red_led.off()
+    buzzer.off()
     print("Program Finished")
