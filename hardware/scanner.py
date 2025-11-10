@@ -1,12 +1,14 @@
-from gpiozero import Buzzer, LED, Button
+from gpiozero import Buzzer, LED
 from time import sleep
-import random
+import serial
 import board
 import digitalio
 from adafruit_character_lcd.character_lcd import Character_LCD_Mono
 from pubnub_client import publish_message
+from qrcode2 import QRCode2
 
 
+# lcd setup
 # refrence for LCD https://pimylifeup.com/raspberry-pi-lcd-16x2/
 lcd_rs = digitalio.DigitalInOut(board.D4)
 lcd_en = digitalio.DigitalInOut(board.D24)
@@ -19,38 +21,40 @@ lcd_columns = 16
 lcd_rows = 2
 
 lcd = Character_LCD_Mono(
-    lcd_rs, lcd_en, lcd_d4, lcd_d5, lcd_d6, lcd_d7, lcd_columns, lcd_rows
+    lcd_rs, lcd_en, lcd_d4, lcd_d5, lcd_d6, lcd_d7,
+    lcd_columns, lcd_rows
 )
 
-sleep(0.5)
 
-# Other components
+# components
 buzzer = Buzzer(16)
 green_led = LED(6)
 red_led = LED(5)
-button = Button(26)
-
-# ID lists
-ID_LIST = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-VALID_IDS = [1, 2, 4, 6, 7, 8]
 
 
-def problem_indicator():
-    buzzer.on()
-    red_led.on()
-    sleep(0.5)
-    buzzer.off()
-    red_led.off()
-    sleep(0.5)
+# barcode scanner setup
+scanner = QRCode2("/dev/ttyAMA0")
+scanner.set_brightness(75)
+scanner.set_continuous(True)
 
 
 def success_indicator():
-    buzzer.on()
     green_led.on()
-    sleep(0.25)
+    buzzer.on()
+    sleep(0.2)
     buzzer.off()
     green_led.off()
-    sleep(0.75)
+    sleep(0.3)
+
+
+def problem_indicator():
+    for _ in range(2):
+        red_led.on()
+        buzzer.on()
+        sleep(0.2)
+        red_led.off()
+        buzzer.off()
+        sleep(0.2)
 
 
 def display_text(line1="", line2=""):
@@ -60,28 +64,38 @@ def display_text(line1="", line2=""):
 
 
 try:
-    print("Program Started")
+    display_text("Ready to Scan", "")
+    print("System ready. Waiting for barcode data...")
+
     while True:
-        lcd.message = "Please Scan\nYour ID"
-        button.wait_for_press()
-        id = random.choice(ID_LIST)
+        data = scanner.read()
 
-        # Publish scanned ID
-        publish_message({"ID": id})
+        if data:
+            data = data.strip()
+            print(f"Scanned: {data}")
 
-        if id in VALID_IDS:
-            display_text("Valid ID", f"ID: {id}")
-            success_indicator()
-        else:
-            display_text("Invalid ID", f"ID: {id}")
-            problem_indicator()
+            if data.startswith("D"):
+                display_text("Access Granted", f"{data}")
+                success_indicator()
+
+                # Publish scanned ID
+                # publish_message({"ID": data})
+            else:
+                display_text("Access Denied", f"{data}")
+                problem_indicator()
+
+            sleep(2)
+            display_text("Ready to Scan", "")
+
 
 except KeyboardInterrupt:
-    print("Program Ended by User.")
+    print("Exiting...")
+
 
 finally:
+    scanner.ser.close()  
     lcd.clear()
-    buzzer.off()
     green_led.off()
     red_led.off()
+    buzzer.off()
     print("Program Finished")
