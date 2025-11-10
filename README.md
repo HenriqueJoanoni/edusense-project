@@ -63,34 +63,68 @@ improving reliability through automation.
 - 1x 10K Potentiometer
 - 1x 16x2 LCD Display (HD44780 compatible)
 - 1x Barcode Scanner Module (e.g., ATOMIC 2D Barcode Scanner Module)
+- 1x Membrane 4*4 button pad
+- 8x 1kΩ Resistors
 - Jumper Wires
 - Power Supply for Raspberry Pi
 - MicroSD Card with Raspberry Pi OS installed
 - Ethernet Cable (for internet connection)
 
-### Hardware Connections:
+## Hardware Connections:
+### LCD
 
-| Component            | GPIO Pins          | Raspberry Pi 5 (physical pins) | Notes                                                                                                   |
-|----------------------|-----------------------------|---------------------------------|---------------------------------------------------------------------------------------------------------|
-| LCD pin 1 (GND)      | GND                         | Any Pi ground rail              | -                                                                                                       |
-| LCD pin 2 (VCC / 5V) | +5V rail                    | Physical Pin 2 or 4             | The LCD backlight needs 5V                                                                              |
-| LCD pin 3      | Potentiometer middle        | -                               | contrast adjust                                                                                         |
-| LCD RS               | GPIO4                       | Physical 7              | -                                                                                                       |
-| LCD EN               | GPIO24                      | Physical 18            | -                                                                                                       |
-| LCD D4               | GPIO23                      | Physical 16            | -                                                                                                       |
-| LCD D5               | GPIO17                      | Physical 11            | -                                                                                                       |
-| LCD D6               | GPIO18                      | Physical 12            | -                                                                                                       |
-| LCD D7               | GPIO22                      | Physical 15            | -                                                                                                       |
-| LCD LED+             | +5V rail                    | -                               | backlight                                                                                               |
-| LCD LED–             | GND                         | -                               | backlight ground                                                                                        |
-| Red LED    | GPIO5                       | Physical 29             | through resistor (e.g. 330 Ω) to LED                                                                    |
-| Green LED | GPIO6                       | Physical 31             | through resistor                                                                                        |
-| Buzzer      | GPIO13                      | Physical 33            | -                                               |
-| Scanner VCC          | 5V or 3.3V (check spec)     | e.g. 5V rail                    | Many modules use 3.3V, but the ATOMIC base spec suggests 5V supply possible |
-| Scanner GND          | GND                         | ground rail                     | common ground                                                                                           |
-| Scanner TX → Pi RX   | Pi GPIO15 (UART RX) | Physical Pin 10                 | connect scanner TX to Pi RX                                                                             |
-| Scanner RX → Pi TX   | Pi GPIO14 (UART TX) | Physical Pin 8                  | connect scanner RX to Pi TX                                                                             |
+| Component                | GPIO Pin(s)          | Raspberry Pi 5 (Physical Pins) | Notes                                  |
+| ------------------------ | -------------------- | ------------------------------ | -------------------------------------- |
+| **LCD pin 1 (GND)**      | GND                  | Any ground rail                | Common ground                          |
+| **LCD pin 2 (VCC / 5V)** | +5V                  | Pin 2 or 4                     | Powers LCD and backlight               |
+| **LCD pin 3**            | Potentiometer middle | –                              | Contrast adjust                        |
+| **LCD RS**               | GPIO4                | Pin 7                          | Register Select                        |
+| **LCD EN**               | GPIO24               | Pin 18                         | Enable signal                          |
+| **LCD D4**               | GPIO23               | Pin 16                         | Data bit 4                             |
+| **LCD D5**               | GPIO17               | Pin 11                         | Data bit 5                             |
+| **LCD D6**               | GPIO18               | Pin 12                         | Data bit 6                             |
+| **LCD D7**               | GPIO22               | Pin 15                         | Data bit 7                             |
+| **LCD LED+**             | +5V                  | –                              | LCD backlight power                    |
+| **LCD LED–**             | GND                  | –                              | LCD backlight ground                   |
 
+- https://pimylifeup.com/raspberry-pi-lcd-16x2/
+
+### LEDs & Buzzer
+| Component                | GPIO Pin(s)          | Raspberry Pi 5 (Physical Pins) | Notes                                  |
+| ------------------------ | -------------------- | ------------------------------ | -------------------------------------- |
+| **Red LED**              | GPIO5                | Pin 29                         | Use ~330 Ω resistor in series          |
+| **Green LED**            | GPIO6                | Pin 31                         | Use ~330 Ω resistor in series          |
+| **Buzzer**               | GPIO13               | Pin 33                         | Active buzzer or passive buzzer driver |
+
+- https://gpiozero.readthedocs.io/en/stable/recipes.html
+
+### Barcode Scanneer
+| Component                | GPIO Pin(s)          | Raspberry Pi 5 (Physical Pins) | Notes                                  |
+| ------------------------ | -------------------- | ------------------------------ | -------------------------------------- |
+| **Scanner VCC**          | 5V                   | Pin 2 or 4                     | ATOMIC base spec supports 5 V          |
+| **Scanner GND**          | GND                  | Any ground                     | Common ground with Pi                  |
+| **Scanner TX → Pi RX**   | GPIO15 (UART RX)     | Pin 10                         | Connect scanner TX to Pi RX            |
+| **Scanner RX → Pi TX**   | GPIO14 (UART TX)     | Pin 8                          | Connect scanner RX to Pi TX            |
+
+- https://thepihut.com/products/atomic-barcode-qr-code-scanner-2-base
+- https://docs.m5stack.com/en/atom/Atomic%20QRCode2%20Base
+
+### Keypad
+| Component                | GPIO Pin(s)          | Raspberry Pi 5 (Physical Pins) | Notes                                  |
+| ------------------------ | -------------------- | ------------------------------ | -------------------------------------- |
+| **Keypad Row 1**         | GPIO12               | Pin 32                         | Drive row 1                            |
+| **Keypad Row 2**         | GPIO16               | Pin 36                         | Drive row 2                            |
+| **Keypad Row 3**         | GPIO25               | Pin 22                         | Drive row 3                            |
+| **Keypad Row 4**         | GPIO26               | Pin 37                         | Drive row 4                            |
+| **Keypad Column 1**      | GPIO7                | Pin 26                         | Input column 1                         |
+| **Keypad Column 2**      | GPIO8                | Pin 24                         | Input column 2                         |
+| **Keypad Column 3**      | GPIO9                | Pin 21                         | Input column 3                         |
+| **Keypad Column 4**      | GPIO11               | Pin 23                         | Input column 4                         |
+
+- https://nerdcave.xyz/raspberrypi/module-and-sensors/tutorial-4-keypad/
+- https://docs.sunfounder.com/projects/davinci-kit/en/latest/python_pi5/pi5_2.1.5_keypad_python.html
+
+---
 - Raspberry Pi 5 will be connected to the internet via Ethernet
 - Raspberry Pi will be powered using the official 27w power adapter
 
