@@ -1,0 +1,70 @@
+#classOverviewContainer {
+  width: 100%;
+  min-height: 80vh;
+  background-color: #F2F2F2;
+}
+#classOverviewContainer #classOverviewMain {
+  padding: 30px;
+}
+#classOverviewContainer #classOverviewMain h2 {
+  font-size: 35px;
+}
+#classOverviewContainer #classOverviewMain #classList {
+  width: 90%;
+  margin: auto;
+  border-radius: 15px;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+#classOverviewContainer #classOverviewMain #classList .classGroupCard {
+  width: 300px;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 15px;
+  margin-block: 10px;
+  border: 1px solid #ccc;
+}
+#classOverviewContainer #classOverviewMain #classList .classGroupCard .classInfo {
+  padding-inline: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+#classOverviewContainer #classOverviewMain #classList .classGroupCard .classInfo p {
+  margin-block: 2px;
+}
+#classOverviewContainer #classOverviewMain #classList .classGroupCard .classInfo h4 {
+  margin-block: 5px;
+  font-size: 16px;
+  color: #0002FF;
+}
+#classOverviewContainer #classOverviewMain #classList .classGroupCard .classInfo div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+}
+#classOverviewContainer #classOverviewMain #classList .classGroupCard a {
+  width: 100px;
+  height: 33px;
+  display: block;
+  background-color: #0002FF;
+  color: white;
+  border: 1px solid #0002FF;
+  text-decoration: none;
+  text-align: center;
+  margin: 10px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+}
+#classOverviewContainer #classOverviewMain #classList .classGroupCard a:hover {
+  color: #0002FF;
+  background-color: #fff;
+}/*# sourceMappingURL=ClassOverview.css.map */

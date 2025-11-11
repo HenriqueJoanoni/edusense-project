@@ -26,8 +26,9 @@ export default function Login(){
             console.log(res)
             if (res.status === 200){
                 console.log(res)
-                sessionStorage.setItem("user", res.data.data.user.user_email)
-                sessionStorage.setItem("token", res.data.token)
+                localStorage.setItem("user", res.data.data.user.user_email)
+                localStorage.setItem("token", res.data.token)
+                localStorage.setItem("accessLevel", 1)
                 setRedirectHome(true)
             }
             else {
