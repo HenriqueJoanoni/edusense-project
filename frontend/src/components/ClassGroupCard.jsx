@@ -11,7 +11,7 @@ export default function ClassGroupCard(props){
                 </div>
                 
             </div>
-            <a href="#">Expand</a>
+            <a href={props.linkTo}>Expand</a>
         </div>
     )
 }
