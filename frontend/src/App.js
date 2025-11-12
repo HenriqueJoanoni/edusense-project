@@ -2,6 +2,12 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import api from './api';
 import {BrowserRouter, Routes, Route, Link } from "react-router-dom"
+import {
+  ACCESS_LEVEL_GUEST,
+  ACCESS_LEVEL_STUDENT,
+  ACCESS_LEVEL_TEACHER,
+  ACCESS_LEVEL_ADMIN
+} from "./config/global_constants"
 
 import Homepage from './pages/Homepage';
 import StudentProfile from './pages/StudentProfile';
@@ -9,6 +15,9 @@ import ClassAttendancePage from './pages/ClassAttendancePage';
 import Login from "./pages/Login"
 import Logout from './pages/Logout';
 import Register from './pages/Register';
+
+import LoggedInRoute from './components/LoggedInRoute';
+import ClassOverview from './pages/ClassOverview';
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -28,6 +37,12 @@ function App() {
       });
   }, []);
 
+
+  //check if logged in
+  if (localStorage.getItem("accessLevel") == null) {
+    localStorage.setItem("accessLevel", ACCESS_LEVEL_GUEST)
+  }
+
   return (
     <BrowserRouter>
       <Routes>
@@ -38,6 +53,13 @@ function App() {
           <Route path="/login/" element={<Login />} />
           <Route path="/logout/" element={<Logout />} />
           <Route path="/register/" element={<Register />} />
+
+
+          <Route path="/classGroups" element={<LoggedInRoute element={ClassOverview} />} />
+          
+
+
+
 
 
 
