@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
+use App\Models\Student;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 
 class AttendanceController extends Controller
 {
@@ -135,6 +137,71 @@ class AttendanceController extends Controller
             'from' => $from,
             'to' => $to,
             'data' => $report
+        ], 200);
+    }
+
+    /**
+     * Return the authenticated user's subscribed subjects.
+     *
+     * Logic:
+     *  - uses the authenticated user to find the Student model (student.user_id)
+     *  - eager loads course -> classes -> classSubjects -> subject
+     *  - collects unique subjects and returns a compact list
+     *
+     * @return JsonResponse
+     */
+    public function displayStudentClassGroups(): JsonResponse
+    {
+        $user = auth()->user();
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthenticated user.'
+            ], 401);
+        }
+
+        $student = Student::with([
+            'course.classes.classSubjects.subject',
+            'course.classes.classSubjects.lecturer'
+        ])->where('user_id', $user->id)->first();
+
+        if (!$student) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Student not found.'
+            ], 404);
+        }
+
+        $subjects = collect();
+
+        if ($student->course && $student->course->classes) {
+            foreach ($student->course->classes as $class) {
+                if ($class->classSubjects) {
+                    foreach ($class->classSubjects as $classSubject) {
+                        $subject = $classSubject->subject;
+                        if (!$subject) {
+                            continue;
+                        }
+                        $subjects->push([
+                            'subject_id' => $subject->id,
+                            'subject_name' => $subject->subject_name,
+                            'subject_code' => $subject->subject_code ?? null,
+                            'class_id' => $class->id,
+                            'class_year' => $class->year ?? null,
+                            'class_semester' => $class->semester ?? null,
+                            'lecturer_id' => $classSubject->lecturer_id ?? null,
+                        ]);
+                    }
+                }
+            }
+        }
+
+        $subjects = $subjects->unique('subject_id')->values();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Subscribed subjects retrieved successfully.',
+            'data' => $subjects
         ], 200);
     }
 }
