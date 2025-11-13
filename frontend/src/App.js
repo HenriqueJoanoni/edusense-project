@@ -18,6 +18,7 @@ import Register from './pages/Register';
 
 import LoggedInRoute from './components/LoggedInRoute';
 import ClassOverview from './pages/ClassOverview';
+import StudentAttendancePage from './pages/StudentAttendancePage';
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -56,6 +57,7 @@ function App() {
 
 
           <Route path="/classGroups" element={<LoggedInRoute element={ClassOverview} />} />
+          <Route path="/classGroups/class" element={<LoggedInRoute element={StudentAttendancePage}/> }/>
           
 
 
