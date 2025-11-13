@@ -56,8 +56,8 @@ function App() {
           <Route path="/register/" element={<Register />} />
 
 
-          <Route path="/classGroups" element={<LoggedInRoute element={ClassOverview} />} />
-          <Route path="/classGroups/class" element={<LoggedInRoute element={StudentAttendancePage}/> }/>
+          <Route path="/class-groups" element={<LoggedInRoute element={ClassOverview} />} />
+          <Route path="/student/attendance/:class_id/:subject_id" element={<LoggedInRoute element={StudentAttendancePage}/> }/>
           
 
 
