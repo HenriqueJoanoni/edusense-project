@@ -37,6 +37,9 @@ Route::middleware('auth.jwt')->group(function () {
     // Attendance
     Route::match(['get', 'post'], 'attendance', [AttendanceController::class, 'returnAttendance']);
 
+    // Return authenticated user's subscribed subjects
+    Route::get('my-classes', [AttendanceController::class, 'displayStudentClassGroups']);
+
     // Barcode
     Route::post('read-barcode/{barcodeData}', [ReaderController::class, 'readBarcode']);
 
