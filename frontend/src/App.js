@@ -25,6 +25,8 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+
+  /*
   useEffect(() => {
     api.get('/users')
       .then(response => {
@@ -37,6 +39,8 @@ function App() {
         setLoading(false);
       });
   }, []);
+
+  */
 
 
   //check if logged in

@@ -16,8 +16,8 @@ export default function Header(){
 
             <div id="headerActions">
                 <a href="" className="headerLink">About</a>
-                {sessionStorage.getItem("token") == null ? <a href="/login" className="headerLink">Login</a> : <a href="/logout" className="headerLink">Logout</a> }
-                {sessionStorage.getItem("token") == null ? <a href="/register" className="headerLink">Register</a> : "" }
+                {localStorage.getItem("token") == null ? <a href="/login" className="headerLink">Login</a> : <a href="/logout" className="headerLink">Logout</a> }
+                {localStorage.getItem("token") == null ? <a href="/register" className="headerLink">Register</a> : "" }
             </div>
         </header>
     )
