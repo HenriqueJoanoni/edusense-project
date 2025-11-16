@@ -1,4 +1,6 @@
 import React, {useState, useEffect} from "react"
+import axios from "axios"
+import { SERVER_ADDRESS } from "../config/global_constants"
 import Header from "../components/Header"
 import Footer from "../components/Footer"
 import AttendanceTableRow from "../components/AttendanceTableRow"
@@ -18,6 +20,20 @@ export default function StudentAttendancePage(props){
     const [sortField, setSortField] = useState("ID")
     const [sortDirection, setSortDirection] = useState(1)
     const [searchInput, setSearchInput] = useState("")
+    const [data, setData] = useState({})
+
+    useEffect(()=>{
+        axios.get(`${SERVER_ADDRESS}/api/classes-endpoint/subjectID`)
+        .then(res => {
+            if(res.status===200){
+                setData(res.data.data)
+            }
+            else {
+                console.log(res)
+            }
+        })
+        .catch(err => {console.log(err)})
+    })
 
     const updateSort = (newSortField) => {
         if (sortField === newSortField) {
@@ -43,7 +59,7 @@ export default function StudentAttendancePage(props){
     }
 
 
-    const data = {
+    const ddata = {
         classTitle:"Algorithms and Data Structures",
         totalClasses: 70,
         totalClassesPresent: 25,
