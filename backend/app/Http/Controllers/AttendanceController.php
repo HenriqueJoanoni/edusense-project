@@ -190,6 +190,7 @@ class AttendanceController extends Controller
                             'class_year' => $class->year ?? null,
                             'class_semester' => $class->semester ?? null,
                             'lecturer_id' => $classSubject->lecturer_id ?? null,
+                            'lecturer_name' => $classSubject->lecturer?->lecturer_name ?? null
                         ]);
                     }
                 }
