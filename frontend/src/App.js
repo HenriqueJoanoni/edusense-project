@@ -18,12 +18,15 @@ import Register from './pages/Register';
 
 import LoggedInRoute from './components/LoggedInRoute';
 import ClassOverview from './pages/ClassOverview';
+import StudentAttendancePage from './pages/StudentAttendancePage';
 
 function App() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+
+  /*
   useEffect(() => {
     api.get('/users')
       .then(response => {
@@ -36,6 +39,8 @@ function App() {
         setLoading(false);
       });
   }, []);
+
+  */
 
 
   //check if logged in
@@ -55,7 +60,8 @@ function App() {
           <Route path="/register/" element={<Register />} />
 
 
-          <Route path="/classGroups" element={<LoggedInRoute element={ClassOverview} />} />
+          <Route path="/class-groups" element={<LoggedInRoute element={ClassOverview} />} />
+          <Route path="/student/attendance/:class_id/:subject_id" element={<LoggedInRoute element={StudentAttendancePage}/> }/>
           
 
 

@@ -20,9 +20,15 @@ export default function Login(){
 
         //todo validation
         const formData = new FormData(e.target)
-
-        axios.post(`${SERVER_ADDRESS}/api/login`, formData, {headers: {"Content-Type": "multipart/form-data" }})
-        .then(res => {
+        axios.defaults.withCredentials = true;
+        axios.post(
+            `${SERVER_ADDRESS}/api/login`,
+            formData,
+            {
+                headers: { "Content-Type": "multipart/form-data" },
+                withCredentials: true
+            }
+        ).then(res => {
             console.log(res)
             if (res.status === 200){
                 console.log(res)
