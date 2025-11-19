@@ -3,11 +3,11 @@
 return [
     'paths' => ['api/*', 'sanctum/csrf-cookie'],
     'allowed_methods' => ['*'],
-    'allowed_origins' => ['*'], /** DEFINE THE FRONTEND URL WHEN IN PRODUCTION */
+    'allowed_origins' => ['http://localhost:3000'], /** DEFINE THE FRONTEND URL WHEN IN PRODUCTION */
     'allowed_origins_patterns' => [],
     'allowed_headers' => ['*'],
     'exposed_headers' => [],
     'max_age' => 0,
-    'supports_credentials' => false,
+    'supports_credentials' => true,
 ];
 
