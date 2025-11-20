@@ -9,12 +9,15 @@ import {
   ACCESS_LEVEL_ADMIN
 } from "./config/global_constants"
 
+
 import Homepage from './pages/Homepage';
 import StudentProfile from './pages/StudentProfile';
 import ClassAttendancePage from './pages/ClassAttendancePage';
+import AdminClassPage from './pages/AdminClassPage';
 import Login from "./pages/Login"
 import Logout from './pages/Logout';
 import Register from './pages/Register';
+
 
 import LoggedInRoute from './components/LoggedInRoute';
 import ClassOverview from './pages/ClassOverview';
@@ -63,7 +66,8 @@ function App() {
           <Route path="/class-groups" element={<LoggedInRoute element={ClassOverview} />} />
           <Route path="/student/attendance/:class_id/:subject_id" element={<LoggedInRoute element={StudentAttendancePage}/> }/>
           
-
+          <Route exact path="/admin/:class_id/:subject_id" element={<LoggedInRoute element={AdminClassPage}/> }/>
+          
 
 
 
