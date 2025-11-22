@@ -7,6 +7,7 @@ import digitalio
 from adafruit_character_lcd.character_lcd import Character_LCD_Mono
 from pubnub_client import publish_message
 from qrcode2 import QRCode2
+from datetime import datetime, timezone
 
 
 # lcd setup
@@ -40,6 +41,8 @@ scanner.set_continuous(True)
 
 
 # keyboard button setup
+# https://nerdcave.xyz/raspberrypi/module-and-sensors/tutorial-4-keypad/
+# https://docs.sunfounder.com/projects/davinci-kit/en/latest/python_pi5/pi5_2.1.5_keypad_python.html
 row_pins = [12, 16, 25, 26]
 rows = [DigitalOutputDevice(pin) for pin in row_pins]
 
@@ -110,7 +113,12 @@ try:
                 success_indicator()
 
                 # Publish scanned ID
-                # publish_message({"ID": data})
+                gmt_now = datetime.now(timezone.utc).replace(tzinfo=None)
+                publish_message({
+                    "ID": data,
+                    "date": gmt_now.strftime("%Y-%m-%d"),
+                    "time": gmt_now.strftime("%H:%M:%S")
+                })
             else:
                 display_text("AInvalid ID", f"{data}")
                 problem_indicator()
@@ -122,7 +130,7 @@ try:
         # check for keypad input
         pressed_keys = read_keypad()
         if pressed_keys and pressed_keys != last_keys:
-            key = pressed_keys[0]  # Only read the first pressed key
+            key = pressed_keys[0] 
             print(f"Key pressed: {key}")
 
             if key == "*":
@@ -137,7 +145,14 @@ try:
                 if re.match(r"^D00\d{6}$", input_buffer):
                     display_text("Access Granted", input_buffer)
                     success_indicator()
-                    # publish_message({"ID": input_buffer})
+                    
+                    # Publish entered ID
+                    gmt_now = datetime.now(timezone.utc).replace(tzinfo=None)
+                    publish_message({
+                        "ID": data,
+                        "date": gmt_now.strftime("%Y-%m-%d"),
+                        "time": gmt_now.strftime("%H:%M:%S")
+                    })
                 else:
                     display_text("Invalid ID", input_buffer)
                     problem_indicator()
@@ -146,7 +161,7 @@ try:
                 display_text("Ready to Scan", "or Enter ID")
 
             else:
-                # Add key to buffer
+                # add key to buffer
                 input_buffer += key
                 display_text("Enter ID:", input_buffer[-lcd_columns:])
 
