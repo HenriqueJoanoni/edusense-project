@@ -13,12 +13,7 @@ return [
     'publish_key' => env('PUBNUB_PUBLISH_KEY'),
     'subscribe_key' => env('PUBNUB_SUBSCRIBE_KEY'),
     'secret_key' => env('PUBNUB_SECRET_KEY'),
-    'uuid' => env('PUBNUB_UUID', function() {
-        if (auth()->check()) {
-            return 'user-' . auth()->id();
-        }
-        return config('app.name') . '-' . gethostname();
-    }),
+    'uuid' => env('PUBNUB_UUID'),
 
     // Optional configurations
     'ssl' => env('PUBNUB_SSL', true),

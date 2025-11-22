@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Carbon\Carbon;
+use Exception;
 use PubNub\Exceptions\PubNubException;
 use PubNub\PubNub;
 use PubNub\PNConfiguration;
@@ -30,16 +31,24 @@ class PubNubService
      * 1. Authenticated user ID
      * 2. Environment variable
      * 3. Generated UUID
+     * @throws Exception
      */
     protected function generateUuid(): string
     {
-        if (auth()->check()) {
-            $user = auth()->user();
-            return sprintf(
-                'user-%d-%s',
-                $user->id,
-                $user->user_email ? Str::slug($user->user_email) : 'unknown'
-            );
+        try {
+            if (app()->bound('auth') && auth()->check()) {
+                $user = auth()->user();
+                return sprintf(
+                    'user-%d-%s',
+                    $user->id,
+                    $user->user_email ? Str::slug($user->user_email) : 'unknown'
+                );
+            }
+        } catch (\Throwable $e) {
+            throw new Exception(sprintf(
+                'Failed to generate UUID from authenticated user: %s. Set the `PUBNUB_UUID` environment variable or verify the authentication service.',
+                $e->getMessage()
+            ));
         }
 
         if (!empty(env('PUBNUB_UUID'))) {
@@ -94,6 +103,7 @@ class PubNubService
 
     /**
      * Publish a message to a channel
+     * @throws Exception
      */
     public function publish(string $channel, array|string $message, array $metadata = []): array
     {
@@ -101,9 +111,13 @@ class PubNubService
             $metadata['publisher_uuid'] = $this->uuid;
             $metadata['published_at'] = now()->toIso8601String();
 
-            if (auth()->check()) {
-                $metadata['user_id'] = auth()->id();
-                $metadata['user_email'] = auth()->user()->user_email;
+            try {
+                if (app()->bound('auth') && auth()->check()) {
+                    $metadata['user_id'] = auth()->id();
+                    $metadata['user_email'] = auth()->user()->user_email;
+                }
+            } catch (\Throwable $e) {
+                throw new Exception("Unable to attach authenticated user metadata to PubNub message: failed to retrieve auth user.");
             }
 
             $result = $this->pubnub->publish()

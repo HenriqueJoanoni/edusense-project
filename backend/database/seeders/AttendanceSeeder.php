@@ -23,7 +23,7 @@ class AttendanceSeeder extends Seeder
                 Attendance::create([
                     'student_id' => $student->id,
                     'reader_id' => $readers->random()->id,
-                    'timestamp' => fake()->dateTimeBetween('-1 year', 'now')->format('Y-m-d H:i:s'),
+                    'timestamp' => fake()->dateTimeBetween('-1 year', 'now', 'UTC')->format('Y-m-d H:i:s'),
                 ]);
             }
         });
