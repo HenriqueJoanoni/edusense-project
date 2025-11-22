@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'pubnub' => [
+        'publish_key' => env('PUBNUB_PUBLISH_KEY'),
+        'subscribe_key' => env('PUBNUB_SUBSCRIBE_KEY'),
+        'secret_key' => env('PUBNUB_SECRET_KEY'),
+    ],
+
 ];
