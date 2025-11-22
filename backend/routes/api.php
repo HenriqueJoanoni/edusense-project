@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PubNubController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
@@ -42,6 +43,16 @@ Route::middleware('auth.jwt')->group(function () {
 
     // Barcode
     Route::post('read-barcode/{barcodeData}', [ReaderController::class, 'readBarcode']);
+
+    // PubNub Integration Routes
+    Route::prefix('pubnub')->group(function () {
+        Route::post('publish', [PubNubController::class, 'publish']);
+        Route::post('history', [PubNubController::class, 'history']);
+        Route::post('presence', [PubNubController::class, 'presence']);
+        Route::post('attendance', [PubNubController::class, 'publishAttendance']);
+        Route::post('notification', [PubNubController::class, 'sendNotification']);
+        Route::get('uuid', [PubNubController::class, 'getUuid']);
+    });
 
     // Reports
     Route::prefix('reports')->group(function () {
