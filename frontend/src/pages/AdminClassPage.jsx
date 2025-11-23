@@ -1,13 +1,52 @@
 import React, {useState, useEffect} from "react"
+import {useParams} from "react-router-dom"
+import axios from "axios"
 import Header from "../components/Header"
 import Footer from "../components/Footer"
 import HorizontalTextField from "../components/HorizontalTextField"
 import AdminClassTableRow from "../components/AdminClassTableRow"
+import { SERVER_ADDRESS } from "../config/global_constants"
 
 import "../css/AdminClassPage.css"
 
 
+
 export default function AdminClassPage(props){
+    const currDate = new Date()
+    const { course_id } = useParams()
+    const [attendances, setAttendances] = useState([])
+
+    const getAttendances = () => {
+        axios.post(`${SERVER_ADDRESS}/api/reports/generate`, {
+            start_date: "2025-01-01", //new Date().toISOString().split("T")[0],
+            end_date: "2025-11-01",//new Date().toISOString().split("T")[0],
+            course_id: course_id
+        },
+        {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+        }
+        )
+        .then(res => {
+            if (res.status === 200){
+                setAttendances(res.data.data.attendances)
+            }
+        })
+        .catch(err => console.log(err))
+    }
+
+    const getClassInfo = () => {
+        
+    }
+
+    useEffect(()=>{ 
+        
+        
+    }, [])
+    
+
+
     const [formData, setFormData] = useState({
         class_name: "Math 1",
         class_teacher: "Mr. Smith",
@@ -109,9 +148,9 @@ http://localhost:8000/api/reports/generate
                             </tr>
                         </thead>
                         <tbody>
-                            {formData.students.map(student => 
+                            {attendances.map(attendance => 
                                 <AdminClassTableRow
-                                    student={student}
+                                    student={attendance.student}
                                     onDeletePressed={()=>{}}
                                 />
                             )}

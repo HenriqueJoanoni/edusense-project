@@ -66,7 +66,7 @@ function App() {
           <Route path="/class-groups" element={<LoggedInRoute element={ClassOverview} />} />
           <Route path="/student/attendance/:class_id/:subject_id" element={<LoggedInRoute element={StudentAttendancePage}/> }/>
           
-          <Route exact path="/admin/:class_id/:subject_id" element={<LoggedInRoute element={AdminClassPage}/> }/>
+          <Route exact path="/admin/:course_id/:subject_id" element={<LoggedInRoute element={AdminClassPage}/> }/>
           
 
 
