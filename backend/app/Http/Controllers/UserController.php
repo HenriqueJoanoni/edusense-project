@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Enum\UserRolesEnum;
+use App\Models\Student;
 use App\Models\User;
 use App\Http\Requests\UpdateUserRequest;
+use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -211,5 +214,31 @@ class UserController extends Controller
                 'error' => config('app.debug') ? $e->getMessage() : null,
             ], 500);
         }
+    }
+
+
+    /**
+     * @throws Exception
+     */
+    public function resolveStudentId(int $id): JsonResponse
+    {
+        $user = User::find($id);
+
+        if ($user->user_role !== UserRolesEnum::STUDENT) {
+            return response()->json([
+                'success' => false,
+                'message' => "User with ID {$id} is not a student. Only students can view attendance reports.",
+                'error' => "Forbidden",
+            ], 403);
+        }
+
+        $studentId = Student::where('user_id', $id)->first();
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'student_id' => $studentId ? $studentId->id : null,
+            ],
+        ]);
     }
 }

@@ -1,27 +1,209 @@
-footer {
-    width: 100%;
-    height: 70px;
-    background-color: #eee;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+@import 'ColorScheme.scss';
 
+.footer {
+  width: 100%;
+  background: linear-gradient(135deg, $primary-color 0%, $secondary-color 100%);
+  color: $light-text-color;
+  padding: 60px 0 0;
+  margin-top: auto;
 
-    #footerLinks ul {
-        width: 40%;
-        list-style: none;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        align-items: center;
+  .footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
 
-        li {
-            margin-inline: 20px;
-
-
-            a img{
-                width: 40px;
-            }
-        }
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      gap: 30px;
+      text-align: center;
     }
+  }
+
+  .footer-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    h3, h4 {
+      margin: 0;
+      font-weight: 600;
+    }
+
+    p {
+      margin: 0;
+      opacity: 0.9;
+      line-height: 1.6;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      li a {
+        color: $light-text-color;
+        text-decoration: none;
+        opacity: 0.85;
+        transition: all 0.3s ease;
+        display: inline-block;
+        position: relative;
+
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: -2px;
+          left: 0;
+          width: 0;
+          height: 2px;
+          background-color: $light-text-color;
+          transition: width 0.3s ease;
+        }
+
+        &:hover {
+          opacity: 1;
+          transform: translateX(5px);
+
+          &::after {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+
+  .footer-brand {
+    .footer-logo {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: $light-text-color;
+    }
+
+    .footer-tagline {
+      font-size: 14px;
+      opacity: 0.8;
+      max-width: 280px;
+
+      @media (max-width: 768px) {
+        max-width: 100%;
+      }
+    }
+  }
+
+  .footer-title {
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+    color: $light-text-color;
+  }
+
+  .footer-social {
+    .social-links {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+
+      @media (max-width: 768px) {
+        justify-content: center;
+      }
+
+      .social-link {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: $light-text-color;
+        transition: all 0.3s ease;
+        @include elevation('sm');
+
+        svg {
+          width: 20px;
+          height: 20px;
+        }
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.2);
+          @include elevation('md');
+          transform: translateY(-3px);
+        }
+
+        &:active {
+          transform: translateY(-1px);
+        }
+      }
+    }
+  }
+
+  .footer-bottom {
+    margin-top: 50px;
+    padding: 20px 0;
+    background: rgba(0, 0, 0, 0.15);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+    .footer-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+
+      @media (max-width: 768px) {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+      }
+    }
+
+    .footer-copyright,
+    .footer-credits {
+      margin: 0;
+      font-size: 14px;
+      opacity: 0.85;
+    }
+
+    .heart {
+      color: #ff6b6b;
+      animation: heartbeat 1.5s ease-in-out infinite;
+    }
+  }
+}
+
+@keyframes heartbeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  10%, 30% {
+    transform: scale(1.1);
+  }
+  20%, 40% {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer {
+    * {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+}
+
+@media (prefers-contrast: custom) {
+  .footer {
+    border-top: 2px solid $light-text-color;
+
+    .social-link {
+      border: 2px solid $light-text-color;
+    }
+  }
 }
