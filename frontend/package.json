@@ -17,13 +17,16 @@
     "react-router-dom": "^7.9.4",
     "react-scripts": "5.0.1",
     "sweetalert2": "^11.26.3",
+    "typed.js": "^2.1.0",
     "web-vitals": "^2.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "build:sass": "sass src/sass_styles:src/css",
+    "watch:sass": "sass --watch src/sass_styles:src/css"
   },
   "eslintConfig": {
     "extends": [
@@ -42,5 +45,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "sass": "^1.94.2"
   }
 }

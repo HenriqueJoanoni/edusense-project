@@ -1,94 +1,363 @@
-#loginPage, #registerPage {
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #f2f2f2;
-    
+@import 'ColorScheme.scss';
 
-    #formContainer {
-        width: 40%;
-        height: max-content;
-        background-color: #fff;
-        border-radius: 15px;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-        border: 1px solid #ddd;
-        padding: 10px 20px;
-        box-shadow: -26px 23px 38px -4px rgba(50,50,50,0.35);
-        -webkit-box-shadow: -26px 23px 38px -4px rgba(50,50,50,0.35);
-        -moz-box-shadow: -26px 23px 38px -4px rgba(50,50,50,0.35);
-        position: relative;
+#loginPage,
+#registerPage {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, rgba($primary-color, 0.05) 0%, rgba($secondary-color, 0.05) 100%);
+  padding: 20px;
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
 
+.auth-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  max-width: 1200px;
+  width: 100%;
+  min-height: 700px;
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  @include elevation('2xl');
 
-        #returnButton {
-            position: absolute;
-            top: 20px;
-            left: 30px;
-            font-size: 30px;
-            font-weight: bold;
-            
+  @media (max-width: 968px) {
+    grid-template-columns: 1fr;
+    max-width: 500px;
+  }
+}
 
-            a {
-                text-decoration: none;
-                color: black;
-            }
+.auth-branding {
+  background: linear-gradient(135deg, $primary-color 0%, $secondary-color 100%);
+  padding: 60px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: $light-text-color;
+  position: relative;
+  overflow: hidden;
 
-            &:hover {
-                cursor: pointer;
-            }
-        }
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+  }
 
-        h2 {
-            color: #002FFF;
-            text-align: center;
-        }
+  &::before {
+    width: 300px;
+    height: 300px;
+    top: -100px;
+    right: -100px;
+  }
 
-        form {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
+  &::after {
+    width: 200px;
+    height: 200px;
+    bottom: -50px;
+    left: -50px;
+  }
 
-            
+  @media (max-width: 968px) {
+    display: none;
+  }
 
-            button {
-                width: 180px;
-                height: 40px;
-                border: 1px solid #002FFF;
-                border-radius: 15px;
-                margin-top: 20px;
-                font-weight: bold;
-                color: #fff;
-                background-color: #002FFF;
+  .branding-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    max-width: 400px;
+  }
 
+  .logo-section {
+    margin-bottom: 30px;
 
-                &:hover {
-                    background-color: #fff;
-                    color: #002FFF;
-                    cursor: pointer;
-                }
-            }
-
-            #callToRegister {
-                font-size: 0.9rem;
-
-                a {
-                    font-weight: bold;
-                    color: black;
-                    text-decoration: none;
-                    
-                    &:hover{
-                        text-decoration: underline;
-                        cursor: pointer;
-                    }
-
-                }
-            }
-        }
+    .logo {
+      width: 250px;
+      height: 80px;
+      margin-bottom: 20px;
+      @include elevation('lg');
+      border-radius: 16px;
+      background: white;
+      padding: 10px;
     }
+
+    .brand-title {
+      font-size: 42px;
+      font-weight: 700;
+      margin: 0;
+      @include text-elevation('lg');
+    }
+  }
+
+  .brand-tagline {
+    font-size: 18px;
+    opacity: 0.95;
+    margin-bottom: 40px;
+    line-height: 1.6;
+    @include text-elevation('sm');
+  }
+
+  .features-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    text-align: left;
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 16px;
+      @include text-elevation('xs');
+
+      .feature-icon {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 16px;
+        flex-shrink: 0;
+      }
+    }
+  }
+}
+
+.auth-form-wrapper {
+  padding: 60px 50px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: white;
+
+  @media (max-width: 768px) {
+    padding: 40px 30px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 30px 20px;
+  }
+}
+
+.back-button {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: $primary-color;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+
+  svg {
+    transition: transform 0.3s ease;
+  }
+
+  &:hover {
+    background: rgba($primary-color, 0.1);
+
+    svg {
+      transform: translateX(-4px);
+    }
+  }
+
+  @media (max-width: 768px) {
+    position: static;
+    margin-bottom: 20px;
+    width: fit-content;
+  }
+}
+
+.form-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 450px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.form-header {
+  margin-bottom: 40px;
+  text-align: center;
+
+  @media (max-width: 768px) {
+    margin-bottom: 30px;
+  }
+
+  h2 {
+    font-size: 32px;
+    font-weight: 700;
+    color: $quaternary-color;
+    margin: 0 0 12px 0;
+
+    @media (max-width: 480px) {
+      font-size: 26px;
+    }
+  }
+
+  p {
+    font-size: 16px;
+    color: #666;
+    margin: 0;
+    opacity: 0.85;
+  }
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  .submit-btn {
+    width: 100%;
+    height: 50px;
+    background: linear-gradient(135deg, $primary-color 0%, $secondary-color 100%);
+    color: $light-text-color;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    @include elevation('sm');
+    @include text-elevation('xs');
+
+    &:hover {
+      @include elevation('md');
+      transform: translateY(-2px);
+    }
+
+    &:active {
+      transform: translateY(0);
+      @include elevation('sm');
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+  }
+
+  .form-footer-text {
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+    margin: 10px 0 0;
+
+    .auth-link {
+      color: $primary-color;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.2s ease;
+
+      &:hover {
+        text-decoration: underline;
+        color: darken($primary-color, 10%);
+      }
+    }
+  }
+
+  .terms-text {
+    text-align: center;
+    font-size: 12px;
+    color: #999;
+    margin: 20px 0 0;
+    line-height: 1.5;
+
+    .terms-link {
+      color: $primary-color;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  #loginPage,
+  #registerPage {
+    padding: 10px;
+  }
+
+  .auth-container {
+    border-radius: 12px;
+  }
+
+  .auth-form {
+    gap: 16px;
+
+    .submit-btn {
+      height: 48px;
+      font-size: 15px;
+    }
+  }
+}
+
+.form-options {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -10px;
+  margin-bottom: 10px;
+
+  .forgot-link {
+    font-size: 14px;
+    color: $primary-color;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+
+    &:hover {
+      text-decoration: underline;
+      color: darken($primary-color, 10%);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-container,
+  .back-button,
+  .submit-btn,
+  .auth-link {
+    transition: none;
+    animation: none;
+  }
+}
+
+@media (prefers-contrast: custom) {
+  .auth-container {
+    border: 2px solid $quaternary-color;
+  }
+
+  .submit-btn {
+    border: 2px solid $light-text-color;
+  }
+}
+
+#loginPage {
+  .auth-container {
+    max-width: 1000px;
+  }
+
+  .form-container {
+    max-width: 400px;
+  }
 }

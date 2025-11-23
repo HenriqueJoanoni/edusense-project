@@ -1,0 +1,238 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+$primary-color: #4A70A9;
+$secondary-color: #8FABD4;
+$tertiary-color: #EFECE3;
+$quaternary-color: #000000;
+
+$background-color: #FFF;
+$light-text-color: #EEE;
+$success-color: #28A745;
+
+$shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+$shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
+0 1px 2px 0 rgba(0, 0, 0, 0.06);
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+0 4px 6px -2px rgba(0, 0, 0, 0.05);
+$shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+0 10px 10px -5px rgba(0, 0, 0, 0.04);
+$shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+$shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+
+$shadow-none: none;
+
+$shadow-primary: 0 0 0 3px rgba($primary-color, 0.2);
+$shadow-primary-lg: 0 4px 20px rgba($primary-color, 0.3);
+
+$shadow-secondary: 0 0 0 3px rgba($secondary-color, 0.2);
+
+@mixin elevation($level: 'md', $hover: false) {
+  @if $level == 'xs' {
+    box-shadow: $shadow-xs;
+  } @else if $level == 'sm' {
+    box-shadow: $shadow-sm;
+  } @else if $level == 'md' {
+    box-shadow: $shadow-md;
+  } @else if $level == 'lg' {
+    box-shadow: $shadow-lg;
+  } @else if $level == 'xl' {
+    box-shadow: $shadow-xl;
+  } @else if $level == '2xl' {
+    box-shadow: $shadow-2xl;
+  } @else if $level == 'inner' {
+    box-shadow: $shadow-inner;
+  } @else if $level == 'none' {
+    box-shadow: $shadow-none;
+  }
+
+  @if $hover {
+    transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
+
+    &:hover {
+      @if $level == 'xs' {
+        box-shadow: $shadow-sm;
+      } @else if $level == 'sm' {
+        box-shadow: $shadow-md;
+      } @else if $level == 'md' {
+        box-shadow: $shadow-lg;
+      } @else if $level == 'lg' {
+        box-shadow: $shadow-xl;
+      } @else if $level == 'xl' {
+        box-shadow: $shadow-2xl;
+      }
+      transform: translateY(-2px);
+    }
+  }
+}
+
+@mixin colored-shadow($color, $size: 'md') {
+  @if $size == 'sm' {
+    box-shadow: 0 0 0 3px rgba($color, 0.15);
+  } @else if $size == 'md' {
+    box-shadow: 0 0 0 3px rgba($color, 0.2);
+  } @else if $size == 'lg' {
+    box-shadow: 0 4px 20px rgba($color, 0.3);
+  }
+}
+
+.shadow-xs {
+  box-shadow: $shadow-xs;
+}
+
+.shadow-sm {
+  box-shadow: $shadow-sm;
+}
+
+.shadow-md {
+  box-shadow: $shadow-md;
+}
+
+.shadow-lg {
+  box-shadow: $shadow-lg;
+}
+
+.shadow-xl {
+  box-shadow: $shadow-xl;
+}
+
+.shadow-2xl {
+  box-shadow: $shadow-2xl;
+}
+
+.shadow-inner {
+  box-shadow: $shadow-inner;
+}
+
+.shadow-none {
+  box-shadow: $shadow-none;
+}
+
+.shadow-hover {
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+
+  &:hover {
+    box-shadow: $shadow-lg;
+    transform: translateY(-2px);
+  }
+}
+
+$text-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.1);
+$text-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.15);
+$text-shadow-md: 0 2px 4px rgba(0, 0, 0, 0.2);
+$text-shadow-lg: 0 3px 6px rgba(0, 0, 0, 0.25);
+$text-shadow-xl: 0 4px 8px rgba(0, 0, 0, 0.3);
+
+$text-shadow-3d: 1px 1px 0 rgba(0, 0, 0, 0.1),
+2px 2px 0 rgba(0, 0, 0, 0.08),
+3px 3px 0 rgba(0, 0, 0, 0.06);
+
+$text-shadow-light: 0 1px 2px rgba(255, 255, 255, 0.3);
+
+$text-shadow-glow: 0 0 10px rgba(255, 255, 255, 0.8),
+0 0 20px rgba(255, 255, 255, 0.6),
+0 0 30px rgba(255, 255, 255, 0.4);
+
+$text-shadow-primary-glow: 0 0 10px rgba($primary-color, 0.6),
+0 0 20px rgba($primary-color, 0.4),
+0 0 30px rgba($primary-color, 0.2);
+
+$text-shadow-secondary-glow: 0 0 10px rgba($secondary-color, 0.6),
+0 0 20px rgba($secondary-color, 0.4),
+0 0 30px rgba($secondary-color, 0.2);
+
+$text-shadow-none: none;
+
+@mixin text-elevation($level: 'sm') {
+  @if $level == 'xs' {
+    text-shadow: $text-shadow-xs;
+  } @else if $level == 'sm' {
+    text-shadow: $text-shadow-sm;
+  } @else if $level == 'md' {
+    text-shadow: $text-shadow-md;
+  } @else if $level == 'lg' {
+    text-shadow: $text-shadow-lg;
+  } @else if $level == 'xl' {
+    text-shadow: $text-shadow-xl;
+  } @else if $level == '3d' {
+    text-shadow: $text-shadow-3d;
+  } @else if $level == 'light' {
+    text-shadow: $text-shadow-light;
+  } @else if $level == 'glow' {
+    text-shadow: $text-shadow-glow;
+  } @else if $level == 'none' {
+    text-shadow: $text-shadow-none;
+  }
+}
+
+@mixin text-glow($color, $intensity: 'medium') {
+  @if $intensity == 'subtle' {
+    text-shadow: 0 0 5px rgba($color, 0.4),
+    0 0 10px rgba($color, 0.2);
+  } @else if $intensity == 'medium' {
+    text-shadow: 0 0 10px rgba($color, 0.6),
+    0 0 20px rgba($color, 0.4),
+    0 0 30px rgba($color, 0.2);
+  } @else if $intensity == 'strong' {
+    text-shadow: 0 0 10px rgba($color, 0.8),
+    0 0 20px rgba($color, 0.6),
+    0 0 30px rgba($color, 0.4),
+    0 0 40px rgba($color, 0.2);
+  }
+}
+
+.text-shadow-xs {
+  text-shadow: $text-shadow-xs;
+}
+
+.text-shadow-sm {
+  text-shadow: $text-shadow-sm;
+}
+
+.text-shadow-md {
+  text-shadow: $text-shadow-md;
+}
+
+.text-shadow-lg {
+  text-shadow: $text-shadow-lg;
+}
+
+.text-shadow-xl {
+  text-shadow: $text-shadow-xl;
+}
+
+.text-shadow-3d {
+  text-shadow: $text-shadow-3d;
+}
+
+.text-shadow-light {
+  text-shadow: $text-shadow-light;
+}
+
+.text-shadow-glow {
+  text-shadow: $text-shadow-glow;
+}
+
+.text-shadow-primary-glow {
+  text-shadow: $text-shadow-primary-glow;
+}
+
+.text-shadow-secondary-glow {
+  text-shadow: $text-shadow-secondary-glow;
+}
+
+.text-shadow-none {
+  text-shadow: $text-shadow-none;
+}
+
+.text-readable-dark {
+  text-shadow: $text-shadow-sm;
+  color: $light-text-color;
+}
+
+.text-readable-light {
+  text-shadow: $text-shadow-xs;
+  color: $quaternary-color;
+}

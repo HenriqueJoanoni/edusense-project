@@ -1,91 +1,431 @@
-#studentProfileContainer {
-    background: #f2f2f2;
-    padding: 20px;
-    min-height: 80vh;
+@import 'ColorScheme.scss';
 
+#studentProfilePage {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, rgba($primary-color, 0.03) 0%, rgba($secondary-color, 0.03) 100%);
+}
 
-    #studentProfileTopRow {
-        width: 95%;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-evenly;
-        align-items: stretch;
+.profile-main {
+  flex: 1;
+  padding: 40px 20px;
 
+  @media (max-width: 768px) {
+    padding: 20px 15px;
+  }
+}
 
-        #studentInfoContainer {
-            position: relative;
-            width: 50%;
-            display: flex;
-            justify-content: flex-start;
-            align-items: flex-start;
-            background: #fff;
-            border-radius: 15px;
-            padding: 40px 80px 80px 40px;
+.profile-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
 
-            #profilePhoto {
-                display: flex;
-                align-items: center;
-                justify-content: center;
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+  gap: 20px;
 
-                
-                border-radius: 50%;
-                
-                img {
-                    width: 150px;
-                    height: 150px;
-                    border-radius: 50%;
-                    border: 3px solid #002FFF;
-                }
-            }
+  .header-content {
+    h1 {
+      font-size: 36px;
+      font-weight: 700;
+      color: $quaternary-color;
+      margin: 0 0 8px 0;
 
-            #studentInformation {
-                margin-left: 40px;
-                display: flex;
-                flex-direction: column;
-
-                * {
-                    margin: 0;
-                    padding: 2px;
-                }
-            }
-
-            #settingsButton {
-                background: transparent;
-                border: none;
-                position: absolute;
-                top: 10px;
-                right: 10px;
-
-                img {
-                    width: 30px;
-                    height: 30px;
-                    transition: ease-out 0.1s;
-
-                    &:hover {
-                        cursor: pointer;
-                        transform: rotate(30deg)
-                    }
-                }
-            }
-        }
-
-        #studentChartSummary {
-            background-color: #fff;
-            border-radius: 15px;
-            width: 40%;
-            height: 300px;
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-
-            canvas {
-                width: 80% !important;
-                height: 80% !important;
-            }
-        }
+      @media (max-width: 768px) {
+        font-size: 28px;
+      }
     }
 
-    #studentTimetable {
-        height: 400px;
+    p {
+      font-size: 16px;
+      color: #666;
+      margin: 0;
     }
+  }
+
+  .edit-btn {
+    padding: 12px 24px;
+    background: $primary-color;
+    color: $light-text-color;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    @include elevation('sm');
+
+    &:hover {
+      background: darken($primary-color, 10%);
+      @include elevation('md');
+      transform: translateY(-2px);
+    }
+
+    &.cancel {
+      background: #666;
+
+      &:hover {
+        background: #555;
+      }
+    }
+  }
+}
+
+.loading-state,
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  text-align: center;
+
+  p {
+    font-size: 16px;
+    color: #666;
+    margin-top: 20px;
+  }
+
+  .spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba($primary-color, 0.2);
+    border-top-color: $primary-color;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  .retry-btn {
+    margin-top: 20px;
+    padding: 12px 32px;
+    background: $primary-color;
+    color: $light-text-color;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    @include elevation('sm');
+    transition: all 0.3s ease;
+
+    &:hover {
+      @include elevation('md');
+      transform: translateY(-2px);
+    }
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.profile-content {
+  display: grid;
+  gap: 30px;
+}
+
+.profile-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  @include elevation('md');
+}
+
+.profile-header-card {
+  background: linear-gradient(135deg, $primary-color 0%, $secondary-color 100%);
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  position: relative;
+
+  @media (max-width: 768px) {
+    padding: 30px 20px;
+  }
+
+  .avatar-section {
+    text-align: center;
+
+    .avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: white;
+      color: $primary-color;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      font-weight: 700;
+      margin: 0 auto 16px;
+      @include elevation('lg');
+
+      @media (max-width: 768px) {
+        width: 100px;
+        height: 100px;
+        font-size: 40px;
+      }
+    }
+
+    .user-status {
+      .status-badge {
+        display: inline-block;
+        padding: 6px 16px;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        font-size: 14px;
+        font-weight: 600;
+        @include text-elevation('sm');
+
+        &.admin {
+          background: rgba(255, 215, 0, 0.3);
+        }
+      }
+    }
+  }
+}
+
+.profile-info {
+  padding: 40px;
+
+  @media (max-width: 768px) {
+    padding: 30px 20px;
+  }
+}
+
+.info-section {
+  margin-bottom: 40px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: $quaternary-color;
+    margin: 0 0 24px 0;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #f0f0f0;
+  }
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+}
+
+.info-item {
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+
+  p {
+    font-size: 16px;
+    color: $quaternary-color;
+    margin: 0;
+    font-weight: 500;
+  }
+
+  .user-id {
+    color: $primary-color;
+    font-family: 'Courier New', monospace;
+  }
+
+  .verification-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    .status-icon {
+      font-size: 16px;
+    }
+
+    &.verified {
+      color: #4caf50;
+    }
+
+    &.pending {
+      color: #ff9800;
+    }
+  }
+
+  .edit-input {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+      @include colored-shadow($primary-color, 'sm');
+    }
+  }
+}
+
+.permissions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.permission-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+
+  .permission-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+  &.granted {
+    background: rgba(76, 175, 80, 0.1);
+    color: #4caf50;
+
+    .permission-icon {
+      background: #4caf50;
+      color: white;
+    }
+  }
+
+  &.denied {
+    background: rgba(158, 158, 158, 0.1);
+    color: #9e9e9e;
+
+    .permission-icon {
+      background: #9e9e9e;
+      color: white;
+    }
+  }
+}
+
+.action-buttons {
+  margin-top: 30px;
+  padding-top: 30px;
+  border-top: 2px solid #f0f0f0;
+
+  .save-btn {
+    padding: 14px 32px;
+    background: $primary-color;
+    color: $light-text-color;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    @include elevation('sm');
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: darken($primary-color, 10%);
+      @include elevation('md');
+      transform: translateY(-2px);
+    }
+  }
+}
+
+.profile-actions {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  @include elevation('md');
+
+  h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: $quaternary-color;
+    margin: 0 0 20px 0;
+  }
+}
+
+.actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.action-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background: #f9f9f9;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+
+  .action-icon {
+    font-size: 32px;
+    flex-shrink: 0;
+  }
+
+  .action-content {
+    h4 {
+      font-size: 16px;
+      font-weight: 600;
+      color: $quaternary-color;
+      margin: 0 0 4px 0;
+    }
+
+    p {
+      font-size: 13px;
+      color: #666;
+      margin: 0;
+    }
+  }
+
+  &:hover {
+    border-color: $primary-color;
+    background: rgba($primary-color, 0.05);
+    @include elevation('sm');
+    transform: translateY(-2px);
+  }
+
+  &.danger {
+    &:hover {
+      border-color: #f44336;
+      background: rgba(244, 67, 54, 0.05);
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .actions-grid {
+    grid-template-columns: 1fr;
+  }
 }

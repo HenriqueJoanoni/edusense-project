@@ -26,7 +26,7 @@ export const showErrorAlert = (title, text = '', options = {}) => {
         icon: 'error',
         title,
         text,
-        confirmButtonText: 'Tentar Novamente',
+        confirmButtonText: 'Try Again',
         ...defaultConfig,
         ...options
     });
@@ -38,8 +38,8 @@ export const showConfirmAlert = (title, text = '', options = {}) => {
         title,
         text,
         showCancelButton: true,
-        confirmButtonText: 'Sim, confirmar',
-        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Yes, confirm',
+        cancelButtonText: 'Cancel',
         reverseButtons: true,
         ...defaultConfig,
         ...options
@@ -51,17 +51,18 @@ export const showInfoAlert = (title, text = '', options = {}) => {
         icon: 'info',
         title,
         text,
-        confirmButtonText: 'Entendi',
+        confirmButtonText: 'Understood',
         ...defaultConfig,
         ...options
     });
 };
 
-export const showLoadingAlert = (title = 'Carregando...') => {
+export const showLoadingAlert = (title = 'Loading...') => {
     return Swal.fire({
         title,
         allowOutsideClick: false,
         allowEscapeKey: false,
+        timer: 2000,
         didOpen: () => {
             Swal.showLoading();
         }

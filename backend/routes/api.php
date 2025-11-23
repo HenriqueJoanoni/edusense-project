@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LecturerDashboardController;
 use App\Http\Controllers\PubNubController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -34,6 +36,9 @@ Route::middleware('auth.jwt')->group(function () {
 
     // User management (view)
     Route::post('user', [UserController::class, 'getUser']);
+
+    // Check if user is student
+    Route::get('/is-student/{id}', [UserController::class, 'resolveStudentId']);
 
     // Attendance
     Route::match(['get', 'post'], 'attendance', [AttendanceController::class, 'returnAttendance']);
@@ -82,5 +87,27 @@ Route::middleware('auth.jwt')->group(function () {
 
         // Password reset (admin only)
         Route::post('reset-password', [AuthController::class, 'resetUserPassword']);
+
+        // Dashboard routes (admin only)
+        Route::prefix('dashboard')->group(function () {
+            Route::get('overview', [DashboardController::class, 'getOverview']);
+            Route::get('activities', [DashboardController::class, 'getRecentActivities']);
+            Route::get('trends', [DashboardController::class, 'getAttendanceTrends']);
+            Route::get('top-courses', [DashboardController::class, 'getTopCourses']);
+            Route::get('system-health', [DashboardController::class, 'getSystemHealth']);
+        });
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Lecturer Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::middleware('lecturer')->group(function () {
+        Route::prefix('lecturer')->group(function () {
+            Route::get('subjects', [LecturerDashboardController::class, 'getMySubjects']);
+            Route::post('attendance', [LecturerDashboardController::class, 'getSubjectAttendance']);
+            Route::get('statistics', [LecturerDashboardController::class, 'getStatistics']);
+        });
     });
 });

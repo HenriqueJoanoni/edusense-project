@@ -7,7 +7,7 @@ export default function Logout() {
 
     useEffect(() => {
         const performLogout = async () => {
-            const token = sessionStorage.getItem("token")
+            const token = sessionStorage.getItem("Token")
 
             if (token) {
                 try {
@@ -23,11 +23,8 @@ export default function Logout() {
                 }
             }
 
-            sessionStorage.removeItem("token")
+            sessionStorage.removeItem("Token")
             sessionStorage.removeItem("User")
-            localStorage.removeItem("token")
-            localStorage.removeItem("User")
-            localStorage.removeItem("accessLevel")
             setShouldRedirect(true)
         }
         performLogout()
