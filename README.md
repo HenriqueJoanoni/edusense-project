@@ -1,3 +1,7 @@
+<div style="text-align: center;">
+  <img src="media/logo.png" alt="Logo" style="width:300px; height:auto;">
+</div>
+
 # Edusense Project
 https://github.com/HenriqueJoanoni/edusense-project
 
@@ -49,6 +53,9 @@ improving reliability through automation.
 - Run `yarn start` to start the development server.
 
 - Open `http://localhost:3000/` in your browser.
+
+## System Architecture
+![Wiring diagram](./media/architecture_diagram.png)
 
 ## IoT Layer
 
