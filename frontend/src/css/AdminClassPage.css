@@ -1,0 +1,119 @@
+#adminPageContainer {
+  margin: 0;
+  padding: 20px;
+}
+#adminPageContainer #adminTopRow {
+  display: flex;
+  width: 80%;
+  justify-content: space-between;
+  align-items: center;
+  margin: auto;
+}
+#adminPageContainer #adminTopRow #adminClassInfo {
+  background-color: #eee;
+  min-width: 400px;
+  height: max-content;
+  padding: 10px;
+  border-radius: 15px;
+}
+#adminPageContainer #adminTopRow #adminClassInfo .horizontalTextField {
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+  margin: 10px auto;
+}
+#adminPageContainer #adminTopRow #adminClassInfo .horizontalTextField label {
+  font-weight: bold;
+}
+#adminPageContainer #adminTopRow #adminClassInfo .horizontalTextField input {
+  padding: 5px 10px;
+  border-radius: 12px;
+  outline: none;
+  border: 1px solid black;
+}
+#adminPageContainer #adminTopRow #adminClassActions {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+#adminPageContainer #adminTopRow #adminClassActions button {
+  width: 300px;
+  height: 60px;
+  font-weight: bold;
+  font-size: 15px;
+  margin-block: 10px;
+  border: none;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 5px 10px;
+}
+#adminPageContainer #adminTopRow #adminClassActions button img {
+  margin-right: 20px;
+  width: 40px;
+}
+#adminPageContainer #adminStudentsTable {
+  width: 90%;
+  margin: 50px auto;
+}
+#adminPageContainer #adminStudentsTable #tableTools {
+  width: 80%;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#adminPageContainer #adminStudentsTable #tableTools span {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+#adminPageContainer #adminStudentsTable #tableTools span img {
+  width: 40px;
+}
+#adminPageContainer #adminStudentsTable table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+#adminPageContainer #adminStudentsTable table .adminClassTableRow td {
+  border-bottom: 1px solid #141414;
+  padding-block: 10px;
+}
+#adminPageContainer #adminStudentsTable table tr th {
+  border-top: 1px solid #141414;
+  border-bottom: 1px solid #141414;
+}
+#adminPageContainer #adminStudentsTable table tr td, #adminPageContainer #adminStudentsTable table tr th {
+  text-align: left;
+}
+#adminPageContainer #adminStudentsTable table tr td:nth-child(1), #adminPageContainer #adminStudentsTable table tr th:nth-child(1) {
+  width: 10%;
+}
+#adminPageContainer #adminStudentsTable table tr td:nth-child(2), #adminPageContainer #adminStudentsTable table tr th:nth-child(2) {
+  width: 80%;
+}
+#adminPageContainer #adminStudentsTable table tr td:nth-child(3), #adminPageContainer #adminStudentsTable table tr th:nth-child(3) {
+  width: 10%;
+}
+#adminPageContainer #adminStudentsTable table tr td span, #adminPageContainer #adminStudentsTable table tr th span {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+#adminPageContainer #adminStudentsTable table tr td span img, #adminPageContainer #adminStudentsTable table tr th span img {
+  width: 40px;
+}
+#adminPageContainer #adminStudentsTable table tr td button, #adminPageContainer #adminStudentsTable table tr th button {
+  background-color: transparent;
+  border: none;
+}
+#adminPageContainer #adminStudentsTable table tr td button img, #adminPageContainer #adminStudentsTable table tr th button img {
+  width: 40px;
+}
+#adminPageContainer #adminStudentsTable table tr td button:hover, #adminPageContainer #adminStudentsTable table tr th button:hover {
+  cursor: pointer;
+}/*# sourceMappingURL=AdminClassPage.css.map */

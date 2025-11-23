@@ -1,0 +1,151 @@
+#adminPageContainer {
+    margin: 0;
+    padding: 20px;
+
+    #adminTopRow {
+        display: flex;
+        width: 80%;
+        justify-content: space-between;
+        align-items: center;
+        margin: auto;
+
+        #adminClassInfo{
+            background-color: #eee;
+            min-width: 400px;
+            height: max-content;
+            padding: 10px;
+            border-radius: 15px;
+
+
+            .horizontalTextField {
+                width: 80%;
+                display: flex;
+                justify-content: space-between;
+                margin: 10px auto;
+
+                label {
+                    font-weight: bold;
+                }
+                input {
+                    padding: 5px 10px;
+                    border-radius: 12px;
+                    outline: none;
+                    border: 1px solid black;
+                }
+
+            }
+        }
+
+        #adminClassActions {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+
+            button {
+                width: 300px;
+                height: 60px;
+                font-weight: bold;
+                font-size: 15px;
+                margin-block: 10px;
+                border: none;
+                border-radius: 10px;
+
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+                padding: 5px 10px;
+
+                img {
+                    margin-right: 20px;
+                    width: 40px;
+                }
+            }
+        }
+    }
+
+
+    #adminStudentsTable {
+        width: 90%;
+        margin:  50px auto;
+        
+
+        #tableTools {
+            width: 80%;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            span {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                img {
+                    width: 40px;
+                }
+            }
+        }
+
+        table {
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: collapse;
+
+
+            .adminClassTableRow {
+                td {
+                    border-bottom: 1px solid #141414;
+                    padding-block: 10px;
+                }
+            }
+
+            tr {      
+                
+                th {
+                    border-top: 1px solid #141414;
+                    border-bottom: 1px solid #141414;
+                }
+            
+
+                td, th {
+                    text-align: left;
+                    &:nth-child(1) { width: 10%; }
+                    &:nth-child(2) { width: 80%; }
+                    &:nth-child(3) { width: 10%; }
+
+
+                    span {
+                        display: flex;
+                        justify-content: flex-start;
+                        align-items: center;
+
+
+                        img {
+                            width: 40px;
+                        }
+                    }
+                    
+
+
+                    button {
+                        background-color: transparent;
+                        border: none;
+
+                        img {
+                            width: 40px;
+                        }
+
+                        &:hover {
+                            cursor: pointer;
+                        }
+                    }
+                }
+            }
+
+            
+        }
+
+    }
+}
