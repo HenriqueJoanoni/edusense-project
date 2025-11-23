@@ -4,6 +4,8 @@ import Footer from "../components/Footer"
 import HorizontalTextField from "../components/HorizontalTextField"
 import AdminClassTableRow from "../components/AdminClassTableRow"
 
+import "../css/AdminClassPage.css"
+
 
 export default function AdminClassPage(props){
     const [formData, setFormData] = useState({
@@ -38,7 +40,15 @@ export default function AdminClassPage(props){
 
 
 
-    
+    /*
+http://localhost:8000/api/reports/generate
+
+{
+  "start_date": "2025-01-01",
+  "end_date": "2025-11-01",
+  "student_id": 10000
+}
+    */
 
 
     return(
@@ -49,6 +59,7 @@ export default function AdminClassPage(props){
                     <div id="adminClassInfo">
                         <HorizontalTextField 
                             fieldName="class_name"
+                            label="Class Name"
                             value={formData.class_name}
                             type="text"
                             onChanged={(e)=>{
@@ -58,6 +69,7 @@ export default function AdminClassPage(props){
 
                         <HorizontalTextField 
                             fieldName="teacher_name"
+                            label="Teacher"
                             value={formData.class_teacher}
                             type="text"
                             onChanged={(e)=>{
@@ -67,36 +79,40 @@ export default function AdminClassPage(props){
 
                         <HorizontalTextField 
                             fieldName="class_id"
+                            label="Class ID"
                             value={formData.class_id}
                             type="text"
                             onChanged={(e)=>{}}
                         />
                     </div>
                     <div id="adminClassActions">
-                        <button type="button">Set Timetable</button>
-                        <button type="button">Add Students</button>
+                        <button type="button"><img src="/icons8-calendar-50.png"/>Set Timetable</button>
+                        <button type="button"><img src="/icons8-add-user-50.png"/>Add Students</button>
                     </div>
                 </div>
 
                 <div id="adminStudentsTable">
                     <div id="tableTools">
-                        <h3>Students Enrolled</h3>
+                        <span>
+                            <img src="/icons8-page-50.png"/>
+                            <h3>Students Enrolled</h3>
+                        </span>               
                         <input type="text" />
                     </div>
 
                     <table>
                         <thead>
                             <tr>
-                                <td>ID</td>
-                                <td>Name</td>
-                                <td>Remove</td>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Remove</th>
                             </tr>
                         </thead>
                         <tbody>
                             {formData.students.map(student => 
                                 <AdminClassTableRow
                                     student={student}
-                                    onDeletePressed={()=>{D}}
+                                    onDeletePressed={()=>{}}
                                 />
                             )}
                         </tbody>
