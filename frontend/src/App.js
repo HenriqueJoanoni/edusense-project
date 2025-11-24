@@ -8,6 +8,7 @@ import {
     ACCESS_LEVEL_ADMIN
 } from "./config/global_constants"
 import "./css/SweetAlerts.css"
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 import Homepage from './pages/Homepage';
 import StudentProfile from './pages/StudentProfile';
@@ -22,6 +23,7 @@ import ClassOverview from './pages/ClassOverview';
 import StudentAttendancePage from './pages/StudentAttendancePage';
 import AdminDashboard from "./pages/AdminDashboard";
 import LecturerDashboard from "./pages/LecturerDashboard";
+import StudentPersonalAttendance from "./pages/StudentPersonalAttendance";
 
 function App() {
     const [users, setUsers] = useState([]);
@@ -38,7 +40,7 @@ function App() {
                 <Route path="/" element={<Homepage/>}/>
                 <Route path="/home" element={<Homepage/>}/>
                 <Route path="/my-profile/" element={<StudentProfile/>}/>
-                <Route path="/my-attendance/" element={<StudentProfile/>}/>
+                <Route path="/my-attendance/" element={<StudentPersonalAttendance/>}/>
                 <Route path="/attendance/" element={<ClassAttendancePage/>}/>
                 <Route path="/dashboard" element={<AdminDashboard/>}/>
                 <Route path="/login/" element={<Login/>}/>

@@ -7,6 +7,7 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterUserRequest;
 use App\Http\Requests\ResetPasswordRequest;
 use App\Models\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -124,10 +125,17 @@ class AuthController extends Controller
     public function resetUserPassword(ResetPasswordRequest $request): JsonResponse
     {
         try {
+            if ($request->id === auth()->id()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'You cannot reset your own password.'
+                ], 403);
+            }
+
             $validated = $request->validated();
             $user = User::findOrFail($validated['id']);
 
-            $password = $validated['new_password'] ?? config('app.default_user_password');
+            $password = (!empty($validated['new_password'])) ? $validated['new_password'] : config('app.default_user_password');
 
             $user->update(['user_password' => $password]);
 
@@ -150,7 +158,7 @@ class AuthController extends Controller
                 ],
             ], 200);
 
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+        } catch (ModelNotFoundException $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'User not found.',

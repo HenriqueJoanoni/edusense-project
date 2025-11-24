@@ -4,7 +4,7 @@ import Header from "../components/Header"
 import Footer from "../components/Footer"
 import "../sass_styles/AdminDashboard.scss"
 import api from "../api"
-import {showErrorAlert, showLoadingAlert, closeAlert} from "../utils/alerts"
+import {showErrorAlert, showLoadingAlert, closeAlert, showSuccessAlert, showConfirmAlert} from "../utils/alerts"
 import {ACCESS_LEVEL_ADMIN} from "../config/global_constants"
 
 export default function AdminDashboard() {
@@ -16,6 +16,7 @@ export default function AdminDashboard() {
     const [loading, setLoading] = useState(true)
     const [redirectToLogin, setRedirectToLogin] = useState(false)
     const [activeTab, setActiveTab] = useState('overview')
+    const [allUsers, setAllUsers] = useState([])
 
     useEffect(() => {
         const userSession = JSON.parse(sessionStorage.getItem("User"))
@@ -34,12 +35,13 @@ export default function AdminDashboard() {
             setLoading(true)
             showLoadingAlert('Loading Dashboard Data...')
 
-            const [overviewRes, activitiesRes, trendsRes, coursesRes, healthRes] = await Promise.all([
+            const [overviewRes, activitiesRes, trendsRes, coursesRes, healthRes, usersRes] = await Promise.all([
                 api.get('/dashboard/overview'),
                 api.get('/dashboard/activities'),
                 api.get('/dashboard/trends'),
                 api.get('/dashboard/top-courses'),
-                api.get('/dashboard/system-health')
+                api.get('/dashboard/system-health'),
+                api.get('/dashboard/users')
             ])
 
             setOverview(overviewRes.data.data)
@@ -47,6 +49,7 @@ export default function AdminDashboard() {
             setTrends(trendsRes.data.data)
             setTopCourses(coursesRes.data.data)
             setSystemHealth(healthRes.data.data)
+            setAllUsers(usersRes.data.data)
 
             closeAlert()
         } catch (err) {
@@ -63,6 +66,23 @@ export default function AdminDashboard() {
             }
         } finally {
             setLoading(false)
+        }
+    }
+
+    const handlerResetPassword = (userId) => {
+        try {
+            api.patch('/dashboard/reset-password', {id: userId}, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem("User")).token}`
+                }
+            })
+            closeAlert()
+            showSuccessAlert('Password Reset')
+        } catch (err) {
+            console.error('Error resetting password:', err)
+            closeAlert()
+            showErrorAlert('Password reset fail', err.response?.data?.message || 'An error occurred')
         }
     }
 
@@ -167,6 +187,12 @@ export default function AdminDashboard() {
                         >
                             System Health
                         </button>
+                        <button
+                            className={activeTab === 'users' ? 'active' : ''}
+                            onClick={() => setActiveTab('users')}
+                        >
+                            User Management
+                        </button>
                     </div>
 
                     {/* Tab Content */}
@@ -266,6 +292,78 @@ export default function AdminDashboard() {
                                         <p>Active: {systemHealth.readers.active}</p>
                                         <p>Inactive: {systemHealth.readers.inactive}</p>
                                     </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {activeTab === 'users' && (
+                            <div className="users-section">
+                                <h2>User Management</h2>
+                                <div className="users-table">
+                                    <table>
+                                        <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Verified Email</th>
+                                            <th>Role</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {allUsers.map((user) => (
+                                            <tr key={user.id}>
+                                                <td>{user.id}</td>
+                                                <td>{user.user_name}</td>
+                                                <td>{user.user_email}</td>
+                                                <td>{
+                                                    user.email_verified_at ?
+                                                        new Date(user.email_verified_at).toLocaleDateString('en-IE') :
+                                                        'Not Verified'
+                                                }</td>
+                                                <td>{user.user_role.replace(/^./, user.user_role[0].toUpperCase())}</td>
+                                                <td>
+                                                    <button
+                                                        id={`admin-edit-user-${user.id}`}
+                                                        className="admin-action admin-edit-user-button"
+                                                        type="button"
+                                                        title="Edit User"
+                                                        onClick={() => {/* handler */
+                                                        }}
+                                                    >
+                                                        <i className="bi bi-pencil" aria-hidden="true"></i>
+                                                        <span className="sr-only">Editar</span>
+                                                    </button>
+
+                                                    <button
+                                                        id={`admin-reset-password-${user.id}`}
+                                                        className="admin-action admin-reset-password-button"
+                                                        type="button"
+                                                        title="Reset Password"
+                                                        onClick={() => { handlerResetPassword(user.id)
+                                                        }}
+                                                    >
+                                                        <i className="bi bi-key" aria-hidden="true"></i>
+                                                        <span className="sr-only">Redefinir senha</span>
+                                                    </button>
+
+                                                    <button
+                                                        id={`admin-delete-user-${user.id}`}
+                                                        className="admin-action admin-delete-user-button"
+                                                        type="button"
+                                                        title="Archive User"
+                                                        onClick={() => {/* handler */
+                                                        }}
+                                                    >
+                                                        <i className="bi bi-archive" aria-hidden="true"></i>
+                                                        <span className="sr-only">Arquivar</span>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         )}

@@ -80,16 +80,12 @@ Route::middleware('auth.jwt')->group(function () {
     |--------------------------------------------------------------------------
     */
     Route::middleware('admin')->group(function () {
-        // User management (admin)
-        Route::get('users', [UserController::class, 'getAllUsers']);
-        Route::patch('update-user/{id}', [UserController::class, 'updateUser']);
-        Route::delete('delete-user/{id}', [UserController::class, 'deleteUser']);
-
-        // Password reset (admin only)
-        Route::post('reset-password', [AuthController::class, 'resetUserPassword']);
-
         // Dashboard routes (admin only)
         Route::prefix('dashboard')->group(function () {
+            Route::get('users', [UserController::class, 'getAllUsers']);
+            Route::patch('update-user/{id}', [UserController::class, 'updateUser']);
+            Route::delete('delete-user/{id}', [UserController::class, 'deleteUser']);
+            Route::patch('reset-password', [AuthController::class, 'resetUserPassword']);
             Route::get('overview', [DashboardController::class, 'getOverview']);
             Route::get('activities', [DashboardController::class, 'getRecentActivities']);
             Route::get('trends', [DashboardController::class, 'getAttendanceTrends']);

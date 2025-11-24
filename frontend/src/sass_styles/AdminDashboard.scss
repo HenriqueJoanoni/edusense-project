@@ -5,259 +5,331 @@
   display: flex;
   flex-direction: column;
   background: linear-gradient(135deg, rgba($primary-color, 0.03) 0%, rgba($secondary-color, 0.03) 100%);
-}
 
-.dashboard-main {
-  flex: 1;
-  padding: 40px 20px;
-}
-
-.dashboard-container {
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-.page-header {
-  margin-bottom: 30px;
-
-  h1 {
-    font-size: 2.5rem;
-    color: $primary-color;
-    margin-bottom: 8px;
-  }
-
-  p {
-    color: #666;
-    font-size: 1.1rem;
-  }
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-  margin-bottom: 30px;
-}
-
-.stat-card {
-  background: white;
-  border-radius: 12px;
-  padding: 24px;
-  display: flex;
-  gap: 16px;
-  @include elevation('sm');
-  transition: all 0.3s ease;
-
-  &:hover {
-    @include elevation('md');
-    transform: translateY(-2px);
-  }
-
-  .card-icon {
-    font-size: 2.5rem;
-    min-width: 60px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 12px;
-    background: linear-gradient(135deg, rgba($primary-color, 0.1), rgba($secondary-color, 0.1));
-  }
-
-  .card-content {
+  .dashboard-main {
     flex: 1;
+    padding: 40px 20px;
+  }
 
-    h3 {
-      font-size: 2rem;
+  .dashboard-container {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .page-header {
+    margin-bottom: 30px;
+
+    h1 {
+      font-size: 2.5rem;
       color: $primary-color;
-      margin-bottom: 4px;
+      margin-bottom: 8px;
     }
 
     p {
       color: #666;
-      margin-bottom: 12px;
-    }
-
-    .card-details {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-
-      span {
-        font-size: 0.85rem;
-        color: #999;
-      }
+      font-size: 1.1rem;
     }
   }
-}
 
-.tabs-navigation {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+  }
 
-  button {
-    padding: 12px 24px;
-    border: none;
+  .stat-card {
     background: white;
-    border-radius: 8px 8px 0 0;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    @include elevation('xs');
-
-    &.active {
-      background: $primary-color;
-      color: white;
-      @include elevation('sm');
-    }
-
-    &:hover:not(.active) {
-      background: rgba($primary-color, 0.1);
-    }
-  }
-}
-
-.tab-content {
-  background: white;
-  border-radius: 12px;
-  padding: 30px;
-  @include elevation('sm');
-}
-
-.activities-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.activity-item {
-  display: flex;
-  gap: 12px;
-  padding: 16px;
-  border-radius: 8px;
-  background: rgba($primary-color, 0.03);
-  transition: background 0.3s ease;
-
-  &:hover {
-    background: rgba($primary-color, 0.08);
-  }
-
-  .activity-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: $success-color;
-    color: white;
+    border-radius: 12px;
+    padding: 24px;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-  }
-
-  .activity-text {
-    margin-bottom: 4px;
-  }
-
-  .activity-meta {
-    font-size: 0.85rem;
-    color: #999;
-  }
-}
-
-.trends-chart {
-  display: flex;
-  gap: 4px;
-  height: 300px;
-  align-items: flex-end;
-  padding: 20px 0;
-}
-
-.trend-bar {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-
-  .bar {
-    width: 100%;
-    background: linear-gradient(180deg, $primary-color, $secondary-color);
-    border-radius: 4px 4px 0 0;
+    gap: 16px;
+    @include elevation('sm');
     transition: all 0.3s ease;
 
     &:hover {
-      opacity: 0.8;
+      @include elevation('md');
+      transform: translateY(-2px);
+    }
+
+    .card-icon {
+      font-size: 2.5rem;
+      min-width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba($primary-color, 0.1), rgba($secondary-color, 0.1));
+    }
+
+    .card-content {
+      flex: 1;
+
+      h3 {
+        font-size: 2rem;
+        color: $primary-color;
+        margin-bottom: 4px;
+      }
+
+      p {
+        color: #666;
+        margin-bottom: 12px;
+      }
+
+      .card-details {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+
+        span {
+          font-size: 0.85rem;
+          color: #999;
+        }
+      }
     }
   }
 
-  .bar-label {
-    font-size: 0.75rem;
-    color: #666;
+  .tabs-navigation {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+
+    button {
+      padding: 12px 24px;
+      border: none;
+      background: white;
+      border-radius: 8px 8px 0 0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      @include elevation('xs');
+
+      &.active {
+        background: $primary-color;
+        color: white;
+        @include elevation('sm');
+      }
+
+      &:hover:not(.active) {
+        background: rgba($primary-color, 0.1);
+      }
+    }
   }
-}
 
-.courses-table {
-  overflow-x: auto;
+  .tab-content {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    @include elevation('sm');
+  }
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
+  .activities-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
 
-    th, td {
-      padding: 12px;
-      text-align: left;
-      border-bottom: 1px solid #eee;
+  .activity-item {
+    display: flex;
+    gap: 12px;
+    padding: 16px;
+    border-radius: 8px;
+    background: rgba($primary-color, 0.03);
+    transition: background 0.3s ease;
+
+    &:hover {
+      background: rgba($primary-color, 0.08);
     }
 
-    th {
-      background: rgba($primary-color, 0.05);
-      font-weight: 600;
+    .activity-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: $success-color;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    .activity-text {
+      margin-bottom: 4px;
+    }
+
+    .activity-meta {
+      font-size: 0.85rem;
+      color: #999;
+    }
+  }
+
+  .trends-chart {
+    display: flex;
+    gap: 4px;
+    height: 300px;
+    align-items: flex-end;
+    padding: 20px 0;
+  }
+
+  .trend-bar {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+
+    .bar {
+      width: 100%;
+      background: linear-gradient(180deg, $primary-color, $secondary-color);
+      border-radius: 4px 4px 0 0;
+      transition: all 0.3s ease;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+
+    .bar-label {
+      font-size: 0.75rem;
+      color: #666;
+    }
+  }
+
+  .courses-table,
+  .users-table {
+    overflow-x: auto;
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+
+      th, td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #eee;
+      }
+
+      th {
+        background: rgba($primary-color, 0.05);
+        font-weight: 600;
+        color: $primary-color;
+      }
+
+      tr:hover {
+        background: rgba($primary-color, 0.02);
+      }
+    }
+  }
+
+  .health-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+  }
+
+  .health-card {
+    padding: 20px;
+    border-radius: 8px;
+    background: rgba($primary-color, 0.03);
+
+    h3 {
       color: $primary-color;
+      margin-bottom: 12px;
     }
 
-    tr:hover {
-      background: rgba($primary-color, 0.02);
+    .status {
+      font-weight: 600;
+      margin-bottom: 8px;
+
+      &.healthy {
+        color: $success-color;
+      }
     }
-  }
-}
 
-.health-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-}
+    .progress-bar {
+      height: 8px;
+      background: #eee;
+      border-radius: 4px;
+      overflow: hidden;
+      margin: 12px 0;
 
-.health-card {
-  padding: 20px;
-  border-radius: 8px;
-  background: rgba($primary-color, 0.03);
-
-  h3 {
-    color: $primary-color;
-    margin-bottom: 12px;
-  }
-
-  .status {
-    font-weight: 600;
-    margin-bottom: 8px;
-
-    &.healthy {
-      color: $success-color;
+      .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, $success-color, $primary-color);
+        transition: width 0.5s ease;
+      }
     }
   }
 
-  .progress-bar {
-    height: 8px;
-    background: #eee;
-    border-radius: 4px;
+  /* Botões de ação do admin (isolar para evitar conflito) */
+  .admin-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    margin: 0 6px;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.12s ease, transform 0.08s ease, box-shadow 0.12s ease;
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+    background: transparent;
+    color: #333;
+  }
+
+  .admin-action:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.18);
+  }
+
+  .admin-edit-user-button {
+    background: rgba(13, 110, 253, 0.06);
+    color: #0d6efd;
+
+    &:hover {
+      background: rgba(13, 110, 253, 0.12);
+      transform: translateY(-1px);
+    }
+  }
+
+  .admin-reset-password-button {
+    background: rgba(255, 193, 7, 0.12);
+    color: #ffc107;
+
+    &:hover {
+      background: rgba(236, 181, 10, 0.20);
+      transform: translateY(-1px);
+    }
+  }
+
+  .admin-delete-user-button {
+    background: rgba(220, 53, 69, 0.06);
+    color: #dc3545;
+
+    &:hover {
+      background: rgba(220, 53, 69, 0.12);
+      transform: translateY(-1px);
+    }
+  }
+
+  .admin-action i {
+    font-size: 1rem;
+    line-height: 1;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
     overflow: hidden;
-    margin: 12px 0;
-
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, $success-color, $primary-color);
-      transition: width 0.5s ease;
-    }
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 }
