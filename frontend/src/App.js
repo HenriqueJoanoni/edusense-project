@@ -24,6 +24,7 @@ import StudentAttendancePage from './pages/StudentAttendancePage';
 import AdminDashboard from "./pages/AdminDashboard";
 import LecturerDashboard from "./pages/LecturerDashboard";
 import StudentPersonalAttendance from "./pages/StudentPersonalAttendance";
+import EditUser from "./pages/EditUser";
 
 function App() {
     const [users, setUsers] = useState([]);
@@ -47,6 +48,8 @@ function App() {
                 <Route path="/logout/" element={<Logout/>}/>
                 <Route path="/register/" element={<Register/>}/>
                 <Route path="/class-groups" element={<LoggedInRoute element={ClassOverview}/>}/>
+
+                <Route path="/admin/edit-user" element={<EditUser/>}/>
 
                 <Route path="/student/attendance/:class_id/:subject_id"
                        element={<LoggedInRoute element={StudentAttendancePage}/>}

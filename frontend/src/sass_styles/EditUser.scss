@@ -1,0 +1,168 @@
+@import 'ColorScheme.scss';
+
+#editUserPage {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, rgba($primary-color, 0.02) 0%, rgba($secondary-color, 0.02) 100%);
+
+  .dashboard-main {
+    flex: 1;
+    padding: 40px 20px;
+  }
+
+  .dashboard-container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .page-header {
+    margin-bottom: 24px;
+
+    h1 {
+      font-size: 2rem;
+      color: $primary-color;
+      margin-bottom: 6px;
+    }
+
+    p {
+      color: #666;
+      font-size: 1rem;
+    }
+  }
+
+  .edit-user-form {
+    background: $background-color;
+    border-radius: 12px;
+    padding: 22px;
+    width: 100%;
+    @include elevation('sm');
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    label {
+      font-weight: 600;
+      color: $quaternary-color;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="number"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba($quaternary-color, 0.12);
+      outline: none;
+      font-size: 1rem;
+      color: $quaternary-color;
+      background: transparent;
+      transition: box-shadow 0.12s ease, border-color 0.12s ease;
+
+      &:focus {
+        border-color: $primary-color;
+        box-shadow: $shadow-primary;
+      }
+    }
+
+    .grid-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+
+      @media (min-width: 768px) {
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+    }
+
+    input[readonly] {
+      background: rgba($primary-color, 0.03);
+      color: darken($primary-color, 10%);
+      cursor: default;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      margin-top: 6px;
+
+      button {
+        min-width: 120px;
+        padding: 10px 16px;
+        border-radius: 8px;
+        border: none;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform 0.08s ease, box-shadow 0.12s ease;
+
+        &:hover {
+          transform: translateY(-2px);
+        }
+
+        &.btn-cancel {
+          background: transparent;
+          color: #444;
+          border: 1px solid rgba($quaternary-color, 0.08);
+          @include elevation('xs');
+
+          &:hover {
+            background: rgba($quaternary-color, 0.03);
+          }
+        }
+
+        &.btn-save {
+          background: $primary-color;
+          color: #fff;
+
+          &:hover {
+            @include elevation('sm');
+            background: darken($primary-color, 4%);
+          }
+        }
+
+        &.btn-edit {
+          background: rgba(13, 110, 253, 0.06);
+          color: #0d6efd;
+
+          &:hover {
+            background: rgba(13, 110, 253, 0.12);
+          }
+        }
+      }
+    }
+
+    .state-message {
+      padding: 18px;
+      border-radius: 8px;
+      background: rgba($primary-color, 0.03);
+      color: $primary-color;
+      text-align: center;
+      @include elevation('xs');
+    }
+  }
+
+  @media (max-width: 520px) {
+    .dashboard-main {
+      padding: 20px 12px;
+    }
+
+    .edit-user-form {
+      padding: 16px;
+
+      .form-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+
+        button {
+          width: 100%;
+        }
+      }
+    }
+  }
+}

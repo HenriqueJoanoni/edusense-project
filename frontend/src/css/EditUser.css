@@ -1,0 +1,243 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+.shadow-xs {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.shadow-sm {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.shadow-md {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.shadow-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.shadow-xl {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.shadow-2xl {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.shadow-inner {
+  box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+}
+
+.shadow-none {
+  box-shadow: none;
+}
+
+.shadow-hover {
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+.shadow-hover:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+.text-shadow-xs {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.text-shadow-sm {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.text-shadow-md {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.text-shadow-lg {
+  text-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
+}
+
+.text-shadow-xl {
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.text-shadow-3d {
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.1), 2px 2px 0 rgba(0, 0, 0, 0.08), 3px 3px 0 rgba(0, 0, 0, 0.06);
+}
+
+.text-shadow-light {
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
+}
+
+.text-shadow-glow {
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6), 0 0 30px rgba(255, 255, 255, 0.4);
+}
+
+.text-shadow-primary-glow {
+  text-shadow: 0 0 10px rgba(74, 112, 169, 0.6), 0 0 20px rgba(74, 112, 169, 0.4), 0 0 30px rgba(74, 112, 169, 0.2);
+}
+
+.text-shadow-secondary-glow {
+  text-shadow: 0 0 10px rgba(143, 171, 212, 0.6), 0 0 20px rgba(143, 171, 212, 0.4), 0 0 30px rgba(143, 171, 212, 0.2);
+}
+
+.text-shadow-none {
+  text-shadow: none;
+}
+
+.text-readable-dark {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  color: #EEE;
+}
+
+.text-readable-light {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  color: #000000;
+}
+
+#editUserPage {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, rgba(74, 112, 169, 0.02) 0%, rgba(143, 171, 212, 0.02) 100%);
+}
+#editUserPage .dashboard-main {
+  flex: 1;
+  padding: 40px 20px;
+}
+#editUserPage .dashboard-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+#editUserPage .page-header {
+  margin-bottom: 24px;
+}
+#editUserPage .page-header h1 {
+  font-size: 2rem;
+  color: #4A70A9;
+  margin-bottom: 6px;
+}
+#editUserPage .page-header p {
+  color: #666;
+  font-size: 1rem;
+}
+#editUserPage .edit-user-form {
+  background: #FFF;
+  border-radius: 12px;
+  padding: 22px;
+  width: 100%;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+#editUserPage .edit-user-form label {
+  font-weight: 600;
+  color: #000000;
+  margin-bottom: 6px;
+  display: block;
+}
+#editUserPage .edit-user-form input[type=text],
+#editUserPage .edit-user-form input[type=email],
+#editUserPage .edit-user-form input[type=number],
+#editUserPage .edit-user-form textarea,
+#editUserPage .edit-user-form select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  outline: none;
+  font-size: 1rem;
+  color: #000000;
+  background: transparent;
+  transition: box-shadow 0.12s ease, border-color 0.12s ease;
+}
+#editUserPage .edit-user-form input[type=text]:focus,
+#editUserPage .edit-user-form input[type=email]:focus,
+#editUserPage .edit-user-form input[type=number]:focus,
+#editUserPage .edit-user-form textarea:focus,
+#editUserPage .edit-user-form select:focus {
+  border-color: #4A70A9;
+  box-shadow: 0 0 0 3px rgba(74, 112, 169, 0.2);
+}
+#editUserPage .edit-user-form .grid-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+@media (min-width: 768px) {
+  #editUserPage .edit-user-form .grid-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+}
+#editUserPage .edit-user-form input[readonly] {
+  background: rgba(74, 112, 169, 0.03);
+  color: rgb(58.4691358025, 88.4938271605, 133.5308641975);
+  cursor: default;
+}
+#editUserPage .edit-user-form .form-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 6px;
+}
+#editUserPage .edit-user-form .form-actions button {
+  min-width: 120px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.08s ease, box-shadow 0.12s ease;
+}
+#editUserPage .edit-user-form .form-actions button:hover {
+  transform: translateY(-2px);
+}
+#editUserPage .edit-user-form .form-actions button.btn-cancel {
+  background: transparent;
+  color: #444;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+#editUserPage .edit-user-form .form-actions button.btn-cancel:hover {
+  background: rgba(0, 0, 0, 0.03);
+}
+#editUserPage .edit-user-form .form-actions button.btn-save {
+  background: #4A70A9;
+  color: #fff;
+}
+#editUserPage .edit-user-form .form-actions button.btn-save:hover {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  background: rgb(67.787654321, 102.5975308642, 154.812345679);
+}
+#editUserPage .edit-user-form .form-actions button.btn-edit {
+  background: rgba(13, 110, 253, 0.06);
+  color: #0d6efd;
+}
+#editUserPage .edit-user-form .form-actions button.btn-edit:hover {
+  background: rgba(13, 110, 253, 0.12);
+}
+#editUserPage .edit-user-form .state-message {
+  padding: 18px;
+  border-radius: 8px;
+  background: rgba(74, 112, 169, 0.03);
+  color: #4A70A9;
+  text-align: center;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+@media (max-width: 520px) {
+  #editUserPage .dashboard-main {
+    padding: 20px 12px;
+  }
+  #editUserPage .edit-user-form {
+    padding: 16px;
+  }
+  #editUserPage .edit-user-form .form-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+  #editUserPage .edit-user-form .form-actions button {
+    width: 100%;
+  }
+}
+
+/*# sourceMappingURL=EditUser.css.map */

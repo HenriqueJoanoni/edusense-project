@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react"
-import {Navigate} from "react-router-dom"
+import {Navigate, useNavigate} from "react-router-dom"
 import Header from "../components/Header"
 import Footer from "../components/Footer"
 import "../sass_styles/AdminDashboard.scss"
@@ -17,6 +17,7 @@ export default function AdminDashboard() {
     const [redirectToLogin, setRedirectToLogin] = useState(false)
     const [activeTab, setActiveTab] = useState('overview')
     const [allUsers, setAllUsers] = useState([])
+    const navigate = useNavigate()
 
     useEffect(() => {
         const userSession = JSON.parse(sessionStorage.getItem("User"))
@@ -83,6 +84,38 @@ export default function AdminDashboard() {
             console.error('Error resetting password:', err)
             closeAlert()
             showErrorAlert('Password reset fail', err.response?.data?.message || 'An error occurred')
+        }
+    }
+
+    const handlerEditUser = async (userId) => {
+        try {
+            showLoadingAlert('Loading User Data...')
+            const token = JSON.parse(sessionStorage.getItem("User")).token
+            const response = await api.post('/user', {id: userId}, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+
+            closeAlert()
+            const payload = response.data.data
+            if (!payload || !payload.user) {
+                showErrorAlert('Error Loading User Data')
+                return
+            }
+
+            navigate('/admin/edit-user', {
+                state: {
+                    user: payload.user,
+                    roleLabel: payload.role_label,
+                    permissions: payload.permissions
+                }
+            })
+        } catch (err) {
+            console.error('Error editing user:', err)
+            closeAlert()
+            showErrorAlert('Error editing user', err.response?.data?.message || 'An error occurred')
         }
     }
 
@@ -329,7 +362,7 @@ export default function AdminDashboard() {
                                                         className="admin-action admin-edit-user-button"
                                                         type="button"
                                                         title="Edit User"
-                                                        onClick={() => {/* handler */
+                                                        onClick={() => { handlerEditUser(user.id)
                                                         }}
                                                     >
                                                         <i className="bi bi-pencil" aria-hidden="true"></i>
