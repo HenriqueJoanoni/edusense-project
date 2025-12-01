@@ -46,7 +46,7 @@ export default function Header() {
                 {user ? (
                     <>
                         {user.user_role === ACCESS_LEVEL_ADMIN ?
-                            <a href="/dashboard" className="headerLink">Dashboard</a> :
+                            <a href="/dashboard" className="headerLink">Admin Dashboard</a> :
                             user.user_role === ACCESS_LEVEL_TEACHER ?
                                 <a href="/lecturer/dashboard" className="headerLink">Dashboard</a> :
                             <a href="/my-attendance" className="headerLink">My Attendance</a>

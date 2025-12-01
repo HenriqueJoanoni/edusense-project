@@ -1,9 +1,9 @@
-@import 'ColorScheme.scss';
+@use 'ColorScheme.scss' as scheme;
 
 .footer {
   width: 100%;
-  background: linear-gradient(135deg, $primary-color 0%, $secondary-color 100%);
-  color: $light-text-color;
+  background: linear-gradient(135deg, scheme.$primary-color 0%, scheme.$secondary-color 100%);
+  color: scheme.$light-text-color;
   padding: 60px 0 0;
   margin-top: auto;
 
@@ -47,7 +47,7 @@
       gap: 10px;
 
       li a {
-        color: $light-text-color;
+        color: scheme.$light-text-color;
         text-decoration: none;
         opacity: 0.85;
         transition: all 0.3s ease;
@@ -61,7 +61,7 @@
           left: 0;
           width: 0;
           height: 2px;
-          background-color: $light-text-color;
+          background-color: scheme.$light-text-color;
           transition: width 0.3s ease;
         }
 
@@ -82,7 +82,7 @@
       font-size: 28px;
       font-weight: 700;
       margin-bottom: 8px;
-      color: $light-text-color;
+      color: scheme.$light-text-color;
     }
 
     .footer-tagline {
@@ -101,7 +101,7 @@
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 4px;
-    color: $light-text-color;
+    color: scheme.$light-text-color;
   }
 
   .footer-social {
@@ -122,9 +122,9 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        color: $light-text-color;
+        color: scheme.$light-text-color;
         transition: all 0.3s ease;
-        @include elevation('sm');
+        @include scheme.elevation('sm');
 
         svg {
           width: 20px;
@@ -133,7 +133,7 @@
 
         &:hover {
           background: rgba(255, 255, 255, 0.2);
-          @include elevation('md');
+          @include scheme.elevation('md');
           transform: translateY(-3px);
         }
 
@@ -200,10 +200,10 @@
 
 @media (prefers-contrast: custom) {
   .footer {
-    border-top: 2px solid $light-text-color;
+    border-top: 2px solid scheme.$light-text-color;
 
     .social-link {
-      border: 2px solid $light-text-color;
+      border: 2px solid scheme.$light-text-color;
     }
   }
 }

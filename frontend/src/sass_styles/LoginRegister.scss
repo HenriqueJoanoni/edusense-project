@@ -1,4 +1,4 @@
-@import 'ColorScheme.scss';
+@use 'ColorScheme.scss' as scheme;
 
 #loginPage,
 #registerPage {
@@ -7,7 +7,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, rgba($primary-color, 0.05) 0%, rgba($secondary-color, 0.05) 100%);
+  background: linear-gradient(135deg, rgba(scheme.$primary-color, 0.05) 0%, rgba(scheme.$secondary-color, 0.05) 100%);
   padding: 20px;
   font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
@@ -21,7 +21,7 @@
   background: white;
   border-radius: 20px;
   overflow: hidden;
-  @include elevation('2xl');
+  @include scheme.elevation('2xl');
 
   @media (max-width: 968px) {
     grid-template-columns: 1fr;
@@ -30,13 +30,13 @@
 }
 
 .auth-branding {
-  background: linear-gradient(135deg, $primary-color 0%, $secondary-color 100%);
+  background: linear-gradient(135deg, scheme.$primary-color 0%, scheme.$secondary-color 100%);
   padding: 60px 40px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: $light-text-color;
+  color: scheme.$light-text-color;
   position: relative;
   overflow: hidden;
 
@@ -80,7 +80,7 @@
       width: 250px;
       height: 80px;
       margin-bottom: 20px;
-      @include elevation('lg');
+      @include scheme.elevation('lg');
       border-radius: 16px;
       background: white;
       padding: 10px;
@@ -90,7 +90,7 @@
       font-size: 42px;
       font-weight: 700;
       margin: 0;
-      @include text-elevation('lg');
+      @include scheme.text-elevation('lg');
     }
   }
 
@@ -99,7 +99,7 @@
     opacity: 0.95;
     margin-bottom: 40px;
     line-height: 1.6;
-    @include text-elevation('sm');
+    @include scheme.text-elevation('sm');
   }
 
   .features-list {
@@ -113,7 +113,7 @@
       align-items: center;
       gap: 12px;
       font-size: 16px;
-      @include text-elevation('xs');
+      @include scheme.text-elevation('xs');
 
       .feature-icon {
         width: 28px;
@@ -154,7 +154,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  color: $primary-color;
+  color: scheme.$primary-color;
   text-decoration: none;
   font-weight: 500;
   font-size: 14px;
@@ -167,7 +167,7 @@
   }
 
   &:hover {
-    background: rgba($primary-color, 0.1);
+    background: rgba(scheme.$primary-color, 0.1);
 
     svg {
       transform: translateX(-4px);
@@ -202,7 +202,7 @@
   h2 {
     font-size: 32px;
     font-weight: 700;
-    color: $quaternary-color;
+    color: scheme.$quaternary-color;
     margin: 0 0 12px 0;
 
     @media (max-width: 480px) {
@@ -226,8 +226,8 @@
   .submit-btn {
     width: 100%;
     height: 50px;
-    background: linear-gradient(135deg, $primary-color 0%, $secondary-color 100%);
-    color: $light-text-color;
+    background: linear-gradient(135deg, scheme.$primary-color 0%, scheme.$secondary-color 100%);
+    color: scheme.$light-text-color;
     border: none;
     border-radius: 10px;
     font-size: 16px;
@@ -235,17 +235,17 @@
     cursor: pointer;
     transition: all 0.3s ease;
     margin-top: 10px;
-    @include elevation('sm');
-    @include text-elevation('xs');
+    @include scheme.elevation('sm');
+    @include scheme.text-elevation('xs');
 
     &:hover {
-      @include elevation('md');
+      @include scheme.elevation('md');
       transform: translateY(-2px);
     }
 
     &:active {
       transform: translateY(0);
-      @include elevation('sm');
+      @include scheme.elevation('sm');
     }
 
     &:disabled {
@@ -262,14 +262,14 @@
     margin: 10px 0 0;
 
     .auth-link {
-      color: $primary-color;
+      color: scheme.$primary-color;
       text-decoration: none;
       font-weight: 600;
       transition: all 0.2s ease;
 
       &:hover {
         text-decoration: underline;
-        color: darken($primary-color, 10%);
+        color: darken(scheme.$primary-color, 10%);
       }
     }
   }
@@ -282,7 +282,7 @@
     line-height: 1.5;
 
     .terms-link {
-      color: $primary-color;
+      color: scheme.$primary-color;
       text-decoration: none;
 
       &:hover {
@@ -320,14 +320,14 @@
 
   .forgot-link {
     font-size: 14px;
-    color: $primary-color;
+    color: scheme.$primary-color;
     text-decoration: none;
     font-weight: 500;
     transition: all 0.2s ease;
 
     &:hover {
       text-decoration: underline;
-      color: darken($primary-color, 10%);
+      color: darken(scheme.$primary-color, 10%);
     }
   }
 }
@@ -344,11 +344,11 @@
 
 @media (prefers-contrast: custom) {
   .auth-container {
-    border: 2px solid $quaternary-color;
+    border: 2px solid scheme.$quaternary-color;
   }
 
   .submit-btn {
-    border: 2px solid $light-text-color;
+    border: 2px solid scheme.$light-text-color;
   }
 }
 

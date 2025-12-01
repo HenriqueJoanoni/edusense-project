@@ -1,4 +1,4 @@
-@import 'ColorScheme.scss';
+@use 'ColorScheme.scss' as scheme;
 
 .formTextField {
   width: 80%;
@@ -25,7 +25,7 @@
     padding: 5px 10px 5px 20px;
 
     &:focus {
-      border: 1px solid $secondary-color;
+      border: 1px solid scheme.$secondary-color;
     }
 
   }

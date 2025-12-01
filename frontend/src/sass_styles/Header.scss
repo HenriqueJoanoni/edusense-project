@@ -1,4 +1,4 @@
-@import 'ColorScheme';
+@use 'ColorScheme' as scheme;
 
 *, *::after, *::before {
   box-sizing: border-box;
@@ -11,8 +11,8 @@ header {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background-color: $background-color;
-  box-shadow: $shadow-md;
+  background-color: scheme.$background-color;
+  box-shadow: scheme.$shadow-md;
 
   #titleSection {
     display: flex;
@@ -20,12 +20,12 @@ header {
     justify-content: flex-start;
     align-items: center;
     padding-inline: 20px;
-    text-shadow: $text-shadow-3d;
+    text-shadow: scheme.$text-shadow-3d;
 
     img {
       width: 60px;
       border-radius: 50%;
-      box-shadow: $shadow-lg;
+      box-shadow: scheme.$shadow-lg;
     }
 
     .edusense-logo-writing {
@@ -60,17 +60,17 @@ header {
       justify-content: center;
       align-items: center;
       text-decoration: none;
-      background-color: $primary-color;
-      color: $light-text-color;
+      background-color: scheme.$primary-color;
+      color: scheme.$light-text-color;
       font-weight: 500;
       border-radius: 10px;
-      border: 1px solid $primary-color;
+      border: 1px solid scheme.$primary-color;
 
       &:hover {
-        color: $primary-color;
-        background-color: $light-text-color;
-        border: 1px solid $primary-color;
-        box-shadow: $shadow-lg;
+        color: scheme.$primary-color;
+        background-color: scheme.$light-text-color;
+        border: 1px solid scheme.$primary-color;
+        box-shadow: scheme.$shadow-lg;
         transition: ease-in 0.2s;
       }
     }
@@ -87,19 +87,19 @@ header {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    box-shadow: $shadow-lg;
+    box-shadow: scheme.$shadow-lg;
     margin-right: 10px;
     cursor: pointer;
     transition: box-shadow 0.2s;
 
     &:hover {
-      box-shadow: $shadow-xl;
+      box-shadow: scheme.$shadow-xl;
     }
   }
 
   .user-name {
     font-weight: 500;
-    color: $primary-color;
+    color: scheme.$primary-color;
     margin-right: 10px;
   }
 
@@ -107,8 +107,8 @@ header {
     position: absolute;
     top: 50px;
     right: 0;
-    background: $background-color;
-    box-shadow: $shadow-lg;
+    background: scheme.$background-color;
+    box-shadow: scheme.$shadow-lg;
     border-radius: 8px;
     min-width: 140px;
     z-index: 10;
@@ -118,13 +118,13 @@ header {
 
     .dropdown-link {
       padding: 10px 20px;
-      color: $primary-color;
+      color: scheme.$primary-color;
       text-decoration: none;
       font-weight: 500;
 
       &:hover {
-        background: $secondary-color;
-        color: $quaternary-color;
+        background: scheme.$secondary-color;
+        color: scheme.$quaternary-color;
       }
     }
   }
