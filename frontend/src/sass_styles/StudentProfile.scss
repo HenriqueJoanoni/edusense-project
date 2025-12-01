@@ -1,10 +1,10 @@
-@import 'ColorScheme.scss';
+@use 'ColorScheme.scss' as scheme;
 
 #studentProfilePage {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(135deg, rgba($primary-color, 0.03) 0%, rgba($secondary-color, 0.03) 100%);
+  background: linear-gradient(135deg, rgba(scheme.$primary-color, 0.03) 0%, rgba(scheme.$secondary-color, 0.03) 100%);
 }
 
 .profile-main {
@@ -33,7 +33,7 @@
     h1 {
       font-size: 36px;
       font-weight: 700;
-      color: $quaternary-color;
+      color: scheme.$quaternary-color;
       margin: 0 0 8px 0;
 
       @media (max-width: 768px) {
@@ -50,19 +50,19 @@
 
   .edit-btn {
     padding: 12px 24px;
-    background: $primary-color;
-    color: $light-text-color;
+    background: scheme.$primary-color;
+    color: scheme.$light-text-color;
     border: none;
     border-radius: 8px;
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    @include elevation('sm');
+    @include scheme.elevation('sm');
 
     &:hover {
-      background: darken($primary-color, 10%);
-      @include elevation('md');
+      background: darken(scheme.$primary-color, 10%);
+      @include scheme.elevation('md');
       transform: translateY(-2px);
     }
 
@@ -94,8 +94,8 @@
   .spinner {
     width: 50px;
     height: 50px;
-    border: 4px solid rgba($primary-color, 0.2);
-    border-top-color: $primary-color;
+    border: 4px solid rgba(scheme.$primary-color, 0.2);
+    border-top-color: scheme.$primary-color;
     border-radius: 50%;
     animation: spin 1s linear infinite;
   }
@@ -103,18 +103,18 @@
   .retry-btn {
     margin-top: 20px;
     padding: 12px 32px;
-    background: $primary-color;
-    color: $light-text-color;
+    background: scheme.$primary-color;
+    color: scheme.$light-text-color;
     border: none;
     border-radius: 8px;
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
-    @include elevation('sm');
+    @include scheme.elevation('sm');
     transition: all 0.3s ease;
 
     &:hover {
-      @include elevation('md');
+      @include scheme.elevation('md');
       transform: translateY(-2px);
     }
   }
@@ -135,11 +135,11 @@
   background: white;
   border-radius: 16px;
   overflow: hidden;
-  @include elevation('md');
+  @include scheme.elevation('md');
 }
 
 .profile-header-card {
-  background: linear-gradient(135deg, $primary-color 0%, $secondary-color 100%);
+  background: linear-gradient(135deg, scheme.$primary-color 0%, scheme.$secondary-color 100%);
   padding: 40px;
   display: flex;
   justify-content: center;
@@ -157,14 +157,14 @@
       height: 120px;
       border-radius: 50%;
       background: white;
-      color: $primary-color;
+      color: scheme.$primary-color;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 48px;
       font-weight: 700;
       margin: 0 auto 16px;
-      @include elevation('lg');
+      @include scheme.elevation('lg');
 
       @media (max-width: 768px) {
         width: 100px;
@@ -182,7 +182,7 @@
         color: white;
         font-size: 14px;
         font-weight: 600;
-        @include text-elevation('sm');
+        @include scheme.text-elevation('sm');
 
         &.admin {
           background: rgba(255, 215, 0, 0.3);
@@ -210,7 +210,7 @@
   .section-title {
     font-size: 20px;
     font-weight: 700;
-    color: $quaternary-color;
+    color: scheme.$quaternary-color;
     margin: 0 0 24px 0;
     padding-bottom: 12px;
     border-bottom: 2px solid #f0f0f0;
@@ -236,13 +236,13 @@
 
   p {
     font-size: 16px;
-    color: $quaternary-color;
+    color: scheme.$quaternary-color;
     margin: 0;
     font-weight: 500;
   }
 
   .user-id {
-    color: $primary-color;
+    color: scheme.$primary-color;
     font-family: 'Courier New', monospace;
   }
 
@@ -275,8 +275,8 @@
 
     &:focus {
       outline: none;
-      border-color: $primary-color;
-      @include colored-shadow($primary-color, 'sm');
+      border-color: scheme.$primary-color;
+      @include scheme.colored-shadow(scheme.$primary-color, 'sm');
     }
   }
 }
@@ -335,19 +335,19 @@
 
   .save-btn {
     padding: 14px 32px;
-    background: $primary-color;
-    color: $light-text-color;
+    background: scheme.$primary-color;
+    color: scheme.$light-text-color;
     border: none;
     border-radius: 8px;
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    @include elevation('sm');
+    @include scheme.elevation('sm');
     transition: all 0.3s ease;
 
     &:hover {
-      background: darken($primary-color, 10%);
-      @include elevation('md');
+      background: darken(scheme.$primary-color, 10%);
+      @include scheme.elevation('md');
       transform: translateY(-2px);
     }
   }
@@ -357,12 +357,12 @@
   background: white;
   border-radius: 16px;
   padding: 30px;
-  @include elevation('md');
+  @include scheme.elevation('md');
 
   h3 {
     font-size: 20px;
     font-weight: 700;
-    color: $quaternary-color;
+    color: scheme.$quaternary-color;
     margin: 0 0 20px 0;
   }
 }
@@ -394,7 +394,7 @@
     h4 {
       font-size: 16px;
       font-weight: 600;
-      color: $quaternary-color;
+      color: scheme.$quaternary-color;
       margin: 0 0 4px 0;
     }
 
@@ -406,9 +406,9 @@
   }
 
   &:hover {
-    border-color: $primary-color;
-    background: rgba($primary-color, 0.05);
-    @include elevation('sm');
+    border-color: scheme.$primary-color;
+    background: rgba(scheme.$primary-color, 0.05);
+    @include scheme.elevation('sm');
     transform: translateY(-2px);
   }
 

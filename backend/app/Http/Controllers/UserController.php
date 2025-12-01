@@ -126,29 +126,37 @@ class UserController extends Controller
      */
     public function deleteUser(int $id): JsonResponse
     {
-        $authenticatedUser = Auth::user();
-        $user = User::find($id);
+        try {
+            $authenticatedUser = Auth::user();
+            $user = User::findOrFail($id);
 
-        if (!$user) {
+            if ($user->id === $authenticatedUser->id) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'You cannot delete your own account.'
+                ], 403);
+            }
+
+            $user->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'User deleted successfully.',
+            ], 200);
+
+        } catch (ModelNotFoundException $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'User not found.'
             ], 404);
-        }
 
-        if ($user->id === $authenticatedUser->id) {
+        } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'You cannot delete your own account.'
-            ], 400);
+                'message' => 'Failed to delete user.',
+                'error' => config('app.debug') ? $e->getMessage() : null,
+            ], 500);
         }
-
-        $user->delete();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'User deleted successfully.',
-        ]);
     }
 
     /**

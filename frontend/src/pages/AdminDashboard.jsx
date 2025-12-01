@@ -13,10 +13,12 @@ export default function AdminDashboard() {
     const [trends, setTrends] = useState([])
     const [topCourses, setTopCourses] = useState([])
     const [systemHealth, setSystemHealth] = useState(null)
-    const [loading, setLoading] = useState(true)
     const [redirectToLogin, setRedirectToLogin] = useState(false)
     const [activeTab, setActiveTab] = useState('overview')
     const [allUsers, setAllUsers] = useState([])
+    const [currentPage, setCurrentPage] = useState(1)
+    const [totalPages, setTotalPages] = useState(0)
+    const [perPage] = useState(10)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -33,7 +35,6 @@ export default function AdminDashboard() {
 
     const fetchDashboardData = async () => {
         try {
-            setLoading(true)
             showLoadingAlert('Loading Dashboard Data...')
 
             const [overviewRes, activitiesRes, trendsRes, coursesRes, healthRes, usersRes] = await Promise.all([
@@ -51,6 +52,7 @@ export default function AdminDashboard() {
             setTopCourses(coursesRes.data.data)
             setSystemHealth(healthRes.data.data)
             setAllUsers(usersRes.data.data)
+            setTotalPages(Math.ceil(usersRes.data.data.length / perPage))
 
             closeAlert()
         } catch (err) {
@@ -65,21 +67,31 @@ export default function AdminDashboard() {
                     err.response?.data?.message || 'Could not fetch dashboard data.'
                 )
             }
-        } finally {
-            setLoading(false)
         }
     }
 
-    const handlerResetPassword = (userId) => {
+    const handlerResetPassword = (userId, userName = '') => {
         try {
-            api.patch('/dashboard/reset-password', {id: userId}, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem("User")).token}`
-                }
-            })
-            closeAlert()
-            showSuccessAlert('Password Reset')
+            if (userId === JSON.parse(sessionStorage.getItem("User")).id) {
+                showErrorAlert('Cannot reset own password', 'Please contact an administrator for assistance.')
+                return
+            }
+
+            showConfirmAlert(`Are you sure you want to reset the password for ${userName}?`)
+                .then(confirm => {
+                    if (!confirm.isConfirmed) {
+                        return
+                    }
+
+                    api.patch('/dashboard/reset-password', {id: userId}, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem("User")).token}`
+                        }
+                    })
+                    closeAlert()
+                    showSuccessAlert('Password Reset')
+                })
         } catch (err) {
             console.error('Error resetting password:', err)
             closeAlert()
@@ -89,6 +101,11 @@ export default function AdminDashboard() {
 
     const handlerEditUser = async (userId) => {
         try {
+            if (userId === JSON.parse(sessionStorage.getItem("User")).id) {
+                showErrorAlert('Cannot edit own account')
+                return
+            }
+
             showLoadingAlert('Loading User Data...')
             const token = JSON.parse(sessionStorage.getItem("User")).token
             const response = await api.post('/user', {id: userId}, {
@@ -119,8 +136,90 @@ export default function AdminDashboard() {
         }
     }
 
+    const handleDeleteUser = async (userId, userName) => {
+        try {
+            if (userId === JSON.parse(sessionStorage.getItem("User")).id) {
+                showErrorAlert('Cannot delete own account', 'Please contact an administrator for assistance.')
+            }
+
+            const confirm = await showConfirmAlert(
+                `Are you sure you want to delete ${userName}?`,
+                'This action will archive the user and cannot be undone.'
+            )
+
+            if (!confirm.isConfirmed) {
+                return
+            }
+
+            showLoadingAlert('Deleting User...')
+            const token = JSON.parse(sessionStorage.getItem("User")).token
+
+            await api.delete(`/dashboard/delete-user/${userId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+
+            closeAlert()
+            showSuccessAlert('User Archived Successfully', 'The user has been removed from active users.')
+
+            await fetchDashboardData()
+        } catch (err) {
+            console.error('Error deleting user:', err)
+            closeAlert()
+            showErrorAlert(
+                'Error deleting user',
+                err.response?.data?.message || 'An error occurred while trying to archive the user')
+        }
+    }
+
     if (redirectToLogin) {
         return <Navigate to="/login"/>
+    }
+
+    const getCurrentPageUsers = () => {
+        const startIndex = (currentPage - 1) * perPage
+        const endIndex = startIndex + perPage
+        return allUsers.slice(startIndex, endIndex)
+    }
+
+    const handlePageChange = (newPage) => {
+        if (newPage < 1 || newPage > totalPages) return
+        setCurrentPage(newPage)
+    }
+
+    const getPageNumbers = () => {
+        const pageNumbers = []
+        const maxVisible = 5
+
+        if (totalPages <= maxVisible) {
+            for (let i = 1; i <= totalPages; i++) {
+                pageNumbers.push(i)
+            }
+        } else {
+            if (currentPage <= 3) {
+                for (let i = 1; i <= 5; i++) {
+                    pageNumbers.push(i)
+                }
+                pageNumbers.push('...')
+                pageNumbers.push(totalPages)
+            } else if (currentPage >= totalPages - 2) {
+                pageNumbers.push(1)
+                pageNumbers.push('...')
+                for (let i = totalPages - 4; i <= totalPages; i++) {
+                    pageNumbers.push(i)
+                }
+            } else {
+                pageNumbers.push(1)
+                pageNumbers.push('...')
+                pageNumbers.push(currentPage - 1)
+                pageNumbers.push(currentPage)
+                pageNumbers.push(currentPage + 1)
+                pageNumbers.push('...')
+                pageNumbers.push(totalPages)
+            }
+        }
+        return pageNumbers
     }
 
     return (
@@ -331,7 +430,12 @@ export default function AdminDashboard() {
 
                         {activeTab === 'users' && (
                             <div className="users-section">
-                                <h2>User Management</h2>
+                                <div className="users-header">
+                                    <h2>User Management</h2>
+                                    <span className="total-users">
+                                        {allUsers.length} total users
+                                    </span>
+                                </div>
                                 <div className="users-table">
                                     <table>
                                         <thead>
@@ -345,7 +449,7 @@ export default function AdminDashboard() {
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        {allUsers.map((user) => (
+                                        {getCurrentPageUsers().map((user) => (
                                             <tr key={user.id}>
                                                 <td>{user.id}</td>
                                                 <td>{user.user_name}</td>
@@ -362,11 +466,10 @@ export default function AdminDashboard() {
                                                         className="admin-action admin-edit-user-button"
                                                         type="button"
                                                         title="Edit User"
-                                                        onClick={() => { handlerEditUser(user.id)
-                                                        }}
+                                                        onClick={() => handlerEditUser(user.id)}
                                                     >
                                                         <i className="bi bi-pencil" aria-hidden="true"></i>
-                                                        <span className="sr-only">Editar</span>
+                                                        <span className="sr-only">Edit</span>
                                                     </button>
 
                                                     <button
@@ -374,11 +477,10 @@ export default function AdminDashboard() {
                                                         className="admin-action admin-reset-password-button"
                                                         type="button"
                                                         title="Reset Password"
-                                                        onClick={() => { handlerResetPassword(user.id)
-                                                        }}
+                                                        onClick={() => handlerResetPassword(user.id, user.user_name)}
                                                     >
                                                         <i className="bi bi-key" aria-hidden="true"></i>
-                                                        <span className="sr-only">Redefinir senha</span>
+                                                        <span className="sr-only">Reset Password</span>
                                                     </button>
 
                                                     <button
@@ -386,17 +488,54 @@ export default function AdminDashboard() {
                                                         className="admin-action admin-delete-user-button"
                                                         type="button"
                                                         title="Archive User"
-                                                        onClick={() => {/* handler */
-                                                        }}
+                                                        onClick={() => handleDeleteUser(user.id, user.user_name)}
                                                     >
                                                         <i className="bi bi-archive" aria-hidden="true"></i>
-                                                        <span className="sr-only">Arquivar</span>
+                                                        <span className="sr-only">Archive</span>
                                                     </button>
                                                 </td>
                                             </tr>
                                         ))}
                                         </tbody>
                                     </table>
+
+                                    <div className="pagination-controls">
+                                        <button
+                                            className="pagination-btn"
+                                            disabled={currentPage === 1}
+                                            onClick={() => handlePageChange(currentPage - 1)}
+                                        >
+                                            <i className="bi bi-chevron-left"></i> Previous
+                                        </button>
+
+                                        <div className="pagination-numbers">
+                                            {getPageNumbers().map((pageNum, index) => {
+                                                if (pageNum === '...') {
+                                                    return (
+                                                        <span key={`ellipsis-${index}`} className="pagination-ellipsis">
+                                                            ...
+                                                        </span>
+                                                    )
+                                                }
+                                                return (
+                                                    <button
+                                                        key={pageNum}
+                                                        className={`pagination-number ${currentPage === pageNum ? 'active' : ''}`}
+                                                        onClick={() => handlePageChange(pageNum)}
+                                                    >
+                                                        {pageNum}
+                                                    </button>
+                                                )
+                                            })}
+                                        </div>
+                                        <button
+                                            className="pagination-btn"
+                                            disabled={currentPage === totalPages}
+                                            onClick={() => handlePageChange(currentPage + 1)}
+                                        >
+                                            Next <i className="bi bi-chevron-right"></i>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         )}

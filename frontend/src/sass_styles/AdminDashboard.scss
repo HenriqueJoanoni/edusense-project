@@ -1,10 +1,10 @@
-@import 'ColorScheme.scss';
+@use 'ColorScheme.scss' as scheme;
 
 #adminDashboardPage {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(135deg, rgba($primary-color, 0.03) 0%, rgba($secondary-color, 0.03) 100%);
+  background: linear-gradient(135deg, rgba(scheme.$primary-color, 0.03) 0%, rgba(scheme.$secondary-color, 0.03) 100%);
 
   .dashboard-main {
     flex: 1;
@@ -21,7 +21,7 @@
 
     h1 {
       font-size: 2.5rem;
-      color: $primary-color;
+      color: scheme.$primary-color;
       margin-bottom: 8px;
     }
 
@@ -44,11 +44,11 @@
     padding: 24px;
     display: flex;
     gap: 16px;
-    @include elevation('sm');
+    @include scheme.elevation('sm');
     transition: all 0.3s ease;
 
     &:hover {
-      @include elevation('md');
+      @include scheme.elevation('md');
       transform: translateY(-2px);
     }
 
@@ -60,7 +60,7 @@
       align-items: center;
       justify-content: center;
       border-radius: 12px;
-      background: linear-gradient(135deg, rgba($primary-color, 0.1), rgba($secondary-color, 0.1));
+      background: linear-gradient(135deg, rgba(scheme.$primary-color, 0.1), rgba(scheme.$secondary-color, 0.1));
     }
 
     .card-content {
@@ -68,7 +68,7 @@
 
       h3 {
         font-size: 2rem;
-        color: $primary-color;
+        color: scheme.$primary-color;
         margin-bottom: 4px;
       }
 
@@ -103,16 +103,16 @@
       border-radius: 8px 8px 0 0;
       cursor: pointer;
       transition: all 0.3s ease;
-      @include elevation('xs');
+      @include scheme.elevation('xs');
 
       &.active {
-        background: $primary-color;
+        background: scheme.$primary-color;
         color: white;
-        @include elevation('sm');
+        @include scheme.elevation('sm');
       }
 
       &:hover:not(.active) {
-        background: rgba($primary-color, 0.1);
+        background: rgba(scheme.$primary-color, 0.1);
       }
     }
   }
@@ -121,7 +121,7 @@
     background: white;
     border-radius: 12px;
     padding: 30px;
-    @include elevation('sm');
+    @include scheme.elevation('sm');
   }
 
   .activities-list {
@@ -135,18 +135,18 @@
     gap: 12px;
     padding: 16px;
     border-radius: 8px;
-    background: rgba($primary-color, 0.03);
+    background: rgba(scheme.$primary-color, 0.03);
     transition: background 0.3s ease;
 
     &:hover {
-      background: rgba($primary-color, 0.08);
+      background: rgba(scheme.$primary-color, 0.08);
     }
 
     .activity-icon {
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      background: $success-color;
+      background: scheme.$success-color;
       color: white;
       display: flex;
       align-items: center;
@@ -181,7 +181,7 @@
 
     .bar {
       width: 100%;
-      background: linear-gradient(180deg, $primary-color, $secondary-color);
+      background: linear-gradient(180deg, scheme.$primary-color, scheme.$secondary-color);
       border-radius: 4px 4px 0 0;
       transition: all 0.3s ease;
 
@@ -211,13 +211,13 @@
       }
 
       th {
-        background: rgba($primary-color, 0.05);
+        background: rgba(scheme.$primary-color, 0.05);
         font-weight: 600;
-        color: $primary-color;
+        color: scheme.$primary-color;
       }
 
       tr:hover {
-        background: rgba($primary-color, 0.02);
+        background: rgba(scheme.$primary-color, 0.02);
       }
     }
   }
@@ -231,10 +231,10 @@
   .health-card {
     padding: 20px;
     border-radius: 8px;
-    background: rgba($primary-color, 0.03);
+    background: rgba(scheme.$primary-color, 0.03);
 
     h3 {
-      color: $primary-color;
+      color: scheme.$primary-color;
       margin-bottom: 12px;
     }
 
@@ -243,7 +243,7 @@
       margin-bottom: 8px;
 
       &.healthy {
-        color: $success-color;
+        color: scheme.$success-color;
       }
     }
 
@@ -256,13 +256,12 @@
 
       .progress-fill {
         height: 100%;
-        background: linear-gradient(90deg, $success-color, $primary-color);
+        background: linear-gradient(90deg, scheme.$success-color, scheme.$primary-color);
         transition: width 0.5s ease;
       }
     }
   }
 
-  /* Botões de ação do admin (isolar para evitar conflito) */
   .admin-action {
     display: inline-flex;
     align-items: center;
@@ -331,5 +330,108 @@
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border: 0;
+  }
+
+  .users-section {
+    .users-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+
+      h2 {
+        margin: 0;
+        color: scheme.$primary-color;
+      }
+
+      .total-users {
+        font-size: 0.95rem;
+        color: scheme.$quaternary-color;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        background-color: rgba(scheme.$primary-color, 0.4);
+        border-radius: 6px;
+      }
+    }
+  }
+
+  .pagination-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background-color: scheme.$secondary-color;
+    border-radius: 8px;
+    gap: 1rem;
+
+    .pagination-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background-color: scheme.$primary-color;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      white-space: nowrap;
+
+      &:hover:not(:disabled) {
+        background-color: scheme.$primary-color;
+        transform: translateY(-2px);
+      }
+
+      &:disabled {
+        background-color: scheme.$tertiary-color;
+        cursor: not-allowed;
+        opacity: 0.6;
+        color: scheme.$secondary-color;
+      }
+
+      i {
+        font-size: 1rem;
+      }
+    }
+
+    .pagination-numbers {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      margin: -6rem auto;
+
+      .pagination-number {
+        min-width: 40px;
+        height: 40px;
+        padding: 0.5rem;
+        background-color: white;
+        border: 2px solid scheme.$secondary-color;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        color: scheme.$quaternary-color;
+
+        &:hover {
+          background-color: scheme.$primary-color;
+          border-color: scheme.$secondary-color;
+          transform: translateY(-2px);
+        }
+
+        &.active {
+          background-color: scheme.$primary-color;
+          color: white;
+          border-color: scheme.$secondary-color;
+        }
+      }
+
+      .pagination-ellipsis {
+        padding: 0 0.5rem;
+        color: scheme.$quaternary-color;
+        font-weight: 500;
+      }
+    }
   }
 }

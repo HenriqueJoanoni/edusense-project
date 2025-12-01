@@ -1,10 +1,10 @@
-@import 'ColorScheme.scss';
+@use 'ColorScheme.scss' as scheme;
 
 #lecturerDashboardPage {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(135deg, rgba($primary-color, 0.03) 0%, rgba($secondary-color, 0.03) 100%);
+  background: linear-gradient(135deg, rgba(scheme.$primary-color, 0.03) 0%, rgba(scheme.$secondary-color, 0.03) 100%);
 
   .dashboard-main {
     flex: 1;
@@ -25,7 +25,7 @@
 
     h1 {
       font-size: 2.5rem;
-      color: $primary-color;
+      color: scheme.$primary-color;
       margin-bottom: 8px;
 
       @media (max-width: 768px) {
@@ -52,11 +52,11 @@
     padding: 24px;
     display: flex;
     gap: 16px;
-    @include elevation('sm');
+    @include scheme.elevation('sm');
     transition: all 0.3s ease;
 
     &:hover {
-      @include elevation('md');
+      @include scheme.elevation('md');
       transform: translateY(-4px);
     }
 
@@ -68,7 +68,7 @@
     .card-content {
       h3 {
         font-size: 2rem;
-        color: $primary-color;
+        color: scheme.$primary-color;
         margin-bottom: 4px;
         margin-top: 0;
       }
@@ -85,7 +85,7 @@
     padding: 20px;
     border-radius: 12px;
     margin-bottom: 20px;
-    @include elevation('sm');
+    @include scheme.elevation('sm');
 
     label {
       font-weight: 600;
@@ -105,8 +105,8 @@
 
       &:focus {
         outline: none;
-        border-color: $primary-color;
-        @include colored-shadow($primary-color, 'sm');
+        border-color: scheme.$primary-color;
+        @include scheme.colored-shadow(scheme.$primary-color, 'sm');
       }
 
       @media (max-width: 768px) {
@@ -124,7 +124,7 @@
     display: flex;
     gap: 16px;
     flex-wrap: wrap;
-    @include elevation('sm');
+    @include scheme.elevation('sm');
 
     @media (max-width: 768px) {
       flex-direction: column;
@@ -158,8 +158,8 @@
 
         &:focus {
           outline: none;
-          border-color: $primary-color;
-          @include colored-shadow($primary-color, 'sm');
+          border-color: scheme.$primary-color;
+          @include scheme.colored-shadow(scheme.$primary-color, 'sm');
         }
       }
     }
@@ -167,14 +167,14 @@
     .apply-filters-btn {
       align-self: flex-end;
       padding: 10px 24px;
-      background: $primary-color;
+      background: scheme.$primary-color;
       color: white;
       border: none;
       border-radius: 8px;
       cursor: pointer;
       transition: all 0.3s ease;
       font-weight: 600;
-      @include elevation('xs');
+      @include scheme.elevation('xs');
 
       @media (max-width: 768px) {
         width: 100%;
@@ -182,8 +182,8 @@
       }
 
       &:hover {
-        background: darken($primary-color, 10%);
-        @include elevation('sm');
+        background: darken(scheme.$primary-color, 10%);
+        @include scheme.elevation('sm');
         transform: translateY(-2px);
       }
 
@@ -209,11 +209,11 @@
       border-radius: 12px;
       text-align: center;
       color: white;
-      @include elevation('sm');
+      @include scheme.elevation('sm');
       transition: all 0.3s ease;
 
       &:hover {
-        @include elevation('md');
+        @include scheme.elevation('md');
         transform: translateY(-4px);
       }
 
@@ -221,7 +221,7 @@
         font-size: 2rem;
         margin-bottom: 8px;
         margin-top: 0;
-        @include text-elevation('sm');
+        @include scheme.text-elevation('sm');
       }
 
       p {
@@ -247,13 +247,13 @@
     background: white;
     border-radius: 12px;
     padding: 24px;
-    @include elevation('sm');
+    @include scheme.elevation('sm');
     overflow-x: auto;
 
     h2 {
       margin-top: 0;
       margin-bottom: 20px;
-      color: $primary-color;
+      color: scheme.$primary-color;
       font-size: 1.75rem;
     }
   }
@@ -271,9 +271,9 @@
     }
 
     th {
-      background: rgba($primary-color, 0.05);
+      background: rgba(scheme.$primary-color, 0.05);
       font-weight: 600;
-      color: $primary-color;
+      color: scheme.$primary-color;
       text-transform: uppercase;
       letter-spacing: 0.5px;
       font-size: 0.85rem;
@@ -283,7 +283,7 @@
       transition: background 0.2s ease;
 
       &:hover {
-        background: rgba($primary-color, 0.02);
+        background: rgba(scheme.$primary-color, 0.02);
       }
     }
 

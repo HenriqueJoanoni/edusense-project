@@ -216,6 +216,16 @@
 #editUserPage .edit-user-form .form-actions button.btn-edit:hover {
   background: rgba(13, 110, 253, 0.12);
 }
+#editUserPage .edit-user-form .form-permissions {
+  display: flex;
+  gap: 12px;
+  flex-direction: column;
+}
+#editUserPage .edit-user-form .form-permissions label {
+  margin-bottom: 0;
+  flex: 1;
+  display: inline-flex;
+}
 #editUserPage .edit-user-form .state-message {
   padding: 18px;
   border-radius: 8px;

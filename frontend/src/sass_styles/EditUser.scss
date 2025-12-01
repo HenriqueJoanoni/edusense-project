@@ -1,10 +1,10 @@
-@import 'ColorScheme.scss';
+@use 'ColorScheme.scss' as scheme;
 
 #editUserPage {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(135deg, rgba($primary-color, 0.02) 0%, rgba($secondary-color, 0.02) 100%);
+  background: linear-gradient(135deg, rgba(scheme.$primary-color, 0.02) 0%, rgba(scheme.$secondary-color, 0.02) 100%);
 
   .dashboard-main {
     flex: 1;
@@ -21,7 +21,7 @@
 
     h1 {
       font-size: 2rem;
-      color: $primary-color;
+      color: scheme.$primary-color;
       margin-bottom: 6px;
     }
 
@@ -32,18 +32,18 @@
   }
 
   .edit-user-form {
-    background: $background-color;
+    background: scheme.$background-color;
     border-radius: 12px;
     padding: 22px;
     width: 100%;
-    @include elevation('sm');
+    @include scheme.elevation('sm');
     display: flex;
     flex-direction: column;
     gap: 16px;
 
     label {
       font-weight: 600;
-      color: $quaternary-color;
+      color: scheme.$quaternary-color;
       margin-bottom: 6px;
       display: block;
     }
@@ -56,16 +56,16 @@
       width: 100%;
       padding: 10px 12px;
       border-radius: 10px;
-      border: 1px solid rgba($quaternary-color, 0.12);
+      border: 1px solid rgba(scheme.$quaternary-color, 0.12);
       outline: none;
       font-size: 1rem;
-      color: $quaternary-color;
+      color: scheme.$quaternary-color;
       background: transparent;
       transition: box-shadow 0.12s ease, border-color 0.12s ease;
 
       &:focus {
-        border-color: $primary-color;
-        box-shadow: $shadow-primary;
+        border-color: scheme.$primary-color;
+        box-shadow: scheme.$shadow-primary;
       }
     }
 
@@ -81,8 +81,8 @@
     }
 
     input[readonly] {
-      background: rgba($primary-color, 0.03);
-      color: darken($primary-color, 10%);
+      background: rgba(scheme.$primary-color, 0.03);
+      color: darken(scheme.$primary-color, 10%);
       cursor: default;
     }
 
@@ -108,21 +108,21 @@
         &.btn-cancel {
           background: transparent;
           color: #444;
-          border: 1px solid rgba($quaternary-color, 0.08);
-          @include elevation('xs');
+          border: 1px solid rgba(scheme.$quaternary-color, 0.08);
+          @include scheme.elevation('xs');
 
           &:hover {
-            background: rgba($quaternary-color, 0.03);
+            background: rgba(scheme.$quaternary-color, 0.03);
           }
         }
 
         &.btn-save {
-          background: $primary-color;
+          background: scheme.$primary-color;
           color: #fff;
 
           &:hover {
-            @include elevation('sm');
-            background: darken($primary-color, 4%);
+            @include scheme.elevation('sm');
+            background: darken(scheme.$primary-color, 4%);
           }
         }
 
@@ -137,13 +137,25 @@
       }
     }
 
+    .form-permissions {
+      display: flex;
+      gap: 12px;
+      flex-direction: column;
+
+      label {
+        margin-bottom: 0;
+        flex: 1;
+        display: inline-flex;
+      }
+    }
+
     .state-message {
       padding: 18px;
       border-radius: 8px;
-      background: rgba($primary-color, 0.03);
-      color: $primary-color;
+      background: rgba(scheme.$primary-color, 0.03);
+      color: scheme.$primary-color;
       text-align: center;
-      @include elevation('xs');
+      @include scheme.elevation('xs');
     }
   }
 

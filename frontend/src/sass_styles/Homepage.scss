@@ -1,4 +1,4 @@
-@import 'ColorScheme';
+@use 'ColorScheme' as scheme;
 
 #homepageContainer {
   width: 100%;
@@ -20,7 +20,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: $light-text-color;
+    color: scheme.$light-text-color;
 
     h2 {
       font-size: 3rem;
@@ -34,8 +34,8 @@
     button {
       outline: none;
       background: transparent;
-      border: 1px solid $light-text-color;
-      color: $light-text-color;
+      border: 1px solid scheme.$light-text-color;
+      color: scheme.$light-text-color;
       font-weight: bold;
       padding: 15px 30px;
       font-size: 15px;
@@ -46,9 +46,9 @@
       &:hover {
         cursor: pointer;
         transform: scale(1.2);
-        background-color: $light-text-color;
-        color: $quaternary-color;
-        border: 1px solid $light-text-color;
+        background-color: scheme.$light-text-color;
+        color: scheme.$quaternary-color;
+        border: 1px solid scheme.$light-text-color;
       }
     }
   }

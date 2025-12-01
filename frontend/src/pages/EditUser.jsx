@@ -32,7 +32,7 @@ export default function EditUser() {
             return
         }
 
-        ;(async () => {
+        (async () => {
             try {
                 showLoadingAlert('Loading user data...')
                 const token = JSON.parse(sessionStorage.getItem("User"))?.token
@@ -66,6 +66,11 @@ export default function EditUser() {
     const handleCancel = () => {
         navigate(-1)
     }
+    
+    const clearString = (str) => {
+        let removedSpecial =  str.replace(/[^a-zA-Z0-9\s]/g, ' ').trim()
+        return removedSpecial.charAt(0).toUpperCase() + removedSpecial.slice(1)
+    }
 
     return (
         <div id="editUserPage">
@@ -91,9 +96,24 @@ export default function EditUser() {
                             <label>Role</label>
                             <input type="text" value={roleLabel} readOnly/>
 
+                            <div className="form-permissions" id="permissions" aria-labelledby="permissions">
+                                <label>Permissions</label>
+                                {permissions && Object.keys(permissions).map((permKey) => (
+                                    <div key={permKey} className="permission-checkbox">
+                                        <input
+                                            type="checkbox"
+                                            id={permKey}
+                                            defaultChecked={permissions[permKey]}
+                                        />
+                                        <label htmlFor={permKey}>{clearString(permKey)}</label>
+                                    </div>
+                                ))}
+                            </div>
+
                             <div className="form-actions">
-                                <button type="button" onClick={handleCancel}>Cancel</button>
+                                <button className="btn-cancel" type="button" onClick={handleCancel}>Cancel</button>
                                 <button
+                                    className="btn-edit"
                                     type="button"
                                     onClick={() => showSuccessAlert('Edit', 'User details updated successfully!')}
                                 >
