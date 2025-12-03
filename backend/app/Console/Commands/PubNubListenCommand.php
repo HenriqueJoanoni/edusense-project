@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Services\PubNubService;
+use App\Jobs\ProcessAttendanceFromPubNub;
 use Illuminate\Support\Facades\Log;
 
 class PubNubListenCommand extends Command
@@ -49,26 +50,35 @@ class PubNubListenCommand extends Command
 
         // Define callbacks...
         $onMessage = function ($pubnub, $message) {
+            $messageData = $message->getMessage();
+
             $this->line("┌─────────────────────────────────────┐");
             $this->info("│ NEW MESSAGE RECEIVED                │");
             $this->line("└─────────────────────────────────────┘");
             $this->line("Channel:   " . $message->getChannel());
             $this->line("Publisher: " . $message->getPublisher());
-            $this->line("My UUID:   " . $this->pubNubService->getUuid());
+            $this->line("My UUID:   " .  $this->pubNubService->getUuid());
             $this->line("Timetoken: " . $message->getTimetoken());
             $this->newLine();
             $this->comment("Message Content:");
-            $this->line(json_encode($message->getMessage(), JSON_PRETTY_PRINT));
+            $this->line(json_encode($messageData, JSON_PRETTY_PRINT));
             $this->line("─────────────────────────────────────");
             $this->newLine();
 
             Log::info('PubNub Message Received', [
                 'channel' => $message->getChannel(),
-                'message' => $message->getMessage(),
+                'message' => $messageData,
                 'publisher' => $message->getPublisher(),
                 'listener_uuid' => $this->pubNubService->getUuid(),
                 'timetoken' => $message->getTimetoken(),
             ]);
+
+            if (isset($messageData['ID'])) {
+                ProcessAttendanceFromPubNub::dispatch($messageData);
+                $this->comment("✓ Job dispatched for student ID: {$messageData['ID']}");
+            } else {
+                $this->warn("⚠ Message received without 'ID' field - skipping attendance processing");
+            }
         };
 
         $onPresence = function ($pubnub, $presence) {
