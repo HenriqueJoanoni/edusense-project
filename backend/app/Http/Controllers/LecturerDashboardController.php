@@ -44,10 +44,9 @@ class LecturerDashboardController extends Controller
     /**
      * Get lecturer's subjects
      *
-     * @param Request $request
      * @return JsonResponse
      */
-    public function getMySubjects(Request $request): JsonResponse
+    public function getMySubjects(): JsonResponse
     {
         try {
             $lecturer = $this->getOrCreateLecturer();
@@ -59,17 +58,27 @@ class LecturerDashboardController extends Controller
                 ], Response::HTTP_FORBIDDEN);
             }
 
-            $subjects = ClassSubject::where('lecturer_id', $lecturer->id)
-                ->with(['subject', 'courseClass.course'])
+            $subjects = ClassSubject::query()
+                ->where('lecturer_id', $lecturer->id)
+                ->with([
+                    'subject:id,subject_name,subject_code',
+                    'class:id,year,semester,course_id',
+                    'class.course' => function ($query) {
+                        $query->select('id', 'course_name')
+                            ->withCount('students');
+                    }
+                ])
                 ->get()
                 ->map(function ($classSubject) {
                     return [
                         'class_subject_id' => $classSubject->id,
                         'subject_id' => $classSubject->subject->id,
                         'subject_name' => $classSubject->subject->subject_name,
-                        'course_name' => $classSubject->courseClass->course->course_name ?? 'N/A',
-                        'class_name' => $classSubject->courseClass->class_name ?? 'N/A',
-                        'total_students' => $this->getTotalStudents($classSubject),
+                        'subject_code' => $classSubject->subject->subject_code,
+                        'course_name' => $classSubject->class->course->course_name ?? 'N/A',
+                        'year' => $classSubject->class->year ?? 'N/A',
+                        'semester' => $classSubject->class->semester ?? 'N/A',
+                        'total_students' => $classSubject->class->course->students_count ?? 0,
                     ];
                 });
 
@@ -114,67 +123,77 @@ class LecturerDashboardController extends Controller
                 ], Response::HTTP_FORBIDDEN);
             }
 
-            $classSubject = ClassSubject::with('courseClass')->find($classSubjectId);
-            $classId = $classSubject->class_id;
+            $classSubject = ClassSubject::with(['class.course', 'subject:id,subject_name,subject_code'])
+                ->find($classSubjectId);
 
-            $students = DB::table('students')
-                ->join('users', 'students.user_id', '=', 'users.id')
-                ->join('class_students', 'students.id', '=', 'class_students.student_id')
-                ->where('class_students.class_id', $classId)
-                ->when($request->student_search, function ($query, $search) {
-                    return $query->where(function ($q) use ($search) {
-                        $q->where('users.user_name', 'like', "%{$search}%")
-                            ->orWhere('users.user_email', 'like', "%{$search}%")
-                            ->orWhere('students.student_name', 'like', "%{$search}%");
-                    });
-                })
-                ->select(
-                    'students.id as student_id',
-                    'students.student_name',
-                    'students.registration as student_number',
-                    'users.user_name',
-                    'users.user_email as student_email'
-                )
-                ->distinct()
-                ->get()
-                ->map(function ($student) use ($classSubjectId, $startDate, $endDate) {
-                    $attendances = Attendance::where('student_id', $student->student_id)
-                        ->where('class_subject_id', $classSubjectId)
-                        ->whereBetween('timestamp', [$startDate, $endDate])
-                        ->get();
+            $courseId = $classSubject->class->course_id;
 
-                    $totalClasses = $this->getTotalClassesInPeriod($classSubjectId, $startDate, $endDate);
-                    $attendedClasses = $attendances->count();
-                    $missedClasses = max(0, $totalClasses - $attendedClasses);
-                    $attendanceRate = $totalClasses > 0 ? round(($attendedClasses / $totalClasses) * 100, 2) : 0;
+            $studentsQuery = Student::where('course_id', $courseId)
+                ->with('user:id,user_name,user_email');
 
-                    return [
-                        'student_id' => $student->student_id,
-                        'student_name' => $student->student_name ?? $student->user_name,
-                        'student_email' => $student->student_email,
-                        'student_number' => $student->student_number,
-                        'total_classes' => $totalClasses,
-                        'attended' => $attendedClasses,
-                        'missed' => $missedClasses,
-                        'attendance_rate' => $attendanceRate,
-                        'status' => $attendanceRate >= 75 ? 'good' : ($attendanceRate >= 50 ? 'warning' : 'critical'),
-                        'last_attendance' => $attendances->sortByDesc('timestamp')->first()?->timestamp?->format('Y-m-d H:i:s'),
-                    ];
+            if ($request->student_search) {
+                $studentsQuery->where(function ($q) use ($request) {
+                    $search = $request->student_search;
+                    $q->where('student_name', 'like', "%{$search}%")
+                        ->orWhere('registration', 'like', "%{$search}%")
+                        ->orWhereHas('user', function ($userQuery) use ($search) {
+                            $userQuery->where('user_name', 'like', "%{$search}%")
+                                ->orWhere('user_email', 'like', "%{$search}%");
+                        });
                 });
+            }
+
+            $students = $studentsQuery->get();
+            $studentIds = $students->pluck('id');
+
+            $attendancesGrouped = Attendance::whereIn('student_id', $studentIds)
+                ->whereBetween('timestamp', [$startDate, $endDate])
+                ->get()
+                ->groupBy('student_id');
+
+            $totalClassDays = Attendance::whereBetween('timestamp', [$startDate, $endDate])
+                ->selectRaw('COUNT(DISTINCT DATE(timestamp)) as total')
+                ->value('total') ?? 0;
+
+            $studentsData = $students->map(function ($student) use ($attendancesGrouped, $totalClassDays) {
+                $attendances = $attendancesGrouped->get($student->id, collect());
+                $attendedClasses = $attendances->count();
+                $missedClasses = max(0, $totalClassDays - $attendedClasses);
+                $attendanceRate = $totalClassDays > 0 ? round(($attendedClasses / $totalClassDays) * 100, 2) : 0;
+
+                return [
+                    'student_id' => $student->id,
+                    'student_name' => $student->student_name ?? $student->user?->user_name ?? 'N/A',
+                    'student_email' => $student->user?->user_email ?? 'N/A',
+                    'student_number' => $student->registration,
+                    'total_classes' => $totalClassDays,
+                    'attended' => $attendedClasses,
+                    'missed' => $missedClasses,
+                    'attendance_rate' => $attendanceRate,
+                    'status' => $attendanceRate >= 75 ? 'good' : ($attendanceRate >= 50 ? 'warning' : 'critical'),
+                    'last_attendance' => $attendances->sortByDesc('timestamp')->first()?->timestamp?->format('Y-m-d H:i:s'),
+                ];
+            });
 
             return response()->json([
                 'success' => true,
                 'data' => [
-                    'students' => $students->values(),
+                    'subject' => [
+                        'name' => $classSubject->subject->subject_name,
+                        'code' => $classSubject->subject->subject_code,
+                        'course' => $classSubject->class->course->course_name,
+                    ],
+                    'students' => $studentsData->values(),
                     'period' => [
                         'start_date' => $startDate,
                         'end_date' => $endDate,
                     ],
                     'summary' => [
-                        'total_students' => $students->count(),
-                        'good_attendance' => $students->where('status', 'good')->count(),
-                        'warning_attendance' => $students->where('status', 'warning')->count(),
-                        'critical_attendance' => $students->where('status', 'critical')->count(),
+                        'total_students' => $studentsData->count(),
+                        'total_class_days' => $totalClassDays,
+                        'good_attendance' => $studentsData->where('status', 'good')->count(),
+                        'warning_attendance' => $studentsData->where('status', 'warning')->count(),
+                        'critical_attendance' => $studentsData->where('status', 'critical')->count(),
                     ],
                 ],
             ], Response::HTTP_OK);
@@ -208,25 +227,27 @@ class LecturerDashboardController extends Controller
             $classSubjectIds = ClassSubject::where('lecturer_id', $lecturer->id)
                 ->pluck('id');
 
-            $totalStudents = DB::table('class_students')
-                ->join('class_subjects', 'class_students.class_id', '=', 'class_subjects.class_id')
-                ->whereIn('class_subjects.id', $classSubjectIds)
-                ->distinct('class_students.student_id')
-                ->count('class_students.student_id');
+            $courseIds = ClassSubject::where('lecturer_id', $lecturer->id)
+                ->join('classes', 'class_subjects.class_id', '=', 'classes.id')
+                ->distinct()
+                ->pluck('classes.course_id');
+
+            $studentIds = Student::whereIn('course_id', $courseIds)
+                ->pluck('id');
 
             $stats = [
                 'total_subjects' => $classSubjectIds->count(),
-                'total_students' => $totalStudents,
-                'attendances_today' => Attendance::whereIn('class_subject_id', $classSubjectIds)
+                'total_students' => $studentIds->count(),
+                'attendances_today' => Attendance::whereIn('student_id', $studentIds)
                     ->whereDate('timestamp', Carbon::today())
                     ->count(),
-                'attendances_this_week' => Attendance::whereIn('class_subject_id', $classSubjectIds)
+                'attendances_this_week' => Attendance::whereIn('student_id', $studentIds)
                     ->whereBetween('timestamp', [
                         Carbon::now()->startOfWeek(),
                         Carbon::now()->endOfWeek()
                     ])
                     ->count(),
-                'average_attendance_rate' => $this->calculateAverageAttendanceRate($classSubjectIds),
+                'average_attendance_rate' => $this->calculateAverageAttendanceRate($studentIds),
             ];
 
             return response()->json([
@@ -263,57 +284,36 @@ class LecturerDashboardController extends Controller
     }
 
     /**
-     * Get total students for a class subject
-     *
-     * @param ClassSubject $classSubject
-     * @return int
-     */
-    private function getTotalStudents(ClassSubject $classSubject): int
-    {
-        return DB::table('class_students')
-            ->where('class_id', $classSubject->class_id)
-            ->count();
-    }
-
-    /**
      * Get total classes in period
      *
-     * @param int $classSubjectId
      * @param string $startDate
      * @param string $endDate
      * @return int
      */
-    private function getTotalClassesInPeriod(int $classSubjectId, string $startDate, string $endDate): int
+    private function getTotalClassesInPeriod(string $startDate, string $endDate): int
     {
-        return Attendance::where('class_subject_id', $classSubjectId)
-            ->whereBetween('timestamp', [$startDate, $endDate])
-            ->distinct('timestamp')
+        return Attendance::whereBetween('timestamp', [$startDate, $endDate])
+            ->distinct()
             ->count(DB::raw('DATE(timestamp)'));
     }
 
     /**
      * Calculate average attendance rate
      *
-     * @param Collection $classSubjectIds
+     * @param Collection $studentIds
      * @return float
      */
-    private function calculateAverageAttendanceRate(Collection $classSubjectIds): float
+    private function calculateAverageAttendanceRate(Collection $studentIds): float
     {
-        if ($classSubjectIds->isEmpty()) {
+        if ($studentIds->isEmpty()) {
             return 0;
         }
 
-        $totalAttendances = Attendance::whereIn('class_subject_id', $classSubjectIds)
+        $totalAttendances = Attendance::whereIn('student_id', $studentIds)
             ->whereBetween('timestamp', [Carbon::now()->subDays(30), Carbon::now()])
             ->count();
 
-        $totalStudents = DB::table('class_students')
-            ->join('class_subjects', 'class_students.class_id', '=', 'class_subjects.class_id')
-            ->whereIn('class_subjects.id', $classSubjectIds)
-            ->distinct('class_students.student_id')
-            ->count('class_students.student_id');
-
-        $totalPossible = $totalStudents * 30;
+        $totalPossible = $studentIds->count() * 30;
 
         return $totalPossible > 0 ? round(($totalAttendances / $totalPossible) * 100, 2) : 0;
     }
