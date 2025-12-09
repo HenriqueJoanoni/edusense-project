@@ -189,8 +189,10 @@ export default function LecturerDashboard() {
                             <input
                                 type="date"
                                 name="start_date"
+                                placeholder="dd/mm/yyyy"
                                 value={filters.start_date}
                                 onChange={handleFilterChange}
+                                maxLength={10}
                             />
                         </div>
 
@@ -199,8 +201,10 @@ export default function LecturerDashboard() {
                             <input
                                 type="date"
                                 name="end_date"
+                                placeholder="dd/mm/yyyy"
                                 value={filters.end_date}
                                 onChange={handleFilterChange}
+                                maxLength={10}
                             />
                         </div>
 
